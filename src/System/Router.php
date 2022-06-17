@@ -33,14 +33,18 @@ class Router
                 $internalRoute = preg_replace("~$uriPattern~", $path, $uri);
                 //var_dump($internalRoute);
                 $segments = explode('/', $internalRoute);
-                $controllerName = 'App\Controllers\\' . ucfirst(array_shift($segments)) . 'Controller';
-                $actionName = 'action' . ucfirst(array_shift($segments));
-                //var_dump($controllerName);
-                $parameters = $segments;
-                //var_dump([$parameters]);
-                $controllerObject = new $controllerName;
-                $result = call_user_func_array(array($controllerObject, $actionName), $parameters);
-                //$result = $controllerObject -> $actionName();
+                $validation = ucfirst($segments[0]);
+                if (($validation == 'Validation' && !empty($_POST)) || ($validation != 'Validation'))
+                {
+                    $controllerName = 'App\Controllers\\' . ucfirst(array_shift($segments)) . 'Controller';
+                    $actionName = 'action' . ucfirst(array_shift($segments));
+                    //var_dump($controllerName);
+                    $parameters = $segments;
+                    //var_dump([$parameters]);
+                    $controllerObject = new $controllerName;
+                    $result = call_user_func_array(array($controllerObject, $actionName), $parameters);
+                    //$result = $controllerObject -> $actionName();
+                }
                 if($result != null)
                 {
                     break;
