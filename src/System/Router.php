@@ -23,7 +23,7 @@ class Router
     public function run()
     {
         $uri = $this->getURI();
-        var_dump($uri);
+        //var_dump($uri);
         $result = false;
         foreach($this->routes as $uriPattern => $path)
         {
@@ -31,7 +31,7 @@ class Router
             if(preg_match("~$uriPattern~", $uri))
             {
                 $internalRoute = preg_replace("~$uriPattern~", $path, $uri);
-                var_dump($internalRoute);
+                //var_dump($internalRoute);
                 $segments = explode('/', $internalRoute);
                 $controllerName = 'App\Controllers\\' . ucfirst(array_shift($segments)) . 'Controller';
                 $actionName = 'action' . ucfirst(array_shift($segments));
