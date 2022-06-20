@@ -7,21 +7,24 @@ use App\Controllers\ValidationController;
 class Validation
 {
     private $data;
-    //private $rules;
-    //private $errors;
+    private $form;
+    private $rules;
+    private $paramsFunction;
 
-    public function __constructor(array $data, array $rules)
+    public function __construct(array $dataOut, string $formOut)
     {
-        $this->data = $data;
+        $this->data = $dataOut;
+        $this->form = $formOut;
+        $this->rules = $this->rules();
     }
 
-    public function validate($form): array
+    public function validate(): array
     {
         $response['status'] = false;
-        if (Validation::dataCheck($data, $form))
+        if ($this->dataCheck())
         {
-            $rules = Validation::rules();
-            $response['data'] = Validation::formErrorArray($data, $rules);
+            //$rules = Validation::rules();
+            $response['data'] = $this->formErrorArray();
             if (empty($response['data']))
             {
                 $response['status'] = true;
@@ -30,43 +33,44 @@ class Validation
         return $response;
     }
 
-    public static function formErrorArray($data, $rules): array
+    private function formErrorArray(): array
     {
         $errors = [];
 
-        foreach($data as $field => $value)
+        foreach($this->data as $field => $value)
         {
             $msg = '';
-            $checkSet = explode('|', $rules[$field]);
+            $checkSet = explode('|', $this->rules[$field]);
             while (!empty($checkSet) && $msg === '')
             {
                 $checkType = array_shift($checkSet);
                 $nameFunction = 'check' . ucfirst(explode(':', $checkType)[0]);
-                $msg = Validation::$nameFunction($value, $checkType);
+                $this->paramsFunction = $checkType;
+                $msg = $this->$nameFunction($value, $checkType);
                 $errors[$field] = $msg;
             }
         }
         return $errors;
     }
 
-    private static function dataCheck(array $data, string $form) : bool
+    private function dataCheck() : bool
     {
         $status = false;
 
         $formsPattern = Validation::formsPattern();
 
-        if (isset($formsPattern[$form])) {
-            $fields = explode('/', $formsPattern[$form]);
-            $keys = array_keys($data);
+        if (isset($formsPattern[$this->form])) {
+            $fields = explode('/', $formsPattern[$this->form]);
+            $keys = array_keys($this->data);
             $comparison = array_intersect($keys, $fields);
-            if (count($data) == count($comparison)) {
+            if (count($this->data) == count($comparison)) {
                 $status = true;
             }
         }
         return $status;
     }
 
-    private static function rules(): array
+    private function rules(): array
     {
         return [
             'name' => 'required|alpha|max:20',
@@ -82,7 +86,7 @@ class Validation
         ];
     }
 
-    private static function formsPattern() : array
+    private function formsPattern() : array
     {
         return
             [
@@ -93,7 +97,7 @@ class Validation
 
 
 
-    private static function checkRequired($value, $params): string {
+    private function checkRequired($value): string {
         $msg = '';
         if (empty($value))
         {
@@ -102,7 +106,7 @@ class Validation
         return $msg;
     }
 
-    private static function checkAlpha($value, $params): string {
+    private function checkAlpha($value): string {
         $msg = '';
         if (!preg_match("~^([а-яА-ЯёЁa-zA-Z]+)$~", $value))
         {
@@ -111,10 +115,10 @@ class Validation
         return $msg;
     }
 
-    private static function checkMax($value, $params): string {
+    private function checkMax($value): string {
         $msg = '';
 
-        $len = explode(':', $params)[1];
+        $len = explode(':', $this->paramsFunction)[1];
         if (strlen($value) > $len)
         {
             $msg = ' Поле должно содержать меньше '. $len . ' символов';
@@ -122,7 +126,7 @@ class Validation
         return $msg;
     }
 
-    private static function checkAlphaDash($value, $params): string {
+    private function checkAlphaDash($value): string {
         $msg = '';
         if (!preg_match("~[а-яА-ЯёЁa-zA-Z][а-яА-ЯёЁa-zA-Z_-]~", $value))
         {
@@ -132,13 +136,13 @@ class Validation
     }
 
 
-    private static function checkEqual($value, $params): string {
+    private function checkEqual($value): string {
         $msg = '';
-        $equals = explode(":", $params)[1];
+        $equals = explode(":", $this->paramsFunction)[1];
         $equals = explode(',', $equals);
         if (!in_array($value, $equals))
         {
-            $msg = 'указано неверное значение';
+            $msg = 'Указано неверное значение';
         }
         return $msg;
     }

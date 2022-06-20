@@ -51,9 +51,9 @@ class User extends Model {
         $user->role = 'user';
         $user->generateAuthToken();
         $user->save();
-        if ($user->getId()==0) {
+       /* if ($user->getId()==0) {
             throw new InvalidArgumentException('Что-то пошло не так, проверьте правильность полей');
-        }
+        }*/
         return $user;
     }
 

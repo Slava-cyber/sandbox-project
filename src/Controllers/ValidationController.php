@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\System\Controller;
-use App\Models\Validation\Validation;
+use App\Models\Validation\Validation as Validation;
 
 class ValidationController extends Controller {
 
@@ -16,7 +16,8 @@ class ValidationController extends Controller {
             $form = $input['form'];
             $data = $input['data'];
 
-            $response = Validation::validate($data, $form);
+            $valid = new Validation($data, $form);
+            $response['data'] = $valid->validate();
             // form json response;
             /*if (ValidationController::dataCheck($data, $form)) {
                 $rules = ValidationController::rules();
