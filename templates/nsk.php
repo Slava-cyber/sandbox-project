@@ -9,6 +9,7 @@ $date = date('m/d/Y h:i:s a', time());
 
 <html>
 <head>
+    <a href="/logout">Выход</a>
     <?= !empty($user) ? 'Привет, ' . $user->getLogin() : 'Войдите на сайт' ?>
     Время в Новосибирске: <?= $date ?><br/>
 </head>

@@ -11,7 +11,7 @@
             <div class="row justify-content-center align-items-center" style="height:100vh">
                 <div class="col-sm-12 col-md-6">
                     <h2 class="text-center">Регистрация</h2>
-                    <form name="registration" method="POST" action="" id="form">
+                    <form name="registration" method="POST" action="" id="registration">
                         <div class="form-group py-2">
                             <label for="name">Имя</label>
                             <input type="text" name="name" class="form-control" placeholder="Введите имя" id="name">
@@ -31,11 +31,11 @@
                         <div class="form-group py-2">
                             <label>Укажите ваш пол</label>
                             <div class="form-check">
-                                <input type="radio" class="form-check-input" id="radio1" name="gender" value="Male" checked>
+                                <input type="radio" class="form-check-input" id="radio" name="gender" value="Male" checked>
                                 <label for="radio1" class="form-check-label">Мужской</label><br/>
                             </div>
                             <div class="form-check">
-                                <input type="radio" class="form-check-input" id="radio2" name="gender" value="Female">
+                                <input type="radio" class="form-check-input" id="radio" name="gender" value="Female">
                                 <label for="radio2" class="form-check-label">Женский</label><br/>
                             </div>
                             <small id="genderHelp" class="form-text form-muted"></small>
@@ -48,12 +48,12 @@
                         </div>
                         <div class="form-group py-2">
                             <label for="password">Пароль</label>
-                            <input type="text" class="form-control" name="password" placeholder="Введите пароль" id="password">
+                            <input type="password" class="form-control" name="password" placeholder="Введите пароль" id="password">
                             <small id="passwordHelp" class="form-text form-muted">Введите пароль</small>
                         </div>
                         <div class="form-group py-2">
                             <label for="password_confirm">Подтверждение пароля</label>
-                            <input type="text" class="form-control" name="password_confirm" placeholder="Подтвердите пароль" id="password_confirm">
+                            <input type="password" class="form-control" name="password_confirm" placeholder="Подтвердите пароль" id="password_confirm">
                             <small id="password_confirmHelp" class="form-text form-muted">Подтвердите пароль</small>
                         </div>
                         <?php if (!empty($error)): ?>
@@ -71,7 +71,7 @@
     <!--</div>-->
 
 
-    <!-- <script src="js/registrationValidation.js"> </script> -->
+   <!--  <script src="js/registrationValidation.js"> </script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </body>

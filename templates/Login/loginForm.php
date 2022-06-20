@@ -18,7 +18,7 @@
                     </div>
                     <div class="form-group py-2">
                         <label for="password">Пароль</label>
-                        <input type="text" class="form-control" name="password" placeholder="Введите пароль" id="password">
+                        <input type="password" class="form-control" name="password" placeholder="Введите пароль" id="password">
                         <small id="passwordHelp" class="form-text form-muted">Введите пароль</small>
                     </div>
                     <?php if (!empty($error)): ?>

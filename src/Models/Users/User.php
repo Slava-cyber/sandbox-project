@@ -49,6 +49,7 @@ class User extends Model {
         $user->password = password_hash($userData['password'], PASSWORD_DEFAULT);
         //$user->authToken = sha1(random_bytes(100) . sha1(random_bytes(100)));
         $user->role = 'user';
+        $user->generateAuthToken();
         $user->save();
         return $user;
     }
@@ -71,6 +72,12 @@ class User extends Model {
         return $user;
     }
 
+    public static function logout(User $user): void
+    {
+        $user->generateAuthToken();
+        $user->save();
+    }
+
     private function generateAuthToken() {
         $this->authToken = sha1(random_bytes(50) . sha1(random_bytes(50)));
     }
@@ -78,5 +85,7 @@ class User extends Model {
     protected static function getNameTable(): string {
         return 'users';
     }
+
+
 
 }

@@ -1,6 +1,6 @@
 //const form = document.querySelector( '[name="registration"]' );
 //form.addEventListener( 'submit', validate );
-document.addEventListener('DOMContentLoaded', function () {
+/*document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('form');
     form.addEventListener('submit', formSend);
 
@@ -11,7 +11,113 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(nameField);
 
     }
+});*/
+console.log(12);
+
+let registrationForm = document.getElementById('registration');
+registrationForm.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    var request = new XMLHttpRequest();
+    var url = '/validation';
+    request.open("POST", url, true);
+    request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    //request.onreadystatechange = function () {
+    //    if (request.readyState === 4 && request.status === 200) {
+   //         //var jsonData = JSON.parse(request.response);
+   //         console.log(14);
+   //     }
+   // };
+
+    var name =  document.getElementById("name").value;
+    var surname =  document.getElementById("surname").value;
+    var birth_date =  document.getElementById("birth_date").value;
+    var sex =  document.getElementById("radio").value;
+    var login =  document.getElementById("login").value;
+    var psw =  document.getElementById("password").value;
+    var psw_confirm = document.getElementById("password_confirm").value
+    let data = {
+        'form' : 'registration',
+        'data' :
+            {
+                'name' : name,
+                'surname' : surname,
+                'date_of_birth' : birth_date,
+                'gender' : sex,
+                'login_sign_up' : login,
+                'password_sign_up' : psw,
+                'password_confirm' : psw_confirm,
+            },
+    };
+    console.log(data);
+    request.send(JSON.stringify(data));
+
 });
+
+
+
+
+/*let registrationForm = document.getElementById('registration');
+
+
+registrationForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
+    let name = document.getElementById('name').value;
+    console.log(name);
+    let user = {
+        "name": name,
+    }
+    console.log(user);
+    //let array = {
+    //    form: 'registration',
+    //    data: user,
+        //data: new FormData(registrationForm),
+    //};
+    //console.log(array);
+    let response = await fetch('/validation', {
+        method: 'POST',
+        headers : {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    });
+
+    //let result = await response.json();
+    //console.log(response.status);
+    console.log(14);
+
+});*/
+
+/*async function postData(url = '', data = {}) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *client
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return await response.json(); // parses JSON response into native JavaScript objects
+}
+
+postData('https://example.com/answer', { answer: 42 })
+    .then((data) => {
+        console.log(data); // JSON data parsed by `response.json()` call
+    });*/
+
+
+
+
+
+
+
 
 /*$('.btn').click(function(event) {
     event.preventDefault();

@@ -34,7 +34,9 @@ class Router
                 //var_dump($internalRoute);
                 $segments = explode('/', $internalRoute);
                 $validation = ucfirst($segments[0]);
-                if (($validation == 'Validation' && !empty($_POST)) || ($validation != 'Validation'))
+                var_dump($validation);
+                $input = json_decode(file_get_contents("php://input"), true);
+                if (($validation == 'Validation' && !empty($input)) || ($validation != 'Validation'))
                 {
                     $controllerName = 'App\Controllers\\' . ucfirst(array_shift($segments)) . 'Controller';
                     $actionName = 'action' . ucfirst(array_shift($segments));

@@ -12,6 +12,14 @@ class UserController extends Controller
 {
     public function actionSignUp()
     {
+        $user = Authorization::getUserByToken();
+
+        if ($user instanceof User)
+        {
+            header('Location: /main');
+            return true;
+        }
+
         if (!empty($_POST)) {
             try {
                 $user = User::signUp($_POST);
@@ -20,7 +28,9 @@ class UserController extends Controller
                 return true;
             }
             if ($user instanceof User) {
-                $this->view->render('Registration/SuccessRegistration');
+                Authorization::createToken($user);
+                header('location: /main');
+                //$this->view->render('Registration/SuccessRegistration');
                 return true;
             }
         }
@@ -31,6 +41,14 @@ class UserController extends Controller
 
     public function actionSignIn()
     {
+        $user = Authorization::getUserByToken();
+
+        if ($user instanceof User)
+        {
+            header('Location: /main');
+            return true;
+        }
+
         if (!empty($_POST)) {
             try {
                 $user = User::signIn($_POST);
@@ -44,6 +62,16 @@ class UserController extends Controller
             }
         }
         $this->view->render('Login/loginForm');
+        return true;
+    }
+
+    public function actionLogout()
+    {
+        $user = Authorization::getUserByToken();
+        if ($user instanceof User) {
+            User::logout($user);
+        }
+        header('Location: /login');
         return true;
     }
 

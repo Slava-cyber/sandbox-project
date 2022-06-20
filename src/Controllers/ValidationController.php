@@ -8,22 +8,28 @@ use App\Models\Validation\Validation;
 class ValidationController extends Controller {
 
     public function actionIndex() {
-        $status = false;
-        if (isset($_POST['data']['form']) && isset($_POST['data']['data']))
+        $response['status'] = false;
+        $input = json_decode(file_get_contents("php://input"), true);
+
+        if (isset($input['form']) && isset($input['form']))
         {
-            $form = $_POST['data']['form'];
-            $data = $_POST['data']['data'];
-            if (ValidationController::dataCheck($data, $form)) {
+            $form = $input['form'];
+            $data = $input['data'];
+
+            $response = Validation::validate($data, $form);
+            // form json response;
+            /*if (ValidationController::dataCheck($data, $form)) {
                 $rules = ValidationController::rules();
                 $validation = new Validation($data, $rules);
                 $errors = $validation->formErrorArray();
                 // form json response with array of errors;
-            }
+            }*/
         }
 
-        //form json response;
+        //form json response with status false and without errors;
     }
 
+    /*
     private static function rules(): array
     {
         return [
@@ -43,14 +49,15 @@ class ValidationController extends Controller {
     private static function formsPattern() : array
     {
         return
-        [
-            'registration' => 'name/surname/login_sign_up/password_sign_up/password_confirm',
-            'login' => 'login_sign_in, password',
-        ];
-    }
+            [
+                'registration' => 'name/surname/login_sign_up/password_sign_up/password_confirm',
+                'login' => 'login_sign_in, password',
+            ];
+    }*/
+
 
     // checking the correctness of the data set for the given form
-    private static function dataCheck(array $data, string $form) : bool
+/*    private static function dataCheck(array $data, string $form) : bool
     {
         $status = false;
 
@@ -65,6 +72,6 @@ class ValidationController extends Controller {
             }
         }
         return $status;
-    }
+    }*/
 
 }
