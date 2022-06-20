@@ -34,7 +34,7 @@ class Router
                 //var_dump($internalRoute);
                 $segments = explode('/', $internalRoute);
                 $validation = ucfirst($segments[0]);
-                var_dump($validation);
+                //var_dump($validation);
                 $input = json_decode(file_get_contents("php://input"), true);
                 if (($validation == 'Validation' && !empty($input)) || ($validation != 'Validation'))
                 {
