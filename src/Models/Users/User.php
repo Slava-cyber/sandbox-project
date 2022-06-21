@@ -35,25 +35,20 @@ class User extends Model {
     }
 
     public static function signUp(array $userData) : ?User {
-        //var_dump('data:', $userData['login']);
-        if (static::findOneByColumn("login", $userData['login']) !== null) {
-            throw new InvalidArgumentException('Пользователь с таким логином уже сущетсвует');
-        }
-
         $user = new User();
-        $user->sex = $userData['gender'];
-        $user->login = $userData['login'];
+        $user->sex = $userData['sex'];
+        $user->login = $userData['login_sign_up'];
         $user->name = $userData['name'];
         $user->surname = $userData['surname'];
-        $user->dateOfBirth = $userData['birth_date'];
-        $user->password = password_hash($userData['password'], PASSWORD_DEFAULT);
+        $user->dateOfBirth = $userData['date_of_birth'];
+        $user->password = password_hash($userData['password_sign_up'], PASSWORD_DEFAULT);
         //$user->authToken = sha1(random_bytes(100) . sha1(random_bytes(100)));
         $user->role = 'user';
         $user->generateAuthToken();
         $user->save();
-       /* if ($user->getId()==0) {
+        if ($user->getId()==0) {
             throw new InvalidArgumentException('Что-то пошло не так, проверьте правильность полей');
-        }*/
+        }
         return $user;
     }
 
@@ -88,7 +83,5 @@ class User extends Model {
     protected static function getNameTable(): string {
         return 'users';
     }
-
-
 
 }

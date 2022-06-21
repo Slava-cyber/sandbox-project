@@ -3,6 +3,8 @@
 namespace App\Models\Validation;
 
 use App\Controllers\ValidationController;
+use App\Models\Users\User as User;
+use App\System\Model as Model;
 
 class Validation
 {
@@ -20,15 +22,16 @@ class Validation
 
     public function validate(): array
     {
-        $response['status'] = false;
+        //$response['status'] = false;
+        $response = [];
         if ($this->dataCheck())
         {
             //$rules = Validation::rules();
-            $response['data'] = $this->formErrorArray();
-            if (empty($response['data']))
-            {
-                $response['status'] = true;
-            }
+            $response = $this->formErrorArray();
+            //if (empty($response['data']))
+            //{
+            //    $response['status'] = true;
+            //}
         }
         return $response;
     }
@@ -37,17 +40,17 @@ class Validation
     {
         $errors = [];
 
-        foreach($this->data as $field => $value)
+        foreach($this->data as $fields => $value)
         {
             $msg = '';
-            $checkSet = explode('|', $this->rules[$field]);
+            $checkSet = explode('|', $this->rules[$fields]);
             while (!empty($checkSet) && $msg === '')
             {
                 $checkType = array_shift($checkSet);
                 $nameFunction = 'check' . ucfirst(explode(':', $checkType)[0]);
                 $this->paramsFunction = $checkType;
-                $msg = $this->$nameFunction($value, $checkType);
-                $errors[$field] = $msg;
+                $msg = $this->$nameFunction($value);
+                $errors[$fields] = $msg;
             }
         }
         return $errors;
@@ -72,15 +75,16 @@ class Validation
 
     private function rules(): array
     {
+
         return [
             'name' => 'required|alpha|max:20',
             'surname' => 'required|alpha|max:20',
-            'gender' => 'required|equal:Male,Female',
-            'login_sign_up' => 'required|unique:users|alphaDash|between:5,20',
+            'sex' => 'required|equal:Male,Female',
+            'login_sign_up' => 'required|unique:user,login|alphaDash|between:5,20',
             'date_of_birth' => 'required|before:2022-17-05|after:1950-28-05',
             'password_sign_up' => 'required|alphaDash|between:8,20',
-            'password_confirm' => 'same:password_sign_up',
-            'login_sign_in' => 'required|in:users',
+            'password_confirm' => 'required|alphaDash|between:8,20|same:password_sign_up',
+            'login_sign_in' => 'required|in:user,login',
             'password'=> 'required|in:users',
             'phoneNumber' => 'match:/[a-z]+/',
         ];
@@ -90,12 +94,52 @@ class Validation
     {
         return
             [
-                'registration' => 'name/surname/login_sign_up/password_sign_up/password_confirm',
-                'login' => 'login_sign_in, password',
+                'registration' => 'name/surname/sex/date_of_birth/login_sign_up/password_sign_up/password_confirm',
+                'login' => 'login_sign_in/password',
             ];
     }
 
 
+    private function checkBefore($value): string {
+        $msg = '';
+        $border = mktime(0,0,0, date("m"), date("d"), date("Y") - 3);
+        //$border = date("Y-m-d", $border);
+        if ($value > (date("Y-m-d", $border)))
+        {
+            $msg = 'Введите корректную дату, до '. date("Y-m-d", $border);
+        }
+
+        return $msg;
+    }
+
+
+    private function checkAfter($value): string {
+        $msg = '';
+        $border = mktime(0,0,0, date("m"), date("d"), date("Y") - 80);
+        if ($value < date("Y-m-d", $border))
+        {
+            $msg = 'Введите корректную дату, после '. date("Y-m-d", $border);
+        }
+
+        return $msg;
+    }
+
+    private function checkUnique($value): string {
+        $msg = '';
+
+        $params = ucfirst(explode(':', $this->paramsFunction)[1]);
+        $params = explode(',', $params);
+        $nameClass= $params[0];
+        $fieldTable = $params[1];
+        $object = User::findOneByColumn($fieldTable, $value);
+        //$object = call_user_func_array(array($nameClass, '::findOneByColumn'), array($fieldTable, $value));
+        if ($object != null)
+        {
+            $msg = 'Такоe значение уже существует';
+        }
+
+        return $msg;
+    }
 
     private function checkRequired($value): string {
         $msg = '';
@@ -121,17 +165,53 @@ class Validation
         $len = explode(':', $this->paramsFunction)[1];
         if (strlen($value) > $len)
         {
-            $msg = ' Поле должно содержать меньше '. $len . ' символов';
+            $msg = 'Поле должно содержать не более '. $len . ' символов';
+        }
+        return $msg;
+    }
+
+    private function checkMin($value): string {
+        $msg = '';
+
+        $len = explode(':', $this->paramsFunction)[1];
+        if (strlen($value) < $len)
+        {
+            $msg = 'Поле должно содержать не менее '. $len . ' символов';
+        }
+        return $msg;
+    }
+
+    private function checkBetween($value): string {
+        $msg = '';
+
+        $range = explode(':', $this->paramsFunction)[1];
+        $range = explode(',', $range);
+        if ((strlen($value) < $range[0]) || (strlen($value) > $range[1]))
+        {
+            $msg = 'Поле должно содержать от'. $range[0] . ' до ' . $range[1] . ' символов';
         }
         return $msg;
     }
 
     private function checkAlphaDash($value): string {
         $msg = '';
-        if (!preg_match("~[а-яА-ЯёЁa-zA-Z][а-яА-ЯёЁa-zA-Z_-]~", $value))
+        //if (!preg_match("~[а-яА-ЯёЁa-zA-Z][а-яА-ЯёЁa-zA-Z_-]~", $value))
+        if (!preg_match("~[a-zA-zа-яА-Я+0-9+_+-+]~", $value))
         {
             $msg = 'Допустимы только буквы, цифры, символы "_-". Начинаться должно с буквы';
         }
+        return $msg;
+    }
+
+    private function checkSame($value): string {
+        $msg = '';
+
+        $same = explode(':', $this->paramsFunction)[1];
+        if ($value != $this->data[$same])
+        {
+            $msg = 'Пароли не совпадают';
+        }
+
         return $msg;
     }
 
