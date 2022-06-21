@@ -3,6 +3,7 @@
 namespace App\Models\Users;
 
 use App\Exceptions\InvalidArgumentException as InvalidArgumentException;
+use App\Models\Validation\Validation as Validation;
 use App\System\Db as Db;
 use App\System\Model as Model;
 
@@ -35,25 +36,29 @@ class User extends Model {
     }
 
     public static function signUp(array $userData) : ?User {
-        $user = new User();
-        $user->sex = $userData['sex'];
-        $user->login = $userData['login_sign_up'];
-        $user->name = $userData['name'];
-        $user->surname = $userData['surname'];
-        $user->dateOfBirth = $userData['date_of_birth'];
-        $user->password = password_hash($userData['password_sign_up'], PASSWORD_DEFAULT);
-        //$user->authToken = sha1(random_bytes(100) . sha1(random_bytes(100)));
-        $user->role = 'user';
-        $user->generateAuthToken();
-        $user->save();
-        if ($user->getId()==0) {
+        $valid = new Validation($userData, 'registration');
+        if ($valid->validate()['status']) {
+            $user = new User();
+            $user->sex = $userData['sex'];
+            $user->login = $userData['login_sign_up'];
+            $user->name = $userData['name'];
+            $user->surname = $userData['surname'];
+            $user->dateOfBirth = $userData['date_of_birth'];
+            $user->password = password_hash($userData['password_sign_up'], PASSWORD_DEFAULT);
+            $user->role = 'user';
+            $user->generateAuthToken();
+            $user->save();
+        } else {
             throw new InvalidArgumentException('Что-то пошло не так, проверьте правильность полей');
         }
+        //if ($user->getId()==0) {
+        //    throw new InvalidArgumentException('Что-то пошло не так, проверьте правильность полей');
+        //}
         return $user;
     }
 
     public static function signIn(array $userData) : User {
-        $user = User::findOneByColumn("login", $userData['login']);
+        $user = User::findOneByColumn("login", $userData['login_sign_in']);
         //var_dump($user);
         if ($user == null) {
             throw new InvalidArgumentException('Пользователя с таким логином не сущетсвует');

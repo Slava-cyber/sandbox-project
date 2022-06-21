@@ -3,6 +3,7 @@
 namespace App\Models\Validation;
 
 use App\Controllers\ValidationController;
+use App\Exceptions\InvalidArgumentException as InvalidArgumentException;
 use App\Models\Users\User as User;
 use App\System\Model as Model;
 
@@ -22,16 +23,22 @@ class Validation
 
     public function validate(): array
     {
-        //$response['status'] = false;
+        $response['status'] = false;
         $response = [];
         if ($this->dataCheck())
         {
-            //$rules = Validation::rules();
-            $response = $this->formErrorArray();
-            //if (empty($response['data']))
-            //{
-            //    $response['status'] = true;
-            //}
+            $response['error'] = $this->formErrorArray();
+            $count = 0;
+            foreach($response['error'] as $field => $msg)
+            {
+                if ($msg != '')
+                {
+                    $count += 1;
+                }
+            }
+            if ($count == 0) {
+                $response['status'] = true;
+            }
         }
         return $response;
     }
@@ -85,10 +92,45 @@ class Validation
             'password_sign_up' => 'required|alphaDash|between:8,20',
             'password_confirm' => 'required|alphaDash|between:8,20|same:password_sign_up',
             'login_sign_in' => 'required|in:user,login',
-            'password'=> 'required|in:users',
+            'password'=> 'required|pswVerify',
             'phoneNumber' => 'match:/[a-z]+/',
         ];
     }
+
+    private function checkPswVerify($value) : string {
+        $msg = '';
+
+        $user = User::findOneByColumn("login", $this->data['login_sign_in']);
+        if ($user != null) {
+            if (!password_verify($value, $user->getPassword())) {
+                $msg = 'Неверный пароль';
+            }
+        } else {
+            $msg = 'Такого пользователя не существует';
+        }
+
+
+        return $msg;
+    }
+
+
+    private function checkIn($value) : string {
+        $msg = '';
+
+        $params = ucfirst(explode(':', $this->paramsFunction)[1]);
+        $params = explode(',', $params);
+        $nameClass= $params[0];
+        $fieldTable = $params[1];
+        $object = User::findOneByColumn($fieldTable, $value);
+        //$object = call_user_func_array(array($nameClass, '::findOneByColumn'), array($fieldTable, $value));
+        if ($object == null)
+        {
+            $msg = 'Неправильное значение';
+        }
+
+        return $msg;
+    }
+
 
     private function formsPattern() : array
     {

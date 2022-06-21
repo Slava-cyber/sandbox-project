@@ -1,15 +1,10 @@
-console.log(12);
 const registrationForm = document.getElementById('registration');
-const name =  document.getElementById("name");
-let surname =  document.getElementById("surname");
-let birthDate =  document.getElementById("date_of_birth");
-let sex =  document.getElementById("sex");
-let login =  document.getElementById("login_sign_up");
-let psw =  document.getElementById("password_sign_up");
-let pswConfirm = document.getElementById("password_confirm");
+const loginForm = document.getElementById('login');
 
-registrationForm.addEventListener("submit", function(event) {
+loginForm.addEventListener("submit", function(event) {
     event.preventDefault();
+    let login =  document.getElementById("login_sign_in");
+    let psw =  document.getElementById("password");
 
     let request = new XMLHttpRequest();
     let url = '/validation';
@@ -18,7 +13,39 @@ registrationForm.addEventListener("submit", function(event) {
     request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
             let jsonData = JSON.parse(request.responseText);
-            validate(jsonData);
+            validate(jsonData, loginForm);
+        }
+    };
+
+    let data = {
+        'form' : 'login',
+        'data' :
+            {
+                'login_sign_in' : login.value.trim(),
+                'password' : psw.value.trim(),
+            },
+    };
+    request.send(JSON.stringify(data));
+});
+
+registrationForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+    let name =  document.getElementById("name");
+    let surname =  document.getElementById("surname");
+    let birthDate =  document.getElementById("date_of_birth");
+    let sex =  document.getElementById("sex");
+    let login =  document.getElementById("login_sign_up");
+    let psw =  document.getElementById("password_sign_up");
+    let pswConfirm = document.getElementById("password_confirm");
+
+    let request = new XMLHttpRequest();
+    let url = '/validation';
+    request.open("POST", url, true);
+    request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            let jsonData = JSON.parse(request.responseText);
+            validate(jsonData, registrationForm);
         }
     };
 
@@ -52,12 +79,12 @@ function removeClass(data) {
     }
 }
 
-function validate(data) {
+function validate(data, form) {
     removeClass(data);
     console.log(data.status);
     if (data.status == true) {
         console.log(data.status);
-        registrationForm.submit();
+        form.submit();
     } else {
         for (field in data.error) {
             if (field != 'sex'){
