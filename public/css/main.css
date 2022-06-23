@@ -5,3 +5,15 @@
 .error {
     color: red;
 }
+
+.profile {
+    background-color: #776c6c;
+}
+
+.profile-content {
+    background-color: #ffffff;
+}
+
+.file {
+    opacity: 0;
+}
