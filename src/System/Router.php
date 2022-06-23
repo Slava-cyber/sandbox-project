@@ -27,6 +27,7 @@ class Router
         $result = false;
         foreach($this->routes as $uriPattern => $path)
         {
+            //var_dump($uriPattern);
             $result = false;
             if(preg_match("~$uriPattern~", $uri))
             {
@@ -34,18 +35,23 @@ class Router
                 //var_dump($internalRoute);
                 $segments = explode('/', $internalRoute);
                 $validation = ucfirst($segments[0]);
-                //var_dump($validation);
+               // var_dump($validation);
                 $input = json_decode(file_get_contents("php://input"), true);
                 if (($validation == 'Validation' && !empty($input)) || ($validation != 'Validation'))
                 {
                     $controllerName = 'App\Controllers\\' . ucfirst(array_shift($segments)) . 'Controller';
-                    $actionName = 'action' . ucfirst(array_shift($segments));
-                    //var_dump($controllerName);
-                    $parameters = $segments;
-                    //var_dump([$parameters]);
-                    $controllerObject = new $controllerName;
-                    $result = call_user_func_array(array($controllerObject, $actionName), $parameters);
-                    //$result = $controllerObject -> $actionName();
+                    if (class_exists($controllerName)) {
+                        $controllerObject = new $controllerName;
+                        //var_dump($controllerName);
+                        $actionName = 'action' . ucfirst(array_shift($segments));
+                        //var_dump($actionName);
+                        if (method_exists($controllerObject, $actionName)) {
+                            $parameters = $segments;
+                            //var_dump($parameters);
+                            $result = call_user_func_array(array($controllerObject, $actionName), $parameters);
+                        }
+                    }
+
                 }
                 if($result != null)
                 {
