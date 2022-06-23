@@ -21,7 +21,63 @@ class User extends Model {
     protected $interest;
     protected $description;
     protected $phoneNumber;
+    //protected $avatar;
+    /*protected $rating = 0;
+    protected $number_of_reviews = 0;*/
     protected $role;
+
+
+    public function getName() {
+        return $this->name;
+    }
+
+    public function getSurname() {
+        return $this->surname;
+    }
+
+    public function getLogin() {
+        return $this->login;
+    }
+
+    public function getSex() {
+        return $this->sex;
+    }
+
+    public function getDateOfBirth() {
+        return $this->dateOfBirth;
+    }
+
+    public function getTown() {
+        return $this->town;
+    }
+
+    public function getInterest() {
+        return $this->interest;
+    }
+
+    public function getDescription() {
+        return $this->description;
+    }
+
+    /*public function getAvatar() {
+        return $this->avatar;
+    }*/
+
+    public function getPhoneNumber() {
+        return $this->phoneNumber;
+    }
+
+    public function getRole() {
+        return $this->role;
+    }
+
+    /*public function getRating() {
+        return $this->rating;
+    }
+
+    /*public function getNumberOfReviews() {
+        return $this->number_of_reviews;
+    }*/
 
     public function getPassword() {
         return $this->password;
@@ -31,13 +87,10 @@ class User extends Model {
         return $this->authToken;
     }
 
-    public function getLogin() {
-        return $this->login;
-    }
-
     public static function signUp(array $userData) : ?User {
         $valid = new Validation($userData, 'registration');
-        if ($valid->validate()['status']) {
+        $status = $valid->validate();
+        if ($status['status']) {
             $user = new User();
             $user->sex = $userData['sex'];
             $user->login = $userData['login_sign_up'];
@@ -48,8 +101,6 @@ class User extends Model {
             $user->role = 'user';
             $user->generateAuthToken();
             $user->save();
-        } else {
-            throw new InvalidArgumentException('Что-то пошло не так, проверьте правильность полей');
         }
         //if ($user->getId()==0) {
         //    throw new InvalidArgumentException('Что-то пошло не так, проверьте правильность полей');
@@ -57,21 +108,22 @@ class User extends Model {
         return $user;
     }
 
-    public static function signIn(array $userData) : User {
-        $user = User::findOneByColumn("login", $userData['login_sign_in']);
-        //var_dump($user);
-        if ($user == null) {
-            throw new InvalidArgumentException('Пользователя с таким логином не сущетсвует');
+    public static function signIn(array $userData) : ?User {
+        $valid = new Validation($userData, 'login');
+        $status = $valid->validate();
+        if ($status)
+        {
+            $user = User::findOneByColumn("login", $userData['login_sign_in']);
+            if ($user instanceof User && password_verify($userData['password'], $user->getPassword()))
+            {
+
+                $user->generateAuthToken();
+                $user->save();
+            } else
+            {
+                $user = null;
+            }
         }
-
-        if (!password_verify($userData['password'], $user->getPassword())) {
-            throw new InvalidArgumentException('Неправильный пароль');
-        }
-
-        $user->generateAuthToken();
-        //var_dump($user->authToken);
-        $user->save();
-
         return $user;
     }
 
@@ -80,6 +132,13 @@ class User extends Model {
         $user->generateAuthToken();
         $user->save();
     }
+
+    public static function getUserByLogin($value) : ?User
+    {
+        $user = User::findOneByColumn("login", $value);
+        return $user;
+    }
+
 
     private function generateAuthToken() {
         $this->authToken = sha1(random_bytes(50) . sha1(random_bytes(50)));

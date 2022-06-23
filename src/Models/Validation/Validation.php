@@ -24,19 +24,11 @@ class Validation
     public function validate(): array
     {
         $response['status'] = false;
-        $response = [];
         if ($this->dataCheck())
         {
             $response['error'] = $this->formErrorArray();
-            $count = 0;
-            foreach($response['error'] as $field => $msg)
+            if (empty($response['error']))
             {
-                if ($msg != '')
-                {
-                    $count += 1;
-                }
-            }
-            if ($count == 0) {
                 $response['status'] = true;
             }
         }
@@ -47,23 +39,24 @@ class Validation
     {
         $errors = [];
 
-        foreach($this->data as $fields => $value)
-        {
+        foreach ($this->data as $fields => $value) {
             $msg = '';
             $checkSet = explode('|', $this->rules[$fields]);
-            while (!empty($checkSet) && $msg === '')
-            {
+            while (!empty($checkSet) && $msg === '') {
                 $checkType = array_shift($checkSet);
                 $nameFunction = 'check' . ucfirst(explode(':', $checkType)[0]);
                 $this->paramsFunction = $checkType;
                 $msg = $this->$nameFunction($value);
-                $errors[$fields] = $msg;
+                if ($msg != '')
+                {
+                    $errors[$fields] = $msg;
+                }
             }
         }
         return $errors;
     }
 
-    private function dataCheck() : bool
+    private function dataCheck(): bool
     {
         $status = false;
 
@@ -91,48 +84,30 @@ class Validation
             'date_of_birth' => 'required|before:2022-17-05|after:1950-28-05',
             'password_sign_up' => 'required|alphaDash|between:8,20',
             'password_confirm' => 'required|alphaDash|between:8,20|same:password_sign_up',
-            'login_sign_in' => 'required|in:user,login',
-            'password'=> 'required|pswVerify',
+            'login_sign_in' => 'required',
+            'password' => 'required',
             'phoneNumber' => 'match:/[a-z]+/',
         ];
     }
 
-    private function checkPswVerify($value) : string {
-        $msg = '';
-
-        $user = User::findOneByColumn("login", $this->data['login_sign_in']);
-        if ($user != null) {
-            if (!password_verify($value, $user->getPassword())) {
-                $msg = 'Неверный пароль';
-            }
-        } else {
-            $msg = 'Такого пользователя не существует';
-        }
-
-
-        return $msg;
-    }
-
-
-    private function checkIn($value) : string {
+    private function checkIn($value): string
+    {
         $msg = '';
 
         $params = ucfirst(explode(':', $this->paramsFunction)[1]);
         $params = explode(',', $params);
-        $nameClass= $params[0];
+        $nameClass = $params[0];
         $fieldTable = $params[1];
         $object = User::findOneByColumn($fieldTable, $value);
         //$object = call_user_func_array(array($nameClass, '::findOneByColumn'), array($fieldTable, $value));
-        if ($object == null)
-        {
+        if ($object == null) {
             $msg = 'Неправильное значение';
         }
 
         return $msg;
     }
 
-
-    private function formsPattern() : array
+    private function formsPattern(): array
     {
         return
             [
@@ -141,129 +116,126 @@ class Validation
             ];
     }
 
-
-    private function checkBefore($value): string {
+    private function checkBefore($value): string
+    {
         $msg = '';
-        $border = mktime(0,0,0, date("m"), date("d"), date("Y") - 3);
+        $border = mktime(0, 0, 0, date("m"), date("d"), date("Y") - 3);
         //$border = date("Y-m-d", $border);
-        if ($value > (date("Y-m-d", $border)))
-        {
-            $msg = 'Введите корректную дату, до '. date("Y-m-d", $border);
+        if ($value > (date("Y-m-d", $border))) {
+            $msg = 'Введите корректную дату, до ' . date("Y-m-d", $border);
         }
 
         return $msg;
     }
 
-
-    private function checkAfter($value): string {
+    private function checkAfter($value): string
+    {
         $msg = '';
-        $border = mktime(0,0,0, date("m"), date("d"), date("Y") - 80);
-        if ($value < date("Y-m-d", $border))
-        {
-            $msg = 'Введите корректную дату, после '. date("Y-m-d", $border);
+        $border = mktime(0, 0, 0, date("m"), date("d"), date("Y") - 80);
+        if ($value < date("Y-m-d", $border)) {
+            $msg = 'Введите корректную дату, после ' . date("Y-m-d", $border);
         }
 
         return $msg;
     }
 
-    private function checkUnique($value): string {
+    private function checkUnique($value): string
+    {
         $msg = '';
 
         $params = ucfirst(explode(':', $this->paramsFunction)[1]);
         $params = explode(',', $params);
-        $nameClass= $params[0];
+        $nameClass = $params[0];
         $fieldTable = $params[1];
         $object = User::findOneByColumn($fieldTable, $value);
         //$object = call_user_func_array(array($nameClass, '::findOneByColumn'), array($fieldTable, $value));
-        if ($object != null)
-        {
+        if ($object != null) {
             $msg = 'Такоe значение уже существует';
         }
 
         return $msg;
     }
 
-    private function checkRequired($value): string {
+    private function checkRequired($value): string
+    {
         $msg = '';
-        if (empty($value))
-        {
+        if (empty($value)) {
             $msg = 'Заполните поле';
         }
         return $msg;
     }
 
-    private function checkAlpha($value): string {
+    private function checkAlpha($value): string
+    {
         $msg = '';
-        if (!preg_match("~^([а-яА-ЯёЁa-zA-Z]+)$~", $value))
-        {
+        if (!preg_match("~^([а-яА-ЯёЁa-zA-Z]+)$~", $value)) {
             $msg = 'Поле должно содержать только буквы';
         }
         return $msg;
     }
 
-    private function checkMax($value): string {
+    private function checkMax($value): string
+    {
         $msg = '';
 
         $len = explode(':', $this->paramsFunction)[1];
-        if (strlen($value) > $len)
-        {
-            $msg = 'Поле должно содержать не более '. $len . ' символов';
+        if (strlen($value) > $len) {
+            $msg = 'Поле должно содержать не более ' . $len . ' символов';
         }
         return $msg;
     }
 
-    private function checkMin($value): string {
+    private function checkMin($value): string
+    {
         $msg = '';
 
         $len = explode(':', $this->paramsFunction)[1];
-        if (strlen($value) < $len)
-        {
-            $msg = 'Поле должно содержать не менее '. $len . ' символов';
+        if (strlen($value) < $len) {
+            $msg = 'Поле должно содержать не менее ' . $len . ' символов';
         }
         return $msg;
     }
 
-    private function checkBetween($value): string {
+    private function checkBetween($value): string
+    {
         $msg = '';
 
         $range = explode(':', $this->paramsFunction)[1];
         $range = explode(',', $range);
-        if ((strlen($value) < $range[0]) || (strlen($value) > $range[1]))
-        {
-            $msg = 'Поле должно содержать от'. $range[0] . ' до ' . $range[1] . ' символов';
+        if ((strlen($value) < $range[0]) || (strlen($value) > $range[1])) {
+            $msg = 'Поле должно содержать от' . $range[0] . ' до ' . $range[1] . ' символов';
         }
         return $msg;
     }
 
-    private function checkAlphaDash($value): string {
+    private function checkAlphaDash($value): string
+    {
         $msg = '';
         //if (!preg_match("~[а-яА-ЯёЁa-zA-Z][а-яА-ЯёЁa-zA-Z_-]~", $value))
-        if (!preg_match("~[a-zA-zа-яА-Я+0-9+_+-+]~", $value))
-        {
+        if (!preg_match("~[a-zA-zа-яА-Я+0-9_+-+]~", $value)) {
             $msg = 'Допустимы только буквы, цифры, символы "_-". Начинаться должно с буквы';
         }
         return $msg;
     }
 
-    private function checkSame($value): string {
+    private function checkSame($value): string
+    {
         $msg = '';
 
         $same = explode(':', $this->paramsFunction)[1];
-        if ($value != $this->data[$same])
-        {
+        if ($value != $this->data[$same]) {
             $msg = 'Пароли не совпадают';
         }
 
         return $msg;
     }
 
-
-    private function checkEqual($value): string {
+    private function checkEqual($value): string
+    {
         $msg = '';
         $equals = explode(":", $this->paramsFunction)[1];
         $equals = explode(',', $equals);
-        if (!in_array($value, $equals))
-        {
+        if (!in_array($value, $equals)) {
             $msg = 'Указано неверное значение';
         }
         return $msg;

@@ -78,7 +78,7 @@ Abstract class Model {
         $params = [];
         $values = [];
 
-        //var_dump($this->authToken);
+        var_dump($this->authToken);
         foreach ($mappedProperties as $column => $value) {
             $params[] = $column . ' = :' . $column;
             $values[$column] = $value;
