@@ -14,17 +14,18 @@
                 <form name="login" id="login" method="POST" action="" id="form">
                     <div class="form-group py-2">
                         <label for="login">Логин</label>
-                        <input type="text" class="form-control" name="login_sign_in" placeholder="Введите свой логин" id="login_sign_in">
-                        <small id="loginHelp" class="form-text form-muted">Введите свой логин</small>
+                        <input type="text" class="form-control" name="login_sign_in"
+                               placeholder="Введите свой логин" id="login_sign_in" value="<?= $_POST['login_sign_in'] ?? '' ?>">
+                        <small id="loginHelp" class="form-text form-muted none">Введите свой логин</small>
                     </div>
                     <div class="form-group py-2">
                         <label for="password">Пароль</label>
                         <input type="password" class="form-control" name="password" placeholder="Введите пароль" id="password">
-                        <small id="passwordHelp" class="form-text form-muted">Введите пароль</small>
+                        <small id="passwordHelp" class="form-text form-muted none">Введите пароль</small>
+                        <?php if (!empty($error)): ?>
+                            <small id="loginHelp" class="form-text form-muted error"><?= $error ?></small>
+                        <?php endif; ?>
                     </div>
-                    <?php if (!empty($error)): ?>
-                        <div class="form-group my-2" name="error" style="box-shadow: 0 0 1px red;"><?= $error ?></div>
-                    <?php endif; ?>
                     <button type="submit" class="btn btn-secondary w-100 my-2">Войти</button>
                     <div class="col-sm-12 col-md-8 w-100 text-center">
                         У вас еще нет аккаунта? - <a href="/registration">Зарегистрируйтесь</a>
@@ -34,7 +35,8 @@
         </div>
     </div>
 
-    <script src="js/registrationValidation.js"> </script>
+    <script src="js/validation.js"> </script>
+    <script src="js/loginValidation.js"> </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </body>
