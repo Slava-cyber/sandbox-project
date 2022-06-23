@@ -21,7 +21,6 @@ class View
 
         extract($this->header);
         extract($data);
-
         /*if (!empty($data)) {
             foreach ($data as $key => $value) {
                 $$key = $value;
