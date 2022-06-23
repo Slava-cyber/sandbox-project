@@ -20,19 +20,17 @@ class UserController extends Controller
             return true;
         }
 
-        if (!empty($_POST)) {
-            try {
-                $user = User::signUp($_POST);
-            } catch (InvalidArgumentException $e) {
-                $this->view->render('Registration/registrationForm', ['error' => $e->getMessage()]);
-                return true;
-            }
-            if ($user instanceof User) {
+        if (!empty($_POST))
+        {
+            $user = User::signUp($_POST);
+
+            if ($user instanceof User)
+            {
                 Authorization::createToken($user);
                 header('location: /main');
-                //$this->view->render('Registration/SuccessRegistration');
                 return true;
             }
+            return false;
         }
 
         $this->view->render('Registration/registrationForm');
@@ -50,14 +48,15 @@ class UserController extends Controller
         }
 
         if (!empty($_POST)) {
-            try {
-                $user = User::signIn($_POST);
-                //var_dump($user);
+            $user = User::signIn($_POST);
+            if ($user instanceof User)
+            {
                 Authorization::createToken($user);
                 header('Location: /main');
                 exit();
-            } catch (InvalidArgumentException $e) {
-                $this->view->render('Login/loginForm', ['error' => $e->getMessage()]);
+            } else
+            {
+                $this->view->render('Login/loginForm', ['error' => 'Такого пользователя не существует']);
                 return true;
             }
         }
