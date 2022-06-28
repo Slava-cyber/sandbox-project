@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body class="profile">
-<?= !empty($user) ? 'Привет, ' . $user->getLogin() : 'Войдите на сайт' ?>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a href="" class="navbar-brand p-2">Sandbox</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
@@ -46,8 +45,106 @@
             </div>
     </nav>
 
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 bg-white p-3">
+                <div class="row">
+                    <form name="search" method="POST" action="" id="search">
+                        <div class="row">
+                            <div class="form-group py-2">
+                                <input type="text" name="title" placeholder="Заголовок" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="accordion" id="accordionPanelsStayOpenExample">
+                                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                        Дополнительные параметры
+                                    </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group py-2">
+                                                    <input type="text" name="town" placeholder="Город" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group py-2">
+                                                    <input type="date" name="date" placeholder="Дата" class="form-control">
+                                                    <small id="dateHelp" class="form-text form-muted">Укажите дату</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group py-2">
+                                                    <input type="time" name="time" class="form-control">
+                                                    <small id="timeHelp" class="form-text form-muted">Укажите время</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group py-2">
+                                                    <select class="form-select form-control">
+                                                        <option selected>Выберите категорию</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group py-2">
+                                                    <select class="form-select form-control">
+                                                        <option selected>Выберите подкатегорию</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2 d-grid text-end">
+                                <button type="submit" class="btn btn-secondary my-2">Найти</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <?= !empty($user) ? 'Привет, ' . $user->getLogin() : 'Войдите на сайт' ?>
     <!-- <script src="js/registrationValidation.js"> </script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  <!--  <div class="accordion" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                    Дополнительные параметры
+                </button>
+            </h2>
+            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                <div class="accordion-body">
+                    <label for="name">Заголовок</label>
+                    <input type="text" name="title" class="form-control">
+                    <label for="name">Заголовок</label>
+                    <input type="text" name="title" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+
 
 </body>
 </html>
