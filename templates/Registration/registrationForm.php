@@ -55,9 +55,9 @@
                             <input type="password" class="form-control" name="password_confirm" placeholder="Подтвердите пароль" id="password_confirm">
                             <small id="password_confirmHelp" class="form-text form-muted none">Подтвердите пароль</small>
                         </div>
-                        <?php if (!empty($error)): ?>
-                            <div class="form-group my-2" name="error" style="box-shadow: 0 0 1px red;"><?= $error ?></div>
-                        <?php endif; ?>
+                            <div class="form-group my-2" name="error" style="box-shadow: 0 0 1px red;" id="php_error">
+                                <?php if (!empty($error)): ?> <?= $error ?> <?php endif; ?>
+                            </div>
                         <button type="submit" class="btn btn-secondary w-100 my-2">Зарегистрироваться</button>
                         <div class="col-sm-12 col-md-8 w-100 text-center">
                             У вас уже есть аккаунт? - <a href="/login">Авторизируйтесь</a>

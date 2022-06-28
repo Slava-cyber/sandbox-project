@@ -11,20 +11,20 @@
         <div class="row justify-content-center align-items-center" style="height:100vh">
             <div class="col-sm-12 col-md-4">
                 <h2 class="text-center">Авторизация</h2>
-                <form name="login" id="login" method="POST" action="" id="form">
+                <form name="login" id="login" method="POST" action="">
                     <div class="form-group py-2">
                         <label for="login">Логин</label>
                         <input type="text" class="form-control" name="login_sign_in"
                                placeholder="Введите свой логин" id="login_sign_in" value="<?= $_POST['login_sign_in'] ?? '' ?>">
-                        <small id="loginHelp" class="form-text form-muted none">Введите свой логин</small>
+                        <small id="loginHelp" class="form-text form-muted none"></small>
                     </div>
                     <div class="form-group py-2">
                         <label for="password">Пароль</label>
                         <input type="password" class="form-control" name="password" placeholder="Введите пароль" id="password">
-                        <small id="passwordHelp" class="form-text form-muted none">Введите пароль</small>
-                        <?php if (!empty($error)): ?>
-                            <small id="loginHelp" class="form-text form-muted error"><?= $error ?></small>
-                        <?php endif; ?>
+                        <small id="passwordHelp" class="form-text form-muted none"></small>
+                        <small id="php_error" class="form-text form-muted error">
+                            <?php if (!empty($error)): ?> <?= $error ?> <?php endif; ?>
+                        </small>
                     </div>
                     <button type="submit" class="btn btn-secondary w-100 my-2">Войти</button>
                     <div class="col-sm-12 col-md-8 w-100 text-center">
