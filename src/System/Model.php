@@ -4,24 +4,29 @@ namespace App\System;
 
 use App\System\Db as Db;
 
-Abstract class Model {
+abstract class Model
+{
 
     protected $id;
 
-    public function getId(): int {
+    public function getId(): int
+    {
         return $this->id;
     }
 
-    public function __set(string $name, $value) {
+    public function __set(string $name, $value)
+    {
         $className = $this->transformNameToClass($name);
         $this->$className = $value;
     }
 
-    private function transformNameToClass(string $source) : string {
+    private function transformNameToClass(string $source): string
+    {
         return lcfirst(str_replace('_', '', ucwords($source, '_')));
     }
 
-    public static function findOneByColumn(string $columnName, $value): ?self {
+    public static function findOneByColumn(string $columnName, $value): ?self
+    {
         $db = Db::getInstance();
         $sql = "SELECT * FROM " . static::getNameTable() . " WHERE " . $columnName . " = :value LIMIT 1";
         $result = $db->query($sql, ['value' => $value], static::class);
@@ -31,11 +36,12 @@ Abstract class Model {
         return $result[0];
     }
 
-    public static function getById(int $id) : ?self {
+    public static function getById(int $id): ?self
+    {
         $db = Db::getInstance();
         $entity = $db->query(
             "SELECT * FROM " . static::getNameTable() . " WHERE id=:id",
-                ["id" => $id],
+            ["id" => $id],
             static::class
         );
         return $entity ? $entity[0] : null;
@@ -43,7 +49,8 @@ Abstract class Model {
 
     abstract protected static function getNameTable(): string;
 
-    public function save(): void {
+    public function save(): void
+    {
         $mappedProperties = $this->mapData();
         if ($this->id !== null) {
             $this->update($mappedProperties);
@@ -52,7 +59,8 @@ Abstract class Model {
         }
     }
 
-    public function insert(array $mappedProperties) : void {
+    public function insert(array $mappedProperties): void
+    {
         $filteredProperties = array_filter($mappedProperties);
 
         $columns = [];
@@ -74,7 +82,8 @@ Abstract class Model {
         //refresh($this);
     }
 
-    public function update(array $mappedProperties): void {
+    public function update(array $mappedProperties): void
+    {
         $params = [];
         $values = [];
 
@@ -87,14 +96,14 @@ Abstract class Model {
         $paramsString = implode(', ', $params);
 
         $sql = "UPDATE " . static::getNameTable() . " SET " . $paramsString . " WHERE id = " . $this->id;
-        //var_dump($sql);
         $db = Db::getInstance();
         $db->query($sql, $values, static::class);
     }
 
 
-    public function delete(): void {
-        $db=Db::getInstance();
+    public function delete(): void
+    {
+        $db = Db::getInstance();
         $db->query(
             "DELETE FROM " . static::getNameTable() . " WHERE id = :id",
             ["id" => $this->id]
@@ -102,7 +111,8 @@ Abstract class Model {
         $this->id = null;
     }
 
-    private function mapData() : array {
+    private function mapData(): array
+    {
         $reflector = new \ReflectionObject($this);
         $properties = $reflector->getProperties();
         $mappedProperties = [];
@@ -114,7 +124,8 @@ Abstract class Model {
         return $mappedProperties;
     }
 
-    private function transformNameToDb(string $source) : string {
+    private function transformNameToDb(string $source): string
+    {
         return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $source));
     }
 }

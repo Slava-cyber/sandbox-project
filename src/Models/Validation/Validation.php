@@ -24,15 +24,14 @@ class Validation
     public function validate(): array
     {
         $response['status'] = false;
-        if ($this->dataCheck())
-        {
+        if ($this->dataCheck()) {
             $response['error'] = $this->formErrorArray();
             $response['status'] = $this->status($response['error']);
         }
         return $response;
     }
 
-    private function status(array $error) : bool
+    private function status(array $error): bool
     {
         $status = false;
         if (count($error) == 1) {
@@ -60,15 +59,13 @@ class Validation
             $i = 0;
             while (!empty($checkSet) && $msg === '') {
                 $checkType = array_shift($checkSet);
-                if ($checkType != 'required' && $value == '' && $i == 0)
-                {
+                if ($checkType != 'required' && $value == '' && $i == 0) {
                     break;
                 }
                 $nameFunction = 'check' . ucfirst(explode(':', $checkType)[0]);
                 $this->paramsFunction = $checkType;
                 $msg = $this->$nameFunction($value);
-                if ($msg != '' || $fields == 'avatar')
-                {
+                if ($msg != '' || $fields == 'avatar') {
                     $errors[$fields] = $msg;
                 }
                 $i += 1;
@@ -118,64 +115,59 @@ class Validation
     }
 
 
-    private function checkNone($value) : string {
+    private function checkNone($value): string
+    {
         return "";
     }
 
-    private function checkImage($value) : string {
+    private function checkImage($value): string
+    {
         $msg = "";
         $path = ROOT . "../public" . $value;
-        if (!file_exists($path) && $value != "")
-        {
+        if (!file_exists($path) && $value != "") {
             $msg = "Файла не существует";
         } else {
             $properties = getimagesize($path);
 
-            if ($properties === false)
-            {
+            if ($properties === false) {
                 $msg = "Файл не является изображением";
-            } else if ($properties[2] > 3 || $properties[2] < 2)
-            {
+            } else if ($properties[2] > 3 || $properties[2] < 2) {
                 $msg = "Файл недопустимого формата. Загрузите файл с форматом .jpg или .png";
-            } else if (filesize($path) > 10 * 1024 * 1024)
-            {
+            } else if (filesize($path) > 10 * 1024 * 1024) {
                 $msg = 'Размер не должен превышать 10 Мб';
             }
         }
         return $msg;
     }
 
-    private function checkAddImage($value) : string
+    private function checkAddImage($value): string
     {
         $msg = '';
 
-        $imageFolder = ROOT . '../public/images/';
+        $imageFolder = ROOT . '../public/images/save/';
         $imageName = $value['name'];
         $path = Validation::createPath($imageName, $imageFolder);
-        if (file_exists($imageFolder . $imageName)) {
-            $imageName = Validation::generateNewName($imageFolder, $imageName);
-        }
-        $path = $imageFolder . $imageName;
         copy($value['tmp_name'], $path);
 
-        $msg = $this->checkImage('/images/' . $imageName);
-        if ($msg == "")
-        {
-            $msg = '/images/' . $imageName;
+        $msg = $this->checkImage('/images/save/' . $imageName);
+        if ($msg == "") {
+            $msg = '/images/save/' . $imageName;
         }
         return $msg;
     }
 
-    public static function createPath(string $nameFile, string $folder) : string {
+    public static function createPath(string $nameFile, string $folder): string
+    {
         if (file_exists($folder . $nameFile)) {
             $nameFile = Validation::generateNewName($folder, $nameFile);
         }
         return $folder . $nameFile;
     }
 
-    public static function generateNewName(string $imageFolder, string $name) : string {
+    public static function generateNewName(string $imageFolder, string $name): string
+    {
         $i = 2;
-        while(true) {
+        while (true) {
             $newName = $i . '-' . $name;
             if (!file_exists($imageFolder . $newName)) {
                 break;
@@ -305,7 +297,7 @@ class Validation
         return $msg;
     }
 
-    private function checkMatch($value) : string
+    private function checkMatch($value): string
     {
         $msg = "";
         $pattern = explode(':', $this->paramsFunction)[1];

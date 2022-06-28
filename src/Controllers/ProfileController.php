@@ -12,8 +12,7 @@ class ProfileController extends Controller
     public function actionView($nickname)
     {
         $user = User::getUserByLogin($nickname);
-        if ($user instanceof User)
-        {
+        if ($user instanceof User) {
             $this->view->render('Profile/profile', ['user' => $user]);
             return true;
         }
@@ -24,14 +23,12 @@ class ProfileController extends Controller
     public function actionEdit()
     {
         if ($this->user instanceof User) {
-            if (empty($_POST))
-            {
+            if (empty($_POST)) {
                 $this->view->render('Profile/edit');
             } else {
                 $data = $_POST;
                 $user = User::profileEdit($_POST, $this->user);
-                if ($user instanceof User)
-                {
+                if ($user instanceof User) {
                     header('Location: /profile/' . $this->user->getLogin());
                 } else {
                     header('Location: 404');
@@ -44,3 +41,4 @@ class ProfileController extends Controller
     }
 
 }
+

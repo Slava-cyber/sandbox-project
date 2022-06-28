@@ -41,8 +41,6 @@ profileForm.addEventListener("submit", function(event) {
     let description =  document.getElementById("description");
     let avatar = document.getElementById("avatar");
 
-    //file = avatar.files[0];
-
     let data = {
         'form' : 'profile',
         'data' :
@@ -60,9 +58,6 @@ profileForm.addEventListener("submit", function(event) {
     };
     var json_arr = JSON.stringify(data);
     formData.append('all', json_arr);
-    //formData.append('userfile', file);
-
-    console.log(avatar.files);
 
     let requestForm = new XMLHttpRequest();
     let url = '/validation';
@@ -70,7 +65,6 @@ profileForm.addEventListener("submit", function(event) {
     requestForm.onreadystatechange = function () {
         if (requestForm.readyState === 4 && requestForm.status === 200) {
             let jsonData = JSON.parse(requestForm.response);
-            console.log(jsonData);
             validate(jsonData, data);
         }
     };

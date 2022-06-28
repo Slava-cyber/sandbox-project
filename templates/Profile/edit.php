@@ -126,12 +126,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="name">Интересы</label>
-                                    <textarea class="form-control" id="interest" rows="5" name="interest" placeholder="Опишите свои интересы" value="<?= $user->getInterest() ?>"></textarea>
+                                    <textarea class="form-control" id="interest" rows="5" name="interest" placeholder="Опишите свои интересы" value=""><?= $user->getInterest() ?></textarea>
                                     <small id="interestHelp" class="form-text form-muted none">Интересы</small>
                                 </div>
                                 <div class="form-group py-2">
                                     <label for="name">О себе</label>
-                                    <textarea class="form-control" id="description" rows="10" name="description" placeholder="Расскажите о себе" value="<?= $user->getDescription() ?>"></textarea>
+                                    <textarea class="form-control" id="description" rows="10" name="description" placeholder="Расскажите о себе" value=""><?= $user->getDescription() ?></textarea>
                                     <small id="aboutHelp" class="form-text form-muted none">О себе</small>
                                 </div>
                             </div>

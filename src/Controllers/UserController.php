@@ -14,18 +14,15 @@ class UserController extends Controller
     {
         $user = Authorization::getUserByToken();
 
-        if ($user instanceof User)
-        {
+        if ($user instanceof User) {
             header('Location: /main');
             return true;
         }
 
-        if (!empty($_POST))
-        {
+        if (!empty($_POST)) {
             $user = User::signUp($_POST);
 
-            if ($user instanceof User)
-            {
+            if ($user instanceof User) {
                 Authorization::createToken($user);
                 header('location: /main');
                 return true;
@@ -41,21 +38,18 @@ class UserController extends Controller
     {
         $user = Authorization::getUserByToken();
 
-        if ($user instanceof User)
-        {
+        if ($user instanceof User) {
             header('Location: /main');
             return true;
         }
 
         if (!empty($_POST)) {
             $user = User::signIn($_POST);
-            if ($user instanceof User)
-            {
+            if ($user instanceof User) {
                 Authorization::createToken($user);
                 header('Location: /main');
                 exit();
-            } else
-            {
+            } else {
                 $this->view->render('Login/loginForm', ['error' => 'Такого пользователя не существует']);
                 return true;
             }

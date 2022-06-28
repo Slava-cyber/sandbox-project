@@ -2,7 +2,6 @@ function validate(data, form) {
     const formControl = document.getElementById(form.form);
     let php_error = document.getElementById('php_error');
     if (data.status == true) {
-        console.log(data.status);
         formControl.submit();
     } else {
         removeClass(form);
@@ -33,7 +32,6 @@ function image_validate(data) {
     let small = formControl.querySelector('small');
     if (data.status == true) {
         const image = document.getElementById('image');
-        console.log(data.error['avatar']);
         image.src=data.error['avatar'];
         hidden.value=data.error['avatar'];
         small.classList.add("none");
@@ -47,32 +45,8 @@ function image_validate(data) {
     }
 }
 
-/*function setErrorFor(input, message) {
-    let element = document.getElementById(input);
-    let formControl = element.parentElement;
-    let small = formControl.querySelector('small');
-    element.classList.add("is-invalid");
-    small.classList.add("error");
-    small.innerHTML = message;
-}*/
-
-/*function setSuccessForAll(input) {
-    for (field in input.data) {
-       // if (field != 'sex'  && field != 'path_image' && field != 'file')  {
-            let element = document.getElementById(field);
-            element.classList.add("is-valid");
-            element.classList.remove("is-invalid");
-            let formControl = element.parentElement;
-            let small = formControl.querySelector('small');
-            small.classList.add("none");
-            small.classList.remove("error");
-       // }
-    }
-}*/
-
 function removeClass(data) {
     for (field in data.data) {
-        console.log(field);
         if (field != 'sex'  && field != 'path_image' && field != 'file') {
             let element = document.getElementById(field);
             element.classList.remove('is-invalid');

@@ -4,7 +4,8 @@ namespace App\System;
 
 use App\Exceptions\DbException as DbException;
 
-class Db {
+class Db
+{
     private static $instance;
     private $user;
     private $pass;
@@ -12,8 +13,9 @@ class Db {
     private $dbName;
     private $pdo;
 
-    private function __construct() {
-        $dbParams = (require ROOT. '/../settings/db.php')['db'];
+    private function __construct()
+    {
+        $dbParams = (require ROOT . '/../settings/db.php')['db'];
 
         $this->user = $dbParams['user'];
         $this->pass = $dbParams['password'];
@@ -23,7 +25,8 @@ class Db {
         try {
             $this->pdo = new \PDO(
                 'mysql:dbname=' . $dbParams['dbname'] . ';host=' . $dbParams['host'],
-                $dbParams['user'], $dbParams['password']
+                $dbParams['user'],
+                $dbParams['password'],
             );
             $this->pdo->exec('SET NAMES UTF8');
         } catch (\PDOException $e) {
@@ -31,7 +34,8 @@ class Db {
         }
     }
 
-    public function query(string $sql, array $params = [], $className = 'stdClass'): ?array {
+    public function query(string $sql, array $params = [], $className = 'stdClass'): ?array
+    {
         $stmt = $this->pdo->prepare($sql);
         $result = $stmt->execute($params);
         if ($result === false) {
@@ -41,7 +45,8 @@ class Db {
         return $stmt->fetchAll(\PDO::FETCH_CLASS, $className);
     }
 
-    public static function getInstance(): self {
+    public static function getInstance(): self
+    {
         if (self::$instance === null) {
             self::$instance = new self();
         }
@@ -49,7 +54,8 @@ class Db {
         return self::$instance;
     }
 
-    public function getLastInsertId(): int {
-        return (int) $this->pdo->lastInsertId();
+    public function getLastInsertId(): int
+    {
+        return (int)$this->pdo->lastInsertId();
     }
 }

@@ -13,13 +13,10 @@ class ValidationController extends Controller
         if (!empty($_POST)) {
             $arr = json_decode($_POST['all'], true);
             $form = $arr['form'];
-            if (isset($arr['data']))
-            {
+            if (isset($arr['data'])) {
                 $data = $arr['data'];
             }
-            if (!empty($_FILES))
-            {
-
+            if (!empty($_FILES)) {
                 $data = [
                     'avatar' => $_FILES['userfile'],
                 ];

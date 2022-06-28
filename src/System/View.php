@@ -15,7 +15,7 @@ class View
         $this->header[$name] = $value;
     }
 
-    public function render(string $nameTemplate, array $data = [])
+    public function render(string $templateName, array $data = [])
     {
         //$fullPath = ROOT . '../templates/' . $path . '.php';
 
@@ -28,7 +28,7 @@ class View
         }*/
 
         ob_start();
-        include($this->path . $nameTemplate . '.php');
+        include($this->path . $templateName . '.php');
         $buffer = ob_get_contents();
         ob_end_clean();
 
