@@ -1,5 +1,10 @@
 const registrationForm = document.getElementById('registration');
 
+if (sessionStorage.getItem("is_reloaded")) {
+    let php_error = document.getElementById('php_error');
+    php_error.classList.remove("none");
+}
+
 registrationForm.addEventListener("submit", function(event) {
     event.preventDefault();
     let name =  document.getElementById("name");
@@ -10,17 +15,7 @@ registrationForm.addEventListener("submit", function(event) {
     let psw =  document.getElementById("password_sign_up");
     let pswConfirm = document.getElementById("password_confirm");
 
-    let request = new XMLHttpRequest();
-    let url = '/validation';
-    request.open("POST", url, true);
-    request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-    request.onreadystatechange = function () {
-        if (request.readyState === 4 && request.status === 200) {
-            let jsonData = JSON.parse(request.responseText);
-            validate(jsonData, data);
-        }
-    };
-
+    var formData = new FormData();
     let data = {
         'form' : 'registration',
         'data' :
@@ -34,5 +29,19 @@ registrationForm.addEventListener("submit", function(event) {
                 'password_confirm' : pswConfirm.value.trim(),
             },
     };
-    request.send(JSON.stringify(data));
+
+    var json_arr = JSON.stringify(data);
+    formData.append('all', json_arr);
+
+    let request = new XMLHttpRequest();
+    let url = '/validation';
+    request.open("POST", url, true);
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            let jsonData = JSON.parse(request.response);
+            validate(jsonData, data);
+        }
+    };
+
+    request.send(formData);
 });
