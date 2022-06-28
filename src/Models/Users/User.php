@@ -21,7 +21,7 @@ class User extends Model {
     protected $interest;
     protected $description;
     protected $phoneNumber;
-    //protected $avatar;
+    protected $avatar;
     /*protected $rating = 0;
     protected $number_of_reviews = 0;*/
     protected $role;
@@ -59,9 +59,15 @@ class User extends Model {
         return $this->description;
     }
 
-    /*public function getAvatar() {
-        return $this->avatar;
-    }*/
+    public function getAvatar() {
+        if ($this->avatar == null || !file_exists(ROOT . '../public' . $this->avatar))
+        {
+            return null;
+        } else
+        {
+            return $this->avatar;
+        }
+    }
 
     public function getPhoneNumber() {
         return $this->phoneNumber;
@@ -88,6 +94,7 @@ class User extends Model {
     }
 
     public static function signUp(array $userData) : ?User {
+        $user = null;
         $valid = new Validation($userData, 'registration');
         $status = $valid->validate();
         if ($status['status']) {
@@ -106,6 +113,44 @@ class User extends Model {
         //    throw new InvalidArgumentException('Что-то пошло не так, проверьте правильность полей');
         //}
         return $user;
+    }
+
+    public static function profileEdit(array $userData, User $user) : ?User {
+        $valid = new Validation($userData, 'profile');
+        $status = $valid->validate();
+        if ($status['status'])
+        {
+            $user->name = $userData['name'];
+            $user->surname = $userData['surname'];
+            $user->dateOfBirth = $userData['date_of_birth'];
+            $user->town = $userData['town'];
+            $user->interest = $userData['interest'];
+            $user->description = $userData['description'];
+            $user->phoneNumber = $userData['phone_number'];
+            if ($userData['path_image'] != "")
+            {
+                unlink(ROOT . '../public' . $user->avatar);
+                $newPath = User::storeImage($userData['path_image']);
+                $user->avatar = $newPath;
+            }
+            $user->save();
+        }
+        return $user;
+    }
+
+    private static function storeImage($path) {
+        $segments = explode('/', $path);
+        $prefix = ROOT . '../public';
+        $storePrefixPath = $prefix . '/images/avatar/';
+        array_shift($segments);
+        array_shift($segments);
+        $imageName = implode($segments);
+        //$newPath = '/images/avatar/' . implode($segments);
+        if (file_exists($storePrefixPath . $imageName)) {
+            $imageName = Validation::generateNewName($storePrefixPath, $imageName);
+        }
+        copy($prefix . $path, $storePrefixPath . $imageName);
+        return '/images/avatar/'. $imageName;
     }
 
     public static function signIn(array $userData) : ?User {

@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Users\Authorization;
 use App\System\Controller;
 use App\System\View as View;
 use App\Models\Users\User as User;
@@ -23,11 +24,23 @@ class ProfileController extends Controller
     public function actionEdit()
     {
         if ($this->user instanceof User) {
-            $this->view->render('Profile/edit');
+            if (empty($_POST))
+            {
+                $this->view->render('Profile/edit');
+            } else {
+                $data = $_POST;
+                $user = User::profileEdit($_POST, $this->user);
+                if ($user instanceof User)
+                {
+                    header('Location: /profile/' . $this->user->getLogin());
+                } else {
+                    header('Location: 404');
+                }
+            }
             return true;
         }
-
-        return false;
+        header('Location: /login');
+        return true;
     }
 
 }
