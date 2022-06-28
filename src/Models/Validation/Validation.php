@@ -27,12 +27,34 @@ class Validation
         if ($this->dataCheck())
         {
             $response['error'] = $this->formErrorArray();
-            if (empty($response['error']))
-            {
-                $response['status'] = true;
-            }
+            $response['status'] = $this->status($response['error']);
+            //if (empty($response['error']))
+            //{
+            //    $response['status'] = true;
+            //}
         }
         return $response;
+    }
+
+    private function status(array $error) : bool
+    {
+        $status = false;
+        if (count($error) == 1)
+        {
+            $field = array_key_first($error);
+            if ($field == 'avatar')
+            {
+                $value = $error[$field];
+                $segments = explode('/', $value);
+                if (count($segments) > 1)
+                {
+                    $status = true;
+                }
+            }
+        } else if (count($error) == 0) {
+            $status = true;
+        }
+        return $status;
     }
 
     private function formErrorArray(): array
@@ -42,15 +64,21 @@ class Validation
         foreach ($this->data as $fields => $value) {
             $msg = '';
             $checkSet = explode('|', $this->rules[$fields]);
+            $i = 0;
             while (!empty($checkSet) && $msg === '') {
                 $checkType = array_shift($checkSet);
+                if ($checkType != 'required' && $value == '' && $i == 0)
+                {
+                    break;
+                }
                 $nameFunction = 'check' . ucfirst(explode(':', $checkType)[0]);
                 $this->paramsFunction = $checkType;
                 $msg = $this->$nameFunction($value);
-                if ($msg != '')
+                if ($msg != '' || $fields == 'avatar')
                 {
                     $errors[$fields] = $msg;
                 }
+                $i += 1;
             }
         }
         return $errors;
@@ -86,8 +114,98 @@ class Validation
             'password_confirm' => 'required|alphaDash|between:8,20|same:password_sign_up',
             'login_sign_in' => 'required',
             'password' => 'required',
-            'phoneNumber' => 'match:/[a-z]+/',
+            'phone_number' => 'match:/^(([+7,7,8])+([0-9]){10})$/',
+            'town' => 'alphaDash|max:20',
+            'interest' => 'alphaDash|max:150|min:5',
+            'description' => 'alphaDash|max:400|min:5',
+            'path_image' => 'image',
+            'avatar' => 'addImage',
+            'file' => 'none',
         ];
+    }
+
+
+    private function checkNone($value) : string {
+        return "";
+    }
+
+    private function checkImage($value) : string {
+        $msg = "";
+        $path = ROOT . "../public" . $value;
+        if (!file_exists($path) && $value != "")
+        {
+            $msg = "Файла не существует";
+        } else {
+            $properties = getimagesize($path);
+
+            if ($properties === false)
+            {
+                $msg = "Файл не является изображением";
+            } else if ($properties[2] > 3 || $properties[2] < 2)
+            {
+                $msg = "Файл недопустимого формата. Загрузите файл с форматом .jpg или .png";
+            } else if (filesize($path) > 10 * 1024 * 1024)
+            {
+                $msg = 'Размер не должен превышать 10 Мб';
+            }
+        }
+        return $msg;
+    }
+
+    private function checkAddImage($value) : string
+    {
+        $msg = '';
+
+        $imageFolder = ROOT . '../public/images/';
+        $imageName = $value['name'];
+        $path = Validation::createPath($imageName, $imageFolder);
+        if (file_exists($imageFolder . $imageName)) {
+            $imageName = Validation::generateNewName($imageFolder, $imageName);
+        }
+        $path = $imageFolder . $imageName;
+        copy($value['tmp_name'], $path);
+
+
+        /*$properties = getimagesize($path);
+
+        if ($properties === false)
+        {
+            $msg = "Файл не является изображением";
+        } else if ($properties[2] > 3 || $properties[2] < 2)
+        {
+            $msg = "Файл недопустимого формата. Загрузите файл с форматом .jpg или .png";
+        } else if ($value['size'] > 10 * 1024 * 1024)
+        {
+            $msg = 'Размер не должен превышать 10 Мб';
+        } else
+        {
+            $msg =  '/images/' . $imageName;
+        }*/
+        $msg = $this->checkImage('/images/' . $imageName);
+        if ($msg == "")
+        {
+            $msg = '/images/' . $imageName;
+        }
+        return $msg;
+    }
+
+    public static function createPath(string $nameFile, string $folder) : string {
+        if (file_exists($folder . $nameFile)) {
+            $nameFile = Validation::generateNewName($folder, $nameFile);
+        }
+        return $folder . $nameFile;
+    }
+
+    public static function generateNewName(string $imageFolder, string $name) : string {
+        $i = 2;
+        while(true) {
+            $newName = $i . '-' . $name;
+            if (!file_exists($imageFolder . $newName)) {
+                break;
+            }
+            $i += 1;
+        }
+        return $newName;
     }
 
     private function checkIn($value): string
@@ -113,6 +231,8 @@ class Validation
             [
                 'registration' => 'name/surname/sex/date_of_birth/login_sign_up/password_sign_up/password_confirm',
                 'login' => 'login_sign_in/password',
+                'image' => 'avatar',
+                'profile' => 'file/path_image/name/surname/date_of_birth/town/phone_number/interest/description/avatar',
             ];
     }
 
@@ -205,6 +325,17 @@ class Validation
         if ((strlen($value) < $range[0]) || (strlen($value) > $range[1])) {
             $msg = 'Поле должно содержать от' . $range[0] . ' до ' . $range[1] . ' символов';
         }
+        return $msg;
+    }
+
+    private function checkMatch($value) : string
+    {
+        $msg = "";
+        $pattern = explode(':', $this->paramsFunction)[1];
+        if (!preg_match($pattern, $value)) {
+            $msg = 'Номер должен иметь формать (+7/7/8){9 цифр}';
+        }
+
         return $msg;
     }
 

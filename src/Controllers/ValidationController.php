@@ -10,21 +10,26 @@ class ValidationController extends Controller
 
     public function actionIndex()
     {
-        //header("Content-Type: application/json; charset=UTF-8");
-        $response = [];
-        $input = json_decode(file_get_contents("php://input"), true);
-        if (isset($input['form']) && isset($input['form'])) {
-            $form = $input['form'];
-            $data = $input['data'];
+        if (!empty($_POST)) {
+            $arr = json_decode($_POST['all'], true);
+            $form = $arr['form'];
+            if (isset($arr['data']))
+            {
+                $data = $arr['data'];
+            }
+            if (!empty($_FILES))
+            {
 
+                $data = [
+                    'avatar' => $_FILES['userfile'],
+                ];
+            }
             $valid = new Validation($data, $form);
             $response = $valid->validate();
-
+            echo json_encode($response);
         } else {
-            $response['status'] = false;
+            return false;
         }
-        header("Content-Type: application/json; charset=UTF-8");
-        echo json_encode($response);
         return true;
     }
 }
