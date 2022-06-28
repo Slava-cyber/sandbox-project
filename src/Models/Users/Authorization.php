@@ -6,7 +6,7 @@ namespace App\Models\Users;
 class Authorization {
     public static function createToken(User $user): void {
         $token = $user->getId() . ':' . $user->getAuthToken();
-        setcookie('token', $token, time()+3600, '/', '', false, true);
+        setcookie('token', $token, time()+36000, '/', '', false, true);
     }
 
     public static function getUserByToken() : ?User {
