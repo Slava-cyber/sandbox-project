@@ -14,10 +14,10 @@ class Validation
     private $rules;
     private $paramsFunction;
 
-    public function __construct(array $dataOut, string $formOut)
+    public function __construct(array $data, string $form)
     {
-        $this->data = $dataOut;
-        $this->form = $formOut;
+        $this->data = $data;
+        $this->form = $form;
         $this->rules = $this->rules();
     }
 
@@ -28,10 +28,6 @@ class Validation
         {
             $response['error'] = $this->formErrorArray();
             $response['status'] = $this->status($response['error']);
-            //if (empty($response['error']))
-            //{
-            //    $response['status'] = true;
-            //}
         }
         return $response;
     }
@@ -39,15 +35,12 @@ class Validation
     private function status(array $error) : bool
     {
         $status = false;
-        if (count($error) == 1)
-        {
+        if (count($error) == 1) {
             $field = array_key_first($error);
-            if ($field == 'avatar')
-            {
+            if ($field == 'avatar') {
                 $value = $error[$field];
                 $segments = explode('/', $value);
-                if (count($segments) > 1)
-                {
+                if (count($segments) > 1) {
                     $status = true;
                 }
             }
@@ -165,22 +158,6 @@ class Validation
         $path = $imageFolder . $imageName;
         copy($value['tmp_name'], $path);
 
-
-        /*$properties = getimagesize($path);
-
-        if ($properties === false)
-        {
-            $msg = "Файл не является изображением";
-        } else if ($properties[2] > 3 || $properties[2] < 2)
-        {
-            $msg = "Файл недопустимого формата. Загрузите файл с форматом .jpg или .png";
-        } else if ($value['size'] > 10 * 1024 * 1024)
-        {
-            $msg = 'Размер не должен превышать 10 Мб';
-        } else
-        {
-            $msg =  '/images/' . $imageName;
-        }*/
         $msg = $this->checkImage('/images/' . $imageName);
         if ($msg == "")
         {
