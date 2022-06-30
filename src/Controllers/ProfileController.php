@@ -9,7 +9,7 @@ use App\Models\Users\User as User;
 
 class ProfileController extends Controller
 {
-    public function actionView($nickname)
+    public function actionView($nickname): bool
     {
         $user = User::getUserByLogin($nickname);
         if ($user instanceof User) {
@@ -20,13 +20,12 @@ class ProfileController extends Controller
         return false;
     }
 
-    public function actionEdit()
+    public function actionEdit(): bool
     {
         if ($this->user instanceof User) {
             if (empty($_POST)) {
                 $this->view->render('Profile/edit');
             } else {
-                $data = $_POST;
                 $user = User::profileEdit($_POST, $this->user);
                 if ($user instanceof User) {
                     header('Location: /profile/' . $this->user->getLogin());
@@ -39,6 +38,5 @@ class ProfileController extends Controller
         header('Location: /login');
         return true;
     }
-
 }
 

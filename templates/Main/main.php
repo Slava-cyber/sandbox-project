@@ -24,7 +24,7 @@
                         <a href="" class="nav-link">Текущие ивенты</a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link">Создать ивент</a>
+                        <a href="/event/add" class="nav-link">Создать ивент</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -86,22 +86,26 @@
                                         <div class="row">
                                             <div class="col-md-5 col-sm-12">
                                                 <div class="form-group py-2">
-                                                    <select class="form-select form-control">
-                                                        <option selected>Выберите категорию</option>
-                                                        <option value="1">One</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
+                                                    <select class="form-select form-control" name="category" id="category">
+                                                        <option value="Активный отдых">Активный отдых</option>
+                                                        <option value="Спорт">Спорт</option>
+                                                        <option value="Квесты/настольные игры">Квесты/настольные игры</option>
+                                                        <option value="Ночная жизнь">Ночная жизнь</option>
+                                                        <option value="Охота/рыбалка">Охота/рыбалка</option>
+                                                        <option value="Туризм">Туризм</option>
+                                                        <option value="Другое">Другое</option>
                                                     </select>
+                                                    <small id="categoryHelp" class="form-text form-muted">Категория</small>
                                                 </div>
                                             </div>
                                             <div class="col-md-5 col-sm-12">
                                                 <div class="form-group py-2">
                                                     <select class="form-select form-control" disabled>
-                                                        <option selected>Выберите подкатегорию</option>
                                                         <option value="1">One</option>
                                                         <option value="2">Two</option>
                                                         <option value="3">Three</option>
                                                     </select>
+                                                    <small id="categoryHelp" class="form-text form-muted">Подкатегория</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -129,23 +133,23 @@
                     </div>
                 </div>
                 <hr class="separator mt-1">
+                <?php foreach ($events as $event) {?>
                 <div class="row">
                     <div class="col-md-12">
-                        <h3>Игра в теннис корт НГУ</h3>
+                        <h3><?= $event->getTitle() ?></h3>
                     </div>
                     <div class="d-sm-inline-flex col-md-12">
                         <div class="me-3">
                             Категория:
                         </div>
                         <div class="me-3">
-                            <strong>Спорт</strong>
+                            <strong><?= $event->getCategory() ?></strong>
                         </div>
                         <div class="me-3">
                             Дата и время:
                         </div>
                         <div class="me-3">
-                            <strong>12.08.22
-                                12:00</strong>
+                            <strong><?= $event->getDate() ?></strong>
                         </div>
                     </div>
          <!--           <div class="d-sm-inline-flex col-md-12">
@@ -170,17 +174,20 @@
                     </div> -->
                     <div class="col-md-12">
                         <p>
-                            <a class="link-dark" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <a class="link-dark" data-bs-toggle="collapse" href="#collapseExample<?= $event->getId() ?>" role="button"
+                               aria-expanded="false" aria-controls="collapseExample">
                                 Дополнительная информация
                             </a>
                         </p>
-                        <div class="collapse" id="collapseExample">
+                        <div class="collapse" id="collapseExample<?= $event->getId() ?>">
                             <div class="d-sm-inline-flex col-md-12 mb-3">
                                 <div class="me-3">
                                     Автор:
                                 </div>
                                 <div class="me-3">
-                                    <a href="/profile/test7">test7</a>
+                                    <a href="/profile/<?= $event->getAuthor()->getLogin() ?>">
+                                        <?= $event->getAuthor()->getLogin() ?>
+                                    </a>
                                 </div>
                                 <div class="me-3">
                                     Рейтинг:
@@ -192,11 +199,11 @@
                                     Город:
                                 </div>
                                 <div>
-                                    <strong>Новосибирск</strong>
+                                    <strong><?= $event->getTown() ?></strong>
                                 </div>
                             </div>
                             <div class="com-md-12 card card-body">
-                                Описание Некоторый заполнитель для компонента сворачивания. Эта панель по умолчанию скрыта, но открывается, когда пользователь активирует соответствующий триггер.
+                                <?= $event->getDescription() ?>
                             </div>
                         </div>
                     </div>
@@ -208,7 +215,7 @@
                     </div>
                     <hr class="separator mt-1">
                 </div>
-
+                <?php } ?>
 
                 <div class="row">
                     <div class="col-md-12">

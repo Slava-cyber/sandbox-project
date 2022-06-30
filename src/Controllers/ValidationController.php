@@ -8,7 +8,7 @@ use App\Models\Validation\Validation as Validation;
 class ValidationController extends Controller
 {
 
-    public function actionIndex()
+    public function actionIndex(): bool
     {
         if (!empty($_POST)) {
             $arr = json_decode($_POST['all'], true);

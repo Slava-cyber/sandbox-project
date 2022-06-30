@@ -7,11 +7,13 @@ class View
     private $header = [];
     private $path;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->path = ROOT . '../templates/';
     }
 
-    public function setHeader(string $name, $value) : void {
+    public function setHeader(string $name, $value): void
+    {
         $this->header[$name] = $value;
     }
 

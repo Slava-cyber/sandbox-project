@@ -10,7 +10,7 @@ use  App\Exceptions\InvalidArgumentException;
 
 class UserController extends Controller
 {
-    public function actionSignUp()
+    public function actionSignUp(): bool
     {
         $user = Authorization::getUserByToken();
 
@@ -34,7 +34,7 @@ class UserController extends Controller
         return true;
     }
 
-    public function actionSignIn()
+    public function actionSignIn(): bool
     {
         $user = Authorization::getUserByToken();
 
@@ -58,7 +58,7 @@ class UserController extends Controller
         return true;
     }
 
-    public function actionLogout()
+    public function actionLogout(): bool
     {
         $user = Authorization::getUserByToken();
         if ($user instanceof User) {
@@ -67,5 +67,4 @@ class UserController extends Controller
         header('Location: /login');
         return true;
     }
-
 }

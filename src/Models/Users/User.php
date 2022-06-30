@@ -10,7 +10,6 @@ use App\System\Model as Model;
 
 class User extends Model
 {
-    //protected $fields;
     protected $name;
     protected $surname;
     protected $login;
@@ -192,6 +191,12 @@ class User extends Model
         return $user;
     }
 
+    public static function getUserById($value): ?User
+    {
+        $user = User::findOneByColumn("id", $value);
+        return $user;
+    }
+
 
     private function generateAuthToken()
     {
@@ -202,5 +207,4 @@ class User extends Model
     {
         return 'users';
     }
-
 }

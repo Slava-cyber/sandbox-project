@@ -36,6 +36,17 @@ abstract class Model
         return $result[0];
     }
 
+    public static function getAll(string $columnName): ?array
+    {
+        $db = Db::getInstance();
+        $sql = "SELECT * FROM " . static::getNameTable() . " WHERE `" . $columnName . "` > NOW()";
+        $result = $db->query($sql, [], static::class);
+        if ($result === []) {
+            return null;
+        }
+        return $result;
+    }
+
     public static function getById(int $id): ?self
     {
         $db = Db::getInstance();
