@@ -111,7 +111,28 @@ class Validation
             'path_image' => 'image',
             'avatar' => 'addImage',
             'file' => 'none',
+            'title' => 'required|min:5|max:30',
+            'datetime' => 'required|after:current',
+            'category' => 'in:category',
         ];
+    }
+
+    private function checkIn($value): string
+    {
+        $msg = "";
+        $params = ucfirst(explode(':', $this->paramsFunction)[1]);
+        if ($params == 'category') {
+            if (!in_array($value, $this->arrayCategory())) {
+                $msg = "Некорректная категория";
+            }
+        }
+        return $msg;
+    }
+
+
+    private function arrayCategory(): array
+    {
+        return ['Другое', 'Активный отдых', 'Ночная жизнь', 'Спорт', 'Охота/рыбалка', 'Квесты/настольные игры', 'Туризм'];
     }
 
 
@@ -131,9 +152,9 @@ class Validation
 
             if ($properties === false) {
                 $msg = "Файл не является изображением";
-            } else if ($properties[2] > 3 || $properties[2] < 2) {
+            } elseif ($properties[2] > 3 || $properties[2] < 2) {
                 $msg = "Файл недопустимого формата. Загрузите файл с форматом .jpg или .png";
-            } else if (filesize($path) > 10 * 1024 * 1024) {
+            } elseif (filesize($path) > 10 * 1024 * 1024) {
                 $msg = 'Размер не должен превышать 10 Мб';
             }
         }
@@ -177,7 +198,7 @@ class Validation
         return $newName;
     }
 
-    private function checkIn($value): string
+    /*private function checkIn($value): string
     {
         $msg = '';
 
@@ -192,7 +213,7 @@ class Validation
         }
 
         return $msg;
-    }
+    }*/
 
     private function formsPattern(): array
     {
@@ -202,6 +223,7 @@ class Validation
                 'login' => 'login_sign_in/password',
                 'image' => 'avatar',
                 'profile' => 'file/path_image/name/surname/date_of_birth/town/phone_number/interest/description/avatar',
+                'eventAdd' => 'title/town/datetime/category/description',
             ];
     }
 
@@ -220,9 +242,14 @@ class Validation
     private function checkAfter($value): string
     {
         $msg = '';
-        $border = mktime(0, 0, 0, date("m"), date("d"), date("Y") - 80);
+        $params = ucfirst(explode(':', $this->paramsFunction)[1]);
+        if ($params == 'Current') {
+            $border = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
+        } else {
+            $border = mktime(0, 0, 0, date("m"), date("d"), date("Y") - 80);
+        }
         if ($value < date("Y-m-d", $border)) {
-            $msg = 'Введите корректную дату, после ' . date("Y-m-d", $border);
+            $msg = 'Введите корректную дату, начиная с ' . date("Y-m-d", $border);
         }
 
         return $msg;
@@ -268,7 +295,7 @@ class Validation
         $msg = '';
 
         $len = explode(':', $this->paramsFunction)[1];
-        if (strlen($value) > $len) {
+        if (iconv_strlen($value) > $len) {
             $msg = 'Поле должно содержать не более ' . $len . ' символов';
         }
         return $msg;
@@ -279,7 +306,7 @@ class Validation
         $msg = '';
 
         $len = explode(':', $this->paramsFunction)[1];
-        if (strlen($value) < $len) {
+        if (iconv_strlen($value) < $len) {
             $msg = 'Поле должно содержать не менее ' . $len . ' символов';
         }
         return $msg;
