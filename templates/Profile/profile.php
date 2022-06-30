@@ -18,13 +18,13 @@
             <div class="container-fluid d-flex justify-content-end">
                 <ul class="navbar-nav nav-pills mr-auto">
                     <li class="nav-item text-center">
-                        <a href="" class="nav-link" aria-current="main">Главная</a>
+                        <a href="/main" class="nav-link" aria-current="main">Главная</a>
                     </li>
                     <li class="nav-item">
                         <a href="" class="nav-link">Текущие ивенты</a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link">Создать ивент</a>
+                        <a href="/event/add" class="nav-link">Создать ивент</a>
                     </li>
 
                     <li class="nav-item dropdown">

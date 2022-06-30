@@ -3,7 +3,7 @@
 <head>
     <metacharset="utf-8">
     <title>Профиль</title>
-    <meta bane="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/main.css">
 </head>
@@ -18,13 +18,13 @@
             <div class="container-fluid d-flex justify-content-end">
                 <ul class="navbar-nav nav-pills mr-auto">
                     <li class="nav-item text-center">
-                        <a href="" class="nav-link" aria-current="main">Главная</a>
+                        <a href="/main" class="nav-link" aria-current="main">Главная</a>
                     </li>
                     <li class="nav-item">
                         <a href="" class="nav-link">Текущие ивенты</a>
                     </li>
                     <li class="nav-item">
-                        <a href="" class="nav-link">Создать ивент</a>
+                        <a href="/event/add" class="nav-link">Создать ивент</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -82,7 +82,7 @@
                             <div class="form-group py-2">
                                 <label for="name">Фамилия</label>
                                 <input type="text" name="surname" class="form-control" placeholder="Введите фамилию" id="surname"
-                                       value="<?= $user->getName() ?>">
+                                       value="<?= $user->getSurname() ?>">
                                 <small id="surnameHelp" class="form-text form-muted none">Фамили</small>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
                             <div class="form-group py-2">
                                 <label for="name">Город</label>
                                 <input type="text" name="town" class="form-control" placeholder="Введите город" id="town"
-                                       value="<?= $user->getName() ?>">
+                                       value="<?= $user->getTown() ?>">
                                 <small id="townHelp" class="form-text form-muted none">Город</small>
                             </div>
                         </div>
