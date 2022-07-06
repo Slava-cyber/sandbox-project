@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\Users\Authorization;
+use App\Controllers\Authorization;
 use App\System\Controller;
 use App\System\View as View;
 use App\Models\Users\User as User;
@@ -23,14 +23,47 @@ class UserController extends Controller
             $user = User::signUp($_POST);
 
             if ($user instanceof User) {
-                Authorization::createToken($user);
+                Authorization::signIn($user);
                 header('location: /main');
                 return true;
             }
             return false;
         }
-
-        $this->view->render('Registration/registrationForm');
+        $data = [
+            'navbar' => [
+                'class' => 'navbar',
+                'type' => 'default',
+                'active' => '',
+            ],
+            'form' => [
+                'class' => 'form',
+                'type' => 'registration',
+                'name' => 'registration',
+                'title' => 'Регистрация',
+                'button' => [
+                    'name' => 'Зарегистрироваться',
+                    'size' => 12,
+                ],
+                'link' => [
+                    'label' => 'У вас уже есть аккаунт? - ',
+                    'name' => 'Авторизируйтесь',
+                    'link' => '/login',
+                ],
+                'page' => 'registration',
+                'js' => [
+                    '/js/validation',
+                    '/js/registrationValidation'
+                ],
+            ],
+            'page' => [
+                'type' => 'oneColumnDefault',
+                'title' => 'Регистрация',
+                'widthColumn' => 'col-md-6',
+                'align' => 'center'
+            ]
+        ];
+        $this->view->generateHtml($data);
+        //$this->view->render('Registration/registrationForm');
         return true;
     }
 
@@ -43,18 +76,54 @@ class UserController extends Controller
             return true;
         }
 
+        $data = [
+            'navbar' => [
+                'class' => 'navbar',
+                'type' => 'default',
+                'active' => 'Войти',
+            ],
+            'form' => [
+                'class' => 'form',
+                'type' => 'registration',
+                'name' => 'login',
+                'title' => 'Авторизация',
+                'button' => [
+                    'name' => 'Войти',
+                    'size' => 12,
+                ],
+                'link' => [
+                    'label' => 'У вас еще нет аккаунта? - ',
+                    'name' => 'Зарегистрируйтесь',
+                    'link' => '/registration',
+                ],
+                'page' => 'login',
+                'js' => [
+                    '/js/validation',
+                    '/js/loginValidation'
+                ],
+            ],
+            'page' => [
+                'type' => 'oneColumnDefault',
+                'title' => 'Авторизация',
+                'widthColumn' => 'col-md-4',
+                'align' => 'center'
+            ]
+        ];
+
+
         if (!empty($_POST)) {
-            $user = User::signIn($_POST);
+            $user = User::prepareSignIn($_POST);
             if ($user instanceof User) {
-                Authorization::createToken($user);
+                Authorization::signIn($user);
                 header('Location: /main');
                 exit();
             } else {
-                $this->view->render('Login/loginForm', ['error' => 'Такого пользователя не существует']);
+                $data['form']['error'] = 'Такого пользователя не существует';
+                $this->view->generateHtml($data);
                 return true;
             }
         }
-        $this->view->render('Login/loginForm');
+        $this->view->generateHtml($data);
         return true;
     }
 

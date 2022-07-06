@@ -22,8 +22,9 @@ class User extends Model
     protected $description;
     protected $phoneNumber;
     protected $avatar;
-    /*protected $rating = 0;
-    protected $number_of_reviews = 0;*/
+
+    //TODO 2 variable: $rating and $numberOfReviews
+
     protected $role;
 
 
@@ -86,13 +87,7 @@ class User extends Model
         return $this->role;
     }
 
-    /*public function getRating() {
-        return $this->rating;
-    }
-
-    /*public function getNumberOfReviews() {
-        return $this->number_of_reviews;
-    }*/
+    //TODO functions for getting rating and count of reviews
 
     public function getPassword()
     {
@@ -163,7 +158,7 @@ class User extends Model
         return '/images/avatar/' . $imageName;
     }
 
-    public static function signIn(array $userData): ?User
+    public static function prepareSignIn(array $userData): ?User
     {
         $valid = new Validation($userData, 'login');
         $status = $valid->validate();
