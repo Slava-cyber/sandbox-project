@@ -53,7 +53,7 @@ class ProfileController extends Controller
                         'button' => [
                             'name' => 'Редактировать',
                             'position' => 'end',
-                            'size' => 2,
+                            'size' => 4,
                         ],
                         'page' => 'profile',
                         'js' => [

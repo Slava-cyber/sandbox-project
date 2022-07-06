@@ -11,7 +11,7 @@ class DisplayView extends View
     public static function profile(array $info, ?User $user): string
     {
         return FormView::render(
-            'profile/profile',
+            'Profile/profile',
             $user,
             [
                 'data' => DisplayView::profileData($user),

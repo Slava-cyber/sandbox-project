@@ -14,8 +14,8 @@
 <div class="container mt-5 mb-5 " <?php echo (isset($page['align'])) ? 'style="height:70vh"' : "" ?>>
     <div class="row justify-content-center
         <?php echo (isset($page['align'])) ? 'align-items-center" style="height:70vh"' : '"' ?>>
-        <div class=" col-sm-12 bg-white p-3
-        <?php echo (isset($page['widthColumn'])) ? $page['widthColumn'] : 'col-md-10' ?>">
+        <div class="col-sm-12 bg-white p-3
+            <?php echo (isset($page['widthColumn'])) ? $page['widthColumn'] : 'col-md-10' ?>">
     <?php foreach ($content as $blockName => $blockValue) : ?>
         <?= $blockValue ?>
     <?php endforeach; ?>

@@ -9,7 +9,7 @@ class FormView extends View
 {
     public static function profile(array $info, ?User $user): string
     {
-        $innerPart = FormView::render2(
+        $innerPart = FormView::render(
             'Forms/Profile/profile',
             $user,
             [
@@ -17,7 +17,7 @@ class FormView extends View
                 'info' => $info
             ]
         );
-        return FormView::render2(
+        return FormView::render(
             'Forms/formPattern',
             $user,
             [
