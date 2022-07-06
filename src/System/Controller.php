@@ -2,12 +2,23 @@
 
 namespace App\System;
 
-use App\Models\Users\Authorization;
+use App\Controllers\Authorization;
 
 abstract class Controller
 {
     protected $view;
     protected $user;
+    protected static $data = [
+        'navbar' => [
+            'class' => 'navbar',
+            'type' => 'default',
+            'active' => '',
+        ],
+        'page' => [
+            'type' => 'oneColumnDefault',
+            'widthColumn' => 'col-md-10',
+        ]
+    ];
 
     public function __construct()
     {

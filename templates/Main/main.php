@@ -134,7 +134,7 @@
                 </div>
                 <hr class="separator mt-1">
                 <?php foreach ($events as $event) {?>
-                <div class="row">
+               <!-- <div class="row"> -->
                     <div class="col-md-12">
                         <h3><?= $event->getTitle() ?></h3>
                     </div>
@@ -152,26 +152,6 @@
                             <strong><?= $event->getDate() ?></strong>
                         </div>
                     </div>
-         <!--           <div class="d-sm-inline-flex col-md-12">
-                        <div class="me-3">
-                            Автор:
-                        </div>
-                        <div class="me-3">
-                            <a href="/profile/test7 class="me-3 ms-3">test7</a>
-                        </div>
-                        <div class="me-3">
-                            Рейтинг:
-                        </div>
-                        <div class="me-3">
-                            <strong>5.0</strong>
-                        </div>
-                        <div class="me-3">
-                            Город:
-                        </div>
-                        <div>
-                            <strong>Новосибирск</strong>
-                        </div>
-                    </div> -->
                     <div class="col-md-12">
                         <p>
                             <a class="link-dark" data-bs-toggle="collapse" href="#collapseExample<?= $event->getId() ?>" role="button"
@@ -214,9 +194,9 @@
                         </div>
                     </div>
                     <hr class="separator mt-1">
-                </div>
+               <!-- </div> -->
                 <?php } ?>
-
+                <hr class="separator mt-1">
                 <div class="row">
                     <div class="col-md-12">
                         <h3>Виртуальная реальность Академгородок</h3>
@@ -296,9 +276,6 @@
                     </div>
                     <hr class="separator mt-1">
                 </div>
-
-
-
             </div>
         </div>
     </div>
@@ -307,27 +284,5 @@
     <?= !empty($user) ? 'Привет, ' . $user->getLogin() : 'Войдите на сайт' ?>
     <!-- <script src="js/registrationValidation.js"> </script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-  <!--  <div class="accordion" id="accordionPanelsStayOpenExample">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                    Дополнительные параметры
-                </button>
-            </h2>
-            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-                <div class="accordion-body">
-                    <label for="name">Заголовок</label>
-                    <input type="text" name="title" class="form-control">
-                    <label for="name">Заголовок</label>
-                    <input type="text" name="title" class="form-control">
-                </div>
-            </div>
-        </div>
-    </div> -->
-
-
-
-
 </body>
 </html>

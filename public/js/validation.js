@@ -5,19 +5,14 @@ function validate(data, form) {
         formControl.submit();
     } else {
         removeClass(form);
-        if (php_error != null)
-        {
+        if (php_error != null) {
             php_error.classList.add("none");
         }
-        for (field in form.data)
-        {
-            if (field != 'sex' && field != 'path_image' && field != 'file')
-            {
-                if (data.error[field] != null)
-                {
+        for (field in form.data) {
+            if (field != 'sex' && field != 'path_image' && field != 'file') {
+                if (data.error[field] != null) {
                     setErrorFor(field, data.error[field]);
-                } else
-                {
+                } else {
                     setSuccessFor(field, form.form);
                 }
             }
@@ -32,22 +27,22 @@ function image_validate(data) {
     let small = formControl.querySelector('small');
     if (data.status == true) {
         const image = document.getElementById('image');
-        image.src=data.error['avatar'];
-        hidden.value=data.error['avatar'];
+        image.src = data.error['avatar'];
+        hidden.value = data.error['avatar'];
         small.classList.add("none");
         small.classList.remove("error");
     } else {
         small.classList.add("error");
         small.classList.remove("none");
-        avatar.value="";
-        hidden.value="";
+        avatar.value = "";
+        hidden.value = "";
         small.innerHTML = data.error['avatar'];
     }
 }
 
 function removeClass(data) {
     for (field in data.data) {
-        if (field != 'sex'  && field != 'path_image' && field != 'file') {
+        if (field != 'sex' && field != 'path_image' && field != 'file') {
             let element = document.getElementById(field);
             element.classList.remove('is-invalid');
             element.classList.remove('is-valid');
@@ -70,8 +65,7 @@ function setErrorFor(input, message) {
 
 function setSuccessFor(input, form) {
     let element = document.getElementById(input);
-    if (form != 'login')
-    {
+    if (form != 'login') {
         element.classList.add("is-valid");
     }
     let formControl = element.parentElement;

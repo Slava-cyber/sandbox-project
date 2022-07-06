@@ -30,7 +30,6 @@ eventAddForm.addEventListener('submit', function (event) {
     request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
             let jsonData = JSON.parse(request.response);
-            console.log(jsonData);
             validate(jsonData, data);
         }
     };

@@ -43,7 +43,7 @@ class Validation
                     $status = true;
                 }
             }
-        } else if (count($error) == 0) {
+        } elseif (count($error) == 0) {
             $status = true;
         }
         return $status;
@@ -132,7 +132,15 @@ class Validation
 
     private function arrayCategory(): array
     {
-        return ['Другое', 'Активный отдых', 'Ночная жизнь', 'Спорт', 'Охота/рыбалка', 'Квесты/настольные игры', 'Туризм'];
+        return [
+            'Другое',
+            'Активный отдых',
+            'Ночная жизнь',
+            'Спорт',
+            'Охота/рыбалка',
+            'Квесты/настольные игры',
+            'Туризм'
+        ];
     }
 
 
@@ -198,23 +206,6 @@ class Validation
         return $newName;
     }
 
-    /*private function checkIn($value): string
-    {
-        $msg = '';
-
-        $params = ucfirst(explode(':', $this->paramsFunction)[1]);
-        $params = explode(',', $params);
-        $nameClass = $params[0];
-        $fieldTable = $params[1];
-        $object = User::findOneByColumn($fieldTable, $value);
-        //$object = call_user_func_array(array($nameClass, '::findOneByColumn'), array($fieldTable, $value));
-        if ($object == null) {
-            $msg = 'Неправильное значение';
-        }
-
-        return $msg;
-    }*/
-
     private function formsPattern(): array
     {
         return
@@ -231,7 +222,6 @@ class Validation
     {
         $msg = '';
         $border = mktime(0, 0, 0, date("m"), date("d"), date("Y") - 3);
-        //$border = date("Y-m-d", $border);
         if ($value > (date("Y-m-d", $border))) {
             $msg = 'Введите корректную дату, до ' . date("Y-m-d", $border);
         }
@@ -264,7 +254,9 @@ class Validation
         $nameClass = $params[0];
         $fieldTable = $params[1];
         $object = User::findOneByColumn($fieldTable, $value);
-        //$object = call_user_func_array(array($nameClass, '::findOneByColumn'), array($fieldTable, $value));
+
+        //TODO It's necessary fix for common case - $object = call_user_func_array(array($nameClass, '::findOneByColumn'), array($fieldTable, $value));
+
         if ($object != null) {
             $msg = 'Такоe значение уже существует';
         }
@@ -284,7 +276,7 @@ class Validation
     private function checkAlpha($value): string
     {
         $msg = '';
-        if (!preg_match("~^([а-яА-ЯёЁa-zA-Z]+)$~", $value)) {
+        if (!preg_match("~^([а-яА-Яр-цёЁa-zA-Z]+)$~", $value)) {
             $msg = 'Поле должно содержать только буквы';
         }
         return $msg;
@@ -338,8 +330,7 @@ class Validation
     private function checkAlphaDash($value): string
     {
         $msg = '';
-        //if (!preg_match("~[а-яА-ЯёЁa-zA-Z][а-яА-ЯёЁa-zA-Z_-]~", $value))
-        if (!preg_match("~[a-zA-zа-яА-Я+0-9_+-+]~", $value)) {
+        if (!preg_match("~[a-zA-zа-яёр-цА-Я+0-9_+-+]~", $value)) {
             $msg = 'Допустимы только буквы, цифры, символы "_-". Начинаться должно с буквы';
         }
         return $msg;
@@ -367,5 +358,4 @@ class Validation
         }
         return $msg;
     }
-
 }

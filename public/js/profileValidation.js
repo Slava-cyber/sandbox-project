@@ -17,9 +17,7 @@ avatar.addEventListener('change', function(event) {
     request.open("POST", url, true);
     request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
-            console.log(request.response);
             let jsonData = JSON.parse(request.response);
-            console.log(jsonData);
             image_validate(jsonData);
         }
     };
@@ -34,7 +32,7 @@ profileForm.addEventListener("submit", function(event) {
     let pathImage = document.getElementById("path_image")
     let name =  document.getElementById("name");
     let surname =  document.getElementById("surname");
-    let birthDate =  document.getElementById("date_of_birth");
+    let dateOfBirth =  document.getElementById("date_of_birth");
     let town =  document.getElementById("town");
     let phoneNumber =  document.getElementById("phone_number");
     let interest =  document.getElementById("interest");
@@ -49,7 +47,7 @@ profileForm.addEventListener("submit", function(event) {
                 'path_image' :pathImage.value.trim(),
                 'name' : name.value.trim(),
                 'surname' : surname.value.trim(),
-                'date_of_birth' : birthDate.value.trim(),
+                'date_of_birth' : dateOfBirth.value.trim(),
                 'town' : town.value.trim(),
                 'phone_number' : phoneNumber.value.trim(),
                 'interest' : interest.value.trim(),
