@@ -12,10 +12,38 @@ class MainController extends Controller
 {
     public function actionIndex(): bool
     {
-        //if (empty($_POST)) {
-        //}
         $events = Event::getAllEvents();
-        $this->view->render('Main/main', ['events' => $events]);
+        $data = [
+            'navbar' => [
+                'class' => 'navbar',
+                'type' => 'default',
+                'active' => 'Главная',
+            ],
+            'form' => [
+                'class' => 'form',
+                'name' => 'search',
+                'button' => [
+                    'name' => 'Найти',
+                    'size' => 2,
+                ],
+                'type' => 'event',
+                'page' => 'main',
+                'separator' => true,
+            ],
+            'list' => [
+                'class' => 'list',
+                'type' => 'default',
+                'data' => $events,
+                'entity' => 'event',
+                'typePart' => 'wholeView',
+                'paginator' => true,
+            ],
+            'page' => [
+                'type' => 'oneColumnDefault',
+                'title' => 'Главная'
+            ]
+        ];
+        $this->view->generateHtml($data);
         return true;
     }
 }

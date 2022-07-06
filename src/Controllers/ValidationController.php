@@ -11,10 +11,10 @@ class ValidationController extends Controller
     public function actionIndex(): bool
     {
         if (!empty($_POST)) {
-            $arr = json_decode($_POST['all'], true);
-            $form = $arr['form'];
-            if (isset($arr['data'])) {
-                $data = $arr['data'];
+            $formData = json_decode($_POST['all'], true);
+            $form = $formData['form'];
+            if (isset($formData['data'])) {
+                $data = $formData['data'];
             }
             if (!empty($_FILES)) {
                 $data = [

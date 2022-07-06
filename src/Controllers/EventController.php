@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\Users\Authorization;
+use App\Controllers\Authorization;
 use App\System\Controller;
 use App\System\View as View;
 use App\Models\Users\User as User;
@@ -14,7 +14,33 @@ class EventController extends Controller
     {
         if ($this->user instanceof User) {
             if (empty($_POST)) {
-                $this->view->render('Event/add');
+                $data = [
+                    'navbar' => [
+                        'class' => 'navbar',
+                        'type' => 'default',
+                        'active' => 'Создать ивент',
+                    ],
+                    'form' => [
+                        'class' => 'form',
+                        'type' => 'event',
+                        'name' => 'eventAdd',
+                        'page' => 'event/add',
+                        'button' => [
+                            'name' => 'Создать',
+                            'position' => 'center',
+                            'size' => 2,
+                        ],
+                        'js' => [
+                            '../js/validation',
+                            '../js/eventValidation'
+                        ]
+                    ],
+                    'page' => [
+                        'type' => 'oneColumnDefault',
+                        'title' => 'Создание ивента'
+                    ]
+                ];
+                $this->view->generateHtml($data);
             } else {
                 $event = Event::create($_POST, $this->user);
                 if ($event instanceof Event) {
