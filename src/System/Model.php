@@ -3,6 +3,7 @@
 namespace App\System;
 
 use App\System\Db as Db;
+use App\System\TimeZone;
 
 abstract class Model
 {
@@ -36,10 +37,15 @@ abstract class Model
         return $result[0];
     }
 
-    public static function getAll(string $columnName): ?array
+    public static function getAll(string $columnName, string $town): ?array
     {
+        $time = new TimeZone($town);
+        date_default_timezone_set('UTC');
+        $duration = $time->timezone();
+        $today = date("Y-m-d H:i:s", strtotime("+$duration sec"));
+
         $db = Db::getInstance();
-        $sql = "SELECT * FROM " . static::getNameTable() . " WHERE `" . $columnName . "` > NOW()";
+        $sql = "SELECT * FROM " . static::getNameTable() . " WHERE (`" . $columnName . "` > '" . "$today" . "' AND `town` = '" . $town . "')";
         $result = $db->query($sql, [], static::class);
         if ($result === []) {
             return null;

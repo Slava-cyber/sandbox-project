@@ -71,9 +71,14 @@ class Event extends Model
         return $event;
     }
 
-    public static function getAllEvents(): ?array
+    public static function getAllEvents(string $town): ?array
     {
-        return Event::getAll('datetime');
+        return Event::getAll('datetime', $town);
+    }
+
+    public static function getEvents(array $form): ?array
+    {
+
     }
 
     protected static function getNameTable(): string
