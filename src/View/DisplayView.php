@@ -14,8 +14,9 @@ class DisplayView extends View
             'Profile/profile',
             $user,
             [
-                'data' => DisplayView::profileData($user),
+                'data' => DisplayView::profileData($info['user']),
                 'info' => $info,
+                'user' => $user,
             ]
         );
     }

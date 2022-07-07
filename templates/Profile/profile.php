@@ -2,8 +2,8 @@
     <div class="col-md-3 border-right">
         <div class="d-flex flex-column align-items-center text-center py-5">
             <img class="rounded-circle" width="150px"
-                 src="<?php echo ($user->getAvatar() != null) ? $user->getAvatar() : "/images/system/avatar_null.jpg"; ?>">
-            <span class="font-weight-bold"><?= $user->getLogin() ?></span>
+                 src="<?php echo ($info['user']->getAvatar() != null) ? $user->getAvatar() : "/images/system/avatar_null.jpg"; ?>">
+            <span class="font-weight-bold"><?= $info['user']->getLogin() ?></span>
             <span class="text-black-50">Рейтинг: 0</span>
             <span class="text-black-50">Всего отзывов: 0</span>
             <a href="#" class="btn btn-secondary btn-sm" role="button" aria-disabled="true">Архив</a>
@@ -40,8 +40,10 @@
                 <?php endforeach; ?>
             <?php endforeach; ?>
             <div class="col-sm-12 text-end">
+                <?php if ($info['button']) : ?>
                 <a href="/profile/edit" class="btn btn-secondary" role="button" aria-disabled="true">Редактировать
                     профиль</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>

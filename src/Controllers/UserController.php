@@ -89,7 +89,7 @@ class UserController extends Controller
                 'title' => 'Авторизация',
                 'button' => [
                     'name' => 'Войти',
-                    'size' => 12,
+                    'size' => '100',
                 ],
                 'link' => [
                     'label' => 'У вас еще нет аккаунта? - ',

@@ -1,10 +1,13 @@
 <form name="<?= $info['name'] ?>" method="POST" action="" id="<?= $info['name'] ?>">
     <h2 class="text-center"><?php echo (isset($info['title'])) ? $info['title'] : '' ?></h2>
     <?= $innerPart ?>
-    <div class="row
-        <?php echo (isset($info['button']['position'])) ? 'justify-content-' . $info['button']['position'] : '' ?>">
-        <div class="col-md-<?php echo (isset($info['button']['size'])) ? $info['button']['size'] : '2' ?> d-grid">
-            <button type="submit" class="btn btn-secondary my-2"><?= $info['button']['name'] ?></button>
+    <div class="row">
+        <div class="col-md-12 <?php echo (isset($info['button']['position'])) ? 'text-' . $info['button']['position'] : '' ?>">
+            <button type="submit"
+                    class="btn btn-secondary my-2
+                    <?php echo (isset($info['button']['size'])) ? 'w-' . $info['button']['size'] : '' ?>">
+                <?= $info['button']['name'] ?>
+            </button>
         </div>
     </div>
     <?php if (isset($info['link'])) : ?>

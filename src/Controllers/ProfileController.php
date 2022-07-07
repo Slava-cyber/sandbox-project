@@ -13,6 +13,11 @@ class ProfileController extends Controller
     {
         $user = User::getUserByLogin($nickname);
         if ($user instanceof User) {
+            if ($user->getLogin() == $this->user->getLogin()) {
+                $button = true;
+            } else {
+                $button = false;
+            }
             $data = [
                 'navbar' => [
                     'class' => 'navbar',
@@ -21,7 +26,9 @@ class ProfileController extends Controller
                 ],
                 'display' => [
                     'class' => 'display',
-                    'type' => 'profile'
+                    'type' => 'profile',
+                    'button' => $button,
+                    'user' => $user,
                 ],
                 'page' => [
                     'type' => 'oneColumnDefault',
@@ -53,7 +60,7 @@ class ProfileController extends Controller
                         'button' => [
                             'name' => 'Редактировать',
                             'position' => 'end',
-                            'size' => 4,
+                            'size' => 40,
                         ],
                         'page' => 'profile',
                         'js' => [
