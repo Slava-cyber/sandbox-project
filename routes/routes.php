@@ -5,6 +5,7 @@ return array
     '^(logout)$' => 'user/logout',
     '^(login)$' => 'user/signIn',
     '^(registration)$' => 'user/signUp',
+    'main/page/([0-9]+)' => 'main/index',
     '^(main)$' => 'main/index',
     '^(profile/edit)$' => 'profile/edit',
     'profile/([a-z,0-9]+)' => 'profile/view/$1',
