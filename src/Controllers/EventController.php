@@ -28,7 +28,7 @@ class EventController extends Controller
                         'button' => [
                             'name' => 'Создать',
                             'position' => 'center',
-                            'size' => 2,
+                            'size' => 25,
                         ],
                         'js' => [
                             '../js/validation',

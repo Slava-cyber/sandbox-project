@@ -13,8 +13,14 @@ class MainController extends Controller
 {
     public function actionIndex(): bool
     {
-
         $dataPage = self::pageData();
+        $path = explode('/', $_SERVER['REQUEST_URI']);
+        (isset($path[2])) ? $currentPage = $path[3] : $currentPage = 1;
+        if (count($path) > 2) {
+            $dataPage['list']['js'][0] = '../../js/mainPagination';
+        }
+        $dataPage['list']['paginator']['currentPage'] = $currentPage;
+
 
         if (empty($_POST)) {
             if ($this->user != null && $this->user->getTown() != null) {
@@ -22,19 +28,9 @@ class MainController extends Controller
             } else {
                 $data['town'] = 'Москва';
             }
-            $path = explode('/', $_SERVER['REQUEST_URI']);
-            (isset($path[2])) ? $currentPage = $path[3] : $currentPage = 1;
-
             $events = Event::getAllEvents($data);
-            $dataPage['list']['paginator']['currentPage'] = $currentPage;
-
-            //$this->view->generateHtml($dataPage);
-            //return true;
         } else {
             $events = Event::getAllEvents($_POST);
-            $dataPage['list']['paginator']['currentPage'] = 1;
-            //$this->view->generateHtml($dataPage);
-            //return true;
         }
         $dataPage['list']['data'] = $events;
         $this->view->generateHtml($dataPage);
@@ -52,6 +48,7 @@ class MainController extends Controller
             'form' => [
                 'class' => 'form',
                 'name' => 'search',
+                'action' => '/main/page/1',
                 'button' => [
                     'name' => 'Найти',
                     'size' => 35,
@@ -69,6 +66,9 @@ class MainController extends Controller
                     'perPage' => 3,
                     'prefix' => '/main/page/'
                 ],
+                'js' => [
+                    '/js/mainPagination',
+                    ]
             ],
             'page' => [
                 'type' => 'oneColumnDefault',
