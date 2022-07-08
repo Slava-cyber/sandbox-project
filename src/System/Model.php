@@ -37,15 +37,20 @@ abstract class Model
         return $result[0];
     }
 
-    public static function getAll(string $columnName, string $town): ?array
+    public static function getAll(array $data): ?array
     {
-        $time = new TimeZone($town);
+        /*$time = new TimeZone($town);
         date_default_timezone_set('UTC');
         $duration = $time->timezone();
-        $today = date("Y-m-d H:i:s", strtotime("+$duration sec"));
+        $today = date("Y-m-d H:i:s", strtotime("+$duration sec"));*/
 
         $db = Db::getInstance();
-        $sql = "SELECT * FROM " . static::getNameTable() . " WHERE (`" . $columnName . "` > '" . "$today" . "' AND `town` = '" . $town . "')";
+        $sql = "SELECT * FROM " . static::getNameTable() . " WHERE 
+        ( `datetime` > '" . $data['datetime'] . "' AND `town` = '" .
+            $data['town'] . "' AND `title` LIKE  '" . $data['title'] . "')";
+        if (isset($data['category']) && !empty($data['category'])) {
+            $sql = $sql . " and ( `category` = '" . $data['category'] . "')";
+        }
         $result = $db->query($sql, [], static::class);
         if ($result === []) {
             return null;

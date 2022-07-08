@@ -7,6 +7,7 @@ use App\Models\Validation\Validation as Validation;
 use App\System\Db as Db;
 use App\System\Model as Model;
 use App\Models\Users\User as User;
+use App\System\TimeZone;
 
 
 class Event extends Model
@@ -44,6 +45,7 @@ class Event extends Model
     {
         return $this->datetime;
     }
+
     public function getAuthor(): User
     {
         return User::getUserById($this->author);
@@ -71,9 +73,23 @@ class Event extends Model
         return $event;
     }
 
-    public static function getAllEvents(string $town): ?array
+    public static function getAllEvents(array $data): ?array
     {
-        return Event::getAll('datetime', $town);
+        if (!isset($data['town'])) {
+            $data['town'] = 'Москва';
+        }
+        if (!isset($data['datetime']) || empty($data['datetime'])) {
+            $time = new TimeZone($data['town']);
+            date_default_timezone_set('UTC');
+            $duration = $time->timezone();
+            $data['datetime'] = date("Y-m-d H:i:s", strtotime("+$duration sec"));
+        }
+        if (!isset($data['title'])) {
+            $data['title'] = '%%';
+        } else {
+            $data['title'] = '%' . $data['title'] . '%';
+        }
+        return Event::getAll($data);
     }
 
     public static function getEvents(array $form): ?array
