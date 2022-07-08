@@ -1,7 +1,7 @@
 <div class="row">
     <div class="form-group py-2">
         <input type="text" name="title" class="form-control" placeholder="Заголовок" id="title"
-               value="">
+               value="<?php echo (!empty($_POST['title'])) ? $_POST['title'] : ''?>">
         <small id="titleHelp" class="form-text form-muted none">Заголовок</small>
     </div>
 </div>

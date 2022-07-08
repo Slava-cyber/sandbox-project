@@ -13,59 +13,67 @@ class MainController extends Controller
 {
     public function actionIndex(): bool
     {
+
+        $dataPage = self::pageData();
+
         if (empty($_POST)) {
             if ($this->user != null && $this->user->getTown() != null) {
-                $town = $this->user->getTown();
+                $data['town'] = $this->user->getTown();
             } else {
-                $town = 'Москва';
+                $data['town'] = 'Москва';
             }
             $path = explode('/', $_SERVER['REQUEST_URI']);
             (isset($path[2])) ? $currentPage = $path[3] : $currentPage = 1;
 
-            $events = Event::getAllEvents($town);
+            $events = Event::getAllEvents($data);
+            $dataPage['list']['paginator']['currentPage'] = $currentPage;
 
-
-            $data = [
-                'navbar' => [
-                    'class' => 'navbar',
-                    'type' => 'default',
-                    'active' => 'Главная',
-                ],
-                'form' => [
-                    'class' => 'form',
-                    'name' => 'search',
-                    'button' => [
-                        'name' => 'Найти',
-                        'size' => 35,
-                    ],
-                    'type' => 'event',
-                    'page' => 'main',
-                    'separator' => true,
-                ],
-                'list' => [
-                    'class' => 'list',
-                    'type' => 'default',
-                    'data' => $events,
-                    'entity' => 'event',
-                    'typePart' => 'wholeView',
-                    'paginator' => [
-                        'currentPage' => $currentPage,
-                        'perPage' => 3,
-                        'prefix' => '/main/page/'
-                    ],
-                ],
-                'page' => [
-                    'type' => 'oneColumnDefault',
-                    'title' => 'Главная'
-                ]
-            ];
-
-
-            $this->view->generateHtml($data);
-            return true;
+            //$this->view->generateHtml($dataPage);
+            //return true;
         } else {
-            header('location: /main');
-            return true;
+            $events = Event::getAllEvents($_POST);
+            $dataPage['list']['paginator']['currentPage'] = 1;
+            //$this->view->generateHtml($dataPage);
+            //return true;
         }
+        $dataPage['list']['data'] = $events;
+        $this->view->generateHtml($dataPage);
+        return true;
+    }
+
+    private static function pageData(): ?array
+    {
+        return [
+            'navbar' => [
+                'class' => 'navbar',
+                'type' => 'default',
+                'active' => 'Главная',
+            ],
+            'form' => [
+                'class' => 'form',
+                'name' => 'search',
+                'button' => [
+                    'name' => 'Найти',
+                    'size' => 35,
+                ],
+                'type' => 'event',
+                'page' => 'main',
+                'separator' => true,
+            ],
+            'list' => [
+                'class' => 'list',
+                'type' => 'default',
+                'entity' => 'event',
+                'typePart' => 'wholeView',
+                'paginator' => [
+                    'perPage' => 3,
+                    'prefix' => '/main/page/'
+                ],
+            ],
+            'page' => [
+                'type' => 'oneColumnDefault',
+                'title' => 'Главная'
+            ]
+        ];
     }
 }
