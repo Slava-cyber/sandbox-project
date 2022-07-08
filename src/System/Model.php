@@ -51,6 +51,8 @@ abstract class Model
         if (isset($data['category']) && !empty($data['category'])) {
             $sql = $sql . " and ( `category` = '" . $data['category'] . "')";
         }
+        $sort = "ORDER BY `datetime` ASC";
+        $sql = $sql . $sort;
         $result = $db->query($sql, [], static::class);
         if ($result === []) {
             return null;
