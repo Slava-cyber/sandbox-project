@@ -15,6 +15,22 @@
         <strong><?= $event->getDate() ?></strong>
     </div>
 </div>
+<div class="d-sm-inline-flex col-md-12">
+    <div class="me-3">
+        Автор:
+    </div>
+    <div class="me-3">
+        <a href="/profile/<?= $event->getAuthor()->getLogin() ?>">
+            <?= $event->getAuthor()->getLogin() ?>
+        </a>
+    </div>
+    <div class="me-3">
+        Рейтинг:
+    </div>
+    <div class="me-3">
+        <strong>5.0</strong>
+    </div>
+</div>
 <div class="col-md-12">
     <p>
         <a class="link-dark" data-bs-toggle="collapse" href="#collapseExample<?= $event->getId() ?>" role="button"
@@ -24,20 +40,6 @@
     </p>
     <div class="collapse" id="collapseExample<?= $event->getId() ?>">
         <div class="d-sm-inline-flex col-md-12 mb-3">
-            <div class="me-3">
-                Автор:
-            </div>
-            <div class="me-3">
-                <a href="/profile/<?= $event->getAuthor()->getLogin() ?>">
-                    <?= $event->getAuthor()->getLogin() ?>
-                </a>
-            </div>
-            <div class="me-3">
-                Рейтинг:
-            </div>
-            <div class="me-3">
-                <strong>5.0</strong>
-            </div>
             <div class="me-3">
                 Город:
             </div>
