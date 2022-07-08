@@ -2,9 +2,7 @@
     <div class="col-md-6">
         <div class="form-group py-2">
             <input type="text" name="town" class="form-control" id="town"
-                   placeholder="
-                   <?php echo ($user != null && $user->getTown() != null) ?
-                       $user->getTown() : "Город по умолчанию: Москва"; ?>"
+                   placeholder=""
             value="<?php echo (!empty($_POST['town'])) ? $_POST['town'] : (($user != null && $user->getTown() != null) ? $user->getTown() : "Москва"); ?>">
             <small id="townHelp" class="form-text form-muted none">Город</small>
         </div>
@@ -19,27 +17,19 @@
     </div>
     <div class="col-md-6">
         <div class="form-group py-2">
-            <select class="form-select form-control" name="category" id="category"
-                    value="<?php echo (!empty($_POST['category'])) ? $_POST['category'] : ''?>">
+            <select class="form-select form-control" name="category" id="category"">
                 <?php if ($info['page'] == 'main') : ?>
                     <option value="">Выберите категорию</option>
                 <?php endif; ?>
                 <?php foreach ($data['category'] as $name) : ?>
                     <option value="<?= $name ?>"
-                        <?php echo ($name == $_POST['category']) ? 'selected="selected"' : '' ?>><?= $name ?></option>
+                        <?php echo (!empty($_POST['category']) && $name == $_POST['category']) ?
+                            'selected="selected"' : '' ?>>
+                        <?= $name ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
             <small id="categoryHelp" class="form-text form-muted">Категория</small>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group py-2">
-            <select class="form-select form-control" disabled>
-                <?php foreach ($data['subcategory'] as $name) : ?>
-                    <option value="<?= $name ?>"><?= $name ?></option>
-                <?php endforeach; ?>
-            </select>
-            <small id="subcategoryHelp" class="form-text form-muted">Подкатегория</small>
         </div>
     </div>
     <?php if ($info['page'] != 'main') : ?>

@@ -1,4 +1,5 @@
-<form name="<?= $info['name'] ?>" method="POST" action="" id="<?= $info['name'] ?>">
+<form name="<?= $info['name'] ?>" method="POST"
+      action="<?php echo (isset($info['action'])) ? $info['action'] : '' ?>" id="<?= $info['name'] ?>">
     <h2 class="text-center"><?php echo (isset($info['title'])) ? $info['title'] : '' ?></h2>
     <?= $innerPart ?>
     <div class="row">

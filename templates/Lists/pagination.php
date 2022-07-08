@@ -3,7 +3,8 @@
         <ul class="pagination justify-content-center">
             <?php $i = 0 ?>
             <?php foreach ($pagination as $name => $link) : ?>
-                <li class="page-item" id="<?= $i ?>" value="<?php $prefix. $link ?>">
+                <input type="hidden" id="<?= 'inputPage' . $i ?>" value="<?= $prefix . $link ?>">
+                <li class="page-item" id="<?= 'liPage' . $i ?>">
                     <a class="page-link" href="<?= $prefix . $link ?>"><?= $name ?></a>
                 </li>
                 <?php $i += 1 ?>

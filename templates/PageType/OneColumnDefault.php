@@ -9,7 +9,7 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/main.css">
 </head>
-<body class="profile">
+<body class="profile <?php echo (isset($page['color'])) ? "profile-content" : ""?> ">
 <?= $navbar ?>
 <div class="container mt-5 mb-5 " <?php echo (isset($page['align'])) ? 'style="height:70vh"' : "" ?>>
     <div class="row justify-content-center
