@@ -42,7 +42,7 @@ class UserController extends Controller
                 'title' => 'Регистрация',
                 'button' => [
                     'name' => 'Зарегистрироваться',
-                    'size' => 12,
+                    'size' => 100,
                 ],
                 'link' => [
                     'label' => 'У вас уже есть аккаунт? - ',
@@ -59,7 +59,8 @@ class UserController extends Controller
                 'type' => 'oneColumnDefault',
                 'title' => 'Регистрация',
                 'widthColumn' => 'col-md-6',
-                'align' => 'center'
+                'align' => 'center',
+                'color' => true,
             ]
         ];
         $this->view->generateHtml($data);
@@ -106,7 +107,8 @@ class UserController extends Controller
                 'type' => 'oneColumnDefault',
                 'title' => 'Авторизация',
                 'widthColumn' => 'col-md-4',
-                'align' => 'center'
+                'align' => 'center',
+                'color' => true,
             ]
         ];
 

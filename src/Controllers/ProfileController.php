@@ -11,6 +11,11 @@ class ProfileController extends Controller
 {
     public function actionView($nickname): bool
     {
+        if ($this->user == null) {
+            header('Location: /login');
+            return true;
+        }
+
         $user = User::getUserByLogin($nickname);
         if ($user instanceof User) {
             if ($user->getLogin() == $this->user->getLogin()) {
