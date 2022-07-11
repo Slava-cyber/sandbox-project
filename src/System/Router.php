@@ -37,7 +37,7 @@ class Router
     private function callMethod($uriPattern, $uri, $path): bool
     {
         $result = false;
-        if (preg_match("~$uriPattern~", $uri)) {
+        if (preg_match("~^$uriPattern$~", $uri)) {
             $internalRoute = preg_replace("~$uriPattern~", $path, $uri);
             $segments = explode('/', $internalRoute);
             $controllerName = 'App\Controllers\\' . ucfirst(array_shift($segments)) . 'Controller';
