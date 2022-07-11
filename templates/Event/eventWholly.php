@@ -52,9 +52,20 @@
         </div>
     </div>
 </div>
-<div class="col-md-12">
-    <a href="#" role="button">Отправить запрос</a>
-    <div class="col-md-12">
-        <span class="text-primary">Статус запроса: Ожидает ответа</span>
+<?php if ($request['possibility']) : ?>
+    <input type="hidden" value="<?= $event->getId() ?>" id="eventId<?= $number ?>">
+    <input type="hidden" value="<?= $user->getId() ?>" id="userId<?= $number ?>">
+    <input type="hidden" value="<?= $event->getAuthor()->getId() ?>" id="eventAuthor<?= $number ?>">
+    <div class="col-md-12 <?php echo ($request['data'] == null) ? "" : 'none' ?>" id="outRequestDiv<?= $number ?>">
+        <a href="" role="button" id="outRequest<?= $number ?>">Отправить запрос</a>
     </div>
-</div>
+    <div class="col-md-12  <?php echo ($request['data'] == null) ? "none" : '' ?>" id="statusRequestDiv<?= $number ?>">
+        <span class="text-primary">
+            Статус запроса: <?php echo ($request['data'] != null) ? $request['data']->getStatus() : 'Ожидает подтверждения' ?>
+        </span>
+    </div>
+<?php else: ?>
+    <div class="col-md-12" id="">
+        <a href="/event/<?= $event->getId() ?>/request" role="button" id="">Показать входящие запросы</a>
+    </div>
+<?php endif; ?>

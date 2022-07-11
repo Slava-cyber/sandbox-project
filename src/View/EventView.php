@@ -8,8 +8,16 @@ use App\Models\Users\User as User;
 
 class EventView extends View
 {
-    public static function wholeView(Event $event, ?User $user): string
+    public static function wholeView(array $data, ?User $user, int $number): string
     {
-        return EventView::render('Event/eventWholly', $user, ['event' => $event]);
+        return EventView::render(
+            'Event/eventWholly',
+            $user,
+            [
+                'event' => $data['event'],
+                'request' => $data['request'],
+                'number' => $number,
+            ]
+        );
     }
 }

@@ -7,7 +7,7 @@ use App\System\View as View;
 use App\Models\Users\User as User;
 use App\Models\Events\Event as Event;
 use App\System\Model as Model;
-
+use App\Models\Events\Requests as Requests;
 
 class MainController extends Controller
 {
@@ -32,9 +32,21 @@ class MainController extends Controller
         } else {
             $events = Event::getAllEvents($_POST);
         }
-        $dataPage['list']['data'] = $events;
+        $requests = Requests::getRequests($events, $this->user);
+        $dataPage['list']['data'] = self::arrayUnion($events, $requests, 'event', 'request');
         $this->view->generateHtml($dataPage);
         return true;
+    }
+
+    private static function arrayUnion(array $first, array $second, string $firstName, string $secondName): ?array
+    {
+        $result = [];
+        $array_size = count($first);
+        for ($i = 0; $i < $array_size; $i++) {
+            $result[$i][$firstName] = $first[$i];
+            $result[$i][$secondName] = $second[$i];
+        }
+        return $result;
     }
 
     private static function pageData(): ?array
@@ -68,7 +80,8 @@ class MainController extends Controller
                 ],
                 'js' => [
                     '/js/mainPagination',
-                    ]
+                    '/js/mainRequest'
+                ]
             ],
             'page' => [
                 'type' => 'oneColumnDefault',

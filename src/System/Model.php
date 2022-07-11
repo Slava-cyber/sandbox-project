@@ -34,16 +34,11 @@ abstract class Model
         if ($result === []) {
             return null;
         }
-        return $result[0];
+        return ($result != null) ? $result[0] : null;
     }
 
     public static function getAll(array $data): ?array
     {
-        /*$time = new TimeZone($town);
-        date_default_timezone_set('UTC');
-        $duration = $time->timezone();
-        $today = date("Y-m-d H:i:s", strtotime("+$duration sec"));*/
-
         $db = Db::getInstance();
         $sql = "SELECT * FROM " . static::getNameTable() . " WHERE 
         ( `datetime` > '" . $data['datetime'] . "' AND `town` = '" .

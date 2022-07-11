@@ -25,9 +25,11 @@ class ListView extends View
         $classView = 'App\View\\' . ucfirst($info['entity']) . 'View';
         $method = $info['typePart'];
         $arrayOfItem = [];
+        $number = 0;
         foreach ($pageData as $item) {
-            $element = $classView::$method($item, $user);
+            $element = $classView::$method($item, $user, $number);
             array_push($arrayOfItem, $element);
+            $number += 1;
         }
         return ListView::render('Lists/listDefault', $user, ['arrayOfItem' => $arrayOfItem]);
     }
