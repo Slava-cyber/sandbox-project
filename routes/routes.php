@@ -11,6 +11,7 @@ return array
     'profile/([a-zA-Zа-яА-ЯёЁр-цР-Ц0-9_.-]+)' => 'profile/view/$1',
     'validation' => 'validation/index',
     '^(event/add)$' => 'event/add',
+    '^(sendRequest)$' => 'request/sendRequest'
     //'Profile/([a-z,0-9]+)/comments' =>  ,
     //'Profile/([a-z,0-9]+)/comments/add' =>  ,
     //'Profile/([a-z,0-9]+)/comments/([0-9]+)/edit' =>  ,
