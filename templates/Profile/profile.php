@@ -2,7 +2,7 @@
     <div class="col-md-3 border-right">
         <div class="d-flex flex-column align-items-center text-center py-5">
             <img class="rounded-circle" width="150px"
-                 src="<?php echo ($info['user']->getAvatar() != null) ? $user->getAvatar() : "/images/system/avatar_null.jpg"; ?>">
+                 src="<?php echo ($info['user']->getAvatar() != null) ? $info['user']->getAvatar() : "/images/system/avatar_null.jpg"; ?>">
             <span class="font-weight-bold"><?= $info['user']->getLogin() ?></span>
             <span class="text-black-50">Рейтинг: 0</span>
             <span class="text-black-50">Всего отзывов: 0</span>
