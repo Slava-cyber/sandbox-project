@@ -8,7 +8,7 @@ return array
     'main/page/([0-9]+)' => 'main/index',
     '^(main)$' => 'main/index',
     '^(profile/edit)$' => 'profile/edit',
-    'profile/([a-z,0-9]+)' => 'profile/view/$1',
+    'profile/([а-яА-ЯР-Цр-цёЁa-zA-Z]+)' => 'profile/view/$1',
     'validation' => 'validation/index',
     '^(event/add)$' => 'event/add',
     //'Profile/([a-z,0-9]+)/comments' =>  ,

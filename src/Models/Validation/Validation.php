@@ -276,7 +276,7 @@ class Validation
     private function checkAlpha($value): string
     {
         $msg = '';
-        if (!preg_match("~^([а-яА-Яр-цёЁa-zA-Z]+)$~", $value)) {
+        if (!preg_match("~^([а-яА-ЯР-Цр-цёЁa-zA-Z]+)$~", $value)) {
             $msg = 'Поле должно содержать только буквы';
         }
         return $msg;

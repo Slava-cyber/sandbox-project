@@ -21,7 +21,7 @@ class Router
 
     public function run()
     {
-        $uri = $this->getURI();
+        $uri = urldecode($this->getURI());
         foreach ($this->routes as $uriPattern => $path) {
             $result = false;
             $result = $this->callMethod($uriPattern, $uri, $path);
