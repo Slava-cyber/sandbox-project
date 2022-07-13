@@ -26,7 +26,7 @@ class NavbarView extends View
             }
             $navbar =
                 [
-                    'active' => $info['active'],
+                    'active' => (isset($info['active'])) ? $info['active'] : '',
                     'main' =>
                         [
                             'Главная' => '/main',
@@ -37,7 +37,7 @@ class NavbarView extends View
                         [
                             'Профиль' => '/profile/' . $user->getLogin(),
                             'Безопасность' => '/profile',
-                            'Архив' => '/archive',
+                            'Архив' => '/event/archive',
                             'divider' => 'default',
                             'Выйти' => '/logout',
                         ]
