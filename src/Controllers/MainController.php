@@ -16,9 +16,9 @@ class MainController extends Controller
         $dataPage = self::pageData();
         $path = explode('/', $_SERVER['REQUEST_URI']);
         (isset($path[2])) ? $currentPage = $path[3] : $currentPage = 1;
-        if (count($path) > 2) {
+        //if (count($path) > 2) {
             $dataPage['list']['js'][0] = '../../js/mainPagination';
-        }
+        //}
         $dataPage['list']['paginator']['currentPage'] = $currentPage;
 
 
@@ -36,17 +36,6 @@ class MainController extends Controller
         $dataPage['list']['data'] = self::arrayUnion($events, $requests, 'event', 'request');
         $this->view->generateHtml($dataPage);
         return true;
-    }
-
-    private static function arrayUnion(array $first, array $second, string $firstName, string $secondName): ?array
-    {
-        $result = [];
-        $array_size = count($first);
-        for ($i = 0; $i < $array_size; $i++) {
-            $result[$i][$firstName] = $first[$i];
-            $result[$i][$secondName] = $second[$i];
-        }
-        return $result;
     }
 
     private static function pageData(): ?array

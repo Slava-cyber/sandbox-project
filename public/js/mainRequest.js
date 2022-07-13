@@ -20,9 +20,12 @@ function sendRequest(i) {
         var formData = new FormData();
 
         let data = {
-            'user': userId.value.trim(),
-            'author': eventAuthor.value.trim(),
-            'event': eventId.value.trim(),
+            'data': {
+                'user': userId.value.trim(),
+                'author': eventAuthor.value.trim(),
+                'event': eventId.value.trim(),
+            },
+            'type': 'create',
         };
 
         var json_arr = JSON.stringify(data);

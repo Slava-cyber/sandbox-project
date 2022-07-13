@@ -4,7 +4,7 @@
             <?php $i = 0 ?>
             <?php foreach ($pagination as $name => $link) : ?>
                 <input type="hidden" id="<?= 'inputPage' . $i ?>" value="<?= $prefix . $link ?>">
-                <li class="page-item" id="<?= 'liPage' . $i ?>">
+                <li class="page-item <?php echo ($currentPage == $name) ? 'active' : '' ?>" id="<?= 'liPage' . $i ?>">
                     <a class="page-link" href="<?= $prefix . $link ?>"><?= $name ?></a>
                 </li>
                 <?php $i += 1 ?>

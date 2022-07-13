@@ -6,6 +6,7 @@ use App\Exceptions\InvalidArgumentException as InvalidArgumentException;
 use App\Models\Validation\Validation as Validation;
 use App\System\Db as Db;
 use App\System\Model as Model;
+use App\Models\Events\Requests;
 
 
 class User extends Model
@@ -172,6 +173,17 @@ class User extends Model
             }
         }
         return $user;
+    }
+
+    public static function getUsersForRequests(array $requests): ?array
+    {
+        $result = [];
+        $i = 0;
+        foreach ($requests as $request) {
+            $result[$i] = User::findOneByColumn('id', $request->getUser());
+            $i += 1;
+        }
+        return $result;
     }
 
     public static function logout(User $user): void
