@@ -41,6 +41,13 @@ class RequestController extends Controller
                 $pageData['list']['paginator']['currentPage'] = self::getCurrentPage();
                 $pageData['list']['paginator']['prefix'] = '/event/' . $event->getId() . 'request/page/';
                 $pageData['page']['title'] = 'Запросы к ивенту';
+                $pageData['list']['table']['countColumn'] = 3;
+                $pageData['list']['table']['data'] = [
+                    'Пользователь (рейтинг/отзывов)',
+                    'Статус запроса',
+                    'Действие',
+                ];
+
 
                 $pageData['list']['data'] = self::formListData($event);
                 $this->view->generateHtml($pageData);
