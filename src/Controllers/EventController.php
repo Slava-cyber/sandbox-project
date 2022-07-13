@@ -63,6 +63,7 @@ class EventController extends Controller
             $pageData['list']['paginator']['currentPage'] = self::getCurrentPage();
             $pageData['navbar']['active'] = 'Текущие ивенты';
             $pageData['list']['paginator']['prefix'] = '/event/current/page/';
+            $pageData['list']['title'] = 'Текущие ивенты';
             $pageData['page']['title'] = 'Текущие ивенты';
             $pageData['list']['data'] = self::formListData($this->user, 'current');
 
@@ -79,6 +80,7 @@ class EventController extends Controller
             $pageData = self::pageListData();
             $pageData['list']['paginator']['currentPage'] = self::getCurrentPage();
             $pageData['list']['paginator']['prefix'] = '/event/archive/page/';
+            $pageData['list']['title'] = 'Прошедшие ивенты';
             $pageData['page']['title'] = 'Архив';
             $pageData['list']['data'] = self::formListData($this->user, 'archive');
             $this->view->generateHtml($pageData);

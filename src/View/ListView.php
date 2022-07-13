@@ -31,7 +31,14 @@ class ListView extends View
             array_push($arrayOfItem, $element);
             $number += 1;
         }
-        return ListView::render('Lists/listDefault', $user, ['arrayOfItem' => $arrayOfItem]);
+        return ListView::render(
+            'Lists/listDefault',
+            $user,
+            [
+                'arrayOfItem' => $arrayOfItem,
+                'info' => $info,
+            ]
+        );
     }
 
     private static function formWithPagination(array $info, ?User $user): string
