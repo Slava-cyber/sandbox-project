@@ -62,8 +62,9 @@
         </div>
         <div class="col-md-12  <?php echo ($request['data'] == null) ? "none" : '' ?>"
              id="statusRequestDiv<?= $number ?>">
-        <span class="text-primary">
-            Статус запроса: <?php echo ($request['data'] != null) ? $request['data']->getStatus() : 'Ожидает подтверждения' ?>
+        <span class="text-primary <?php echo ($request['data']->getStatus() == 'Запрос принят') ? 'text-success' :
+        (($request['data']->getStatus() == 'Запрос отклонен') ? 'text-danger' : 'text-dark') ?>">
+            <?php echo ($request['data'] != null) ? $request['data']->getStatus() : 'Ожидает подтверждения' ?>
         </span>
         </div>
     <?php else : ?>
