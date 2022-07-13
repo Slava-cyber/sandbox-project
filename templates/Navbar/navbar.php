@@ -22,7 +22,7 @@
                            role="button" data-bs-toggle="dropdown" arai-expanded="false">
                             <img src="/images/system/profile1.png" alt="" width="40" height="40">
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                             <?php foreach ($navbar['dropdown'] as $dropdownElement => $dropdownLink) : ?>
                                 <?php if ($dropdownElement != 'divider') : ?>
                                     <li>

@@ -6,7 +6,7 @@
             <span class="font-weight-bold"><?= $info['user']->getLogin() ?></span>
             <span class="text-black-50">Рейтинг: 0</span>
             <span class="text-black-50">Всего отзывов: 0</span>
-            <a href="#" class="btn btn-secondary btn-sm" role="button" aria-disabled="true">Архив</a>
+            <a href="/event/archive" class="btn btn-secondary btn-sm" role="button" aria-disabled="true">Архив</a>
             <span> </span>
         </div>
     </div>
