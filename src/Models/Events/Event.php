@@ -73,6 +73,33 @@ class Event extends Model
         return $event;
     }
 
+    public static function getAllEventsByUser(User $user, $date, string $type): ?array
+    {
+        $eventsCreation = self::getEventCreationByUser($user, $date, $type);
+        $eventsByRequest = self::getEventByRequest($user, $date, $type);
+        return array_merge($eventsCreation, $eventsByRequest);
+    }
+
+    public static function getEventCreationByUser(User $user, $date, string $type): ?array
+    {
+        $db = Db::getInstance();
+        ($type == 'archive') ? $comparisonSign = '<' : $comparisonSign = '>';
+        $sql = "SELECT * FROM " . static::getNameTable() . " WHERE (`author` = :value AND  `datetime` " .
+            $comparisonSign . " '" . $date . "')";
+        return $db->query($sql, ['value' => $user->getId()], static::class);
+    }
+
+    public static function getEventByRequest(User $user, $date, string $type): ?array
+    {
+        $db = Db::getInstance();
+        ($type == 'archive') ? $comparisonSign = '<' : $comparisonSign = '>';
+        $sql = "SELECT events.* FROM events 
+                INNER JOIN event_requests ON 
+                    (events.id = event_requests.event AND event_requests.user = :value) 
+                WHERE events.datetime " . $comparisonSign . " :date";
+        return $db->query($sql, ['value' => $user->getId(), 'date' => $date], static::class);
+    }
+
     public static function getAllEvents(array $data): ?array
     {
         if (!isset($data['town'])) {
@@ -92,9 +119,12 @@ class Event extends Model
         return Event::getAll($data);
     }
 
-    public static function getEvents(array $form): ?array
+    public static function checkExistenceEventByUser(User $user, int $id): ?Event
     {
-
+        $db = Db::getInstance();
+        $sql = "SELECT * FROM events WHERE `id` = :id AND `author` = :author LIMIT 1";
+        $result = $db->query($sql, ['author' => $user->getId(), 'id' => $id], static::class);
+        return ($result != null) ? $result[0] : null;
     }
 
     protected static function getNameTable(): string
