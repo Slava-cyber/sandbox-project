@@ -7,6 +7,25 @@ use App\Models\Users\User as User;
 
 class FormView extends View
 {
+    public static function passwordRecovery(array $info, ?User $user): string
+    {
+        $innerPart = FormView::render(
+            'Forms/PasswordRecovery/passwordRecovery',
+            $user,
+            [
+                'info' => $info
+            ]
+        );
+        return FormView::render(
+            'Forms/formPattern',
+            $user,
+            [
+                'innerPart' => $innerPart,
+                'info' => $info,
+            ]
+        );
+    }
+
     public static function profile(array $info, ?User $user): string
     {
         $innerPart = FormView::render(
@@ -14,6 +33,25 @@ class FormView extends View
             $user,
             [
                 'data' => FormView::profileData($user),
+                'info' => $info
+            ]
+        );
+        return FormView::render(
+            'Forms/formPattern',
+            $user,
+            [
+                'innerPart' => $innerPart,
+                'info' => $info,
+            ]
+        );
+    }
+
+    public static function email(array $info, ?User $user): string
+    {
+        $innerPart = FormView::render(
+            'Forms/Email/email',
+            $user,
+            [
                 'info' => $info
             ]
         );
