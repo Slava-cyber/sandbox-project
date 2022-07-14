@@ -23,11 +23,10 @@ class User extends Model
     protected $description;
     protected $phoneNumber;
     protected $avatar;
-
-    //TODO 2 variable: $rating and $numberOfReviews
-
+    protected $email;
+    protected $rating;
+    protected $numberOfReviews;
     protected $role;
-
 
     public function getName()
     {
@@ -88,7 +87,15 @@ class User extends Model
         return $this->role;
     }
 
-    //TODO functions for getting rating and count of reviews
+    public function getRating()
+    {
+        return ($this->rating != null) ? number_format($this->rating, 1) : 0;
+    }
+
+    public function getNumberOfReviews()
+    {
+        return ($this->numberOfReviews != null) ? $this->numberOfReviews : 0;
+    }
 
     public function getPassword()
     {
@@ -98,6 +105,11 @@ class User extends Model
     public function getAuthToken()
     {
         return $this->authToken;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     public static function signUp(array $userData): ?User
@@ -157,6 +169,41 @@ class User extends Model
         }
         copy($prefix . $path, $storePrefixPath . $imageName);
         return '/images/avatar/' . $imageName;
+    }
+
+    public static function saveEmail(array $userData, User $user): bool
+    {
+        $valid = new Validation($userData, 'email');
+        if ($valid->validate()) {
+            $user->email = $userData['email'];
+            $user->save();
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    public static function checkLoginEmail(array $userData): string
+    {
+        $msg = '';
+        if (isset($userData['login']) && isset($userData['email'])) {
+            $db = Db::getInstance();
+            $sql = "SELECT * FROM users WHERE `login` = :login AND `email` = :email";
+            $result = $db->query(
+                $sql,
+                [
+                    'login' => $userData['login'],
+                    'email' => $userData['email'],
+                ],
+                static::class
+            );
+            if (empty($result)) {
+                $msg = 'Неккоректные данные';
+            }
+        } else {
+            $msg = 'Заполните все поля';
+        }
+        return $msg;
     }
 
     public static function prepareSignIn(array $userData): ?User
