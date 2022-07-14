@@ -36,7 +36,7 @@ class NavbarView extends View
                     'dropdown' =>
                         [
                             'Профиль' => '/profile/' . $user->getLogin(),
-                            'Безопасность' => '/profile',
+                            'Безопасность' => '/account/security',
                             'Архив' => '/event/archive',
                             'divider' => 'default',
                             'Выйти' => '/logout',
