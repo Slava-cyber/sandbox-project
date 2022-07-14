@@ -1,9 +1,12 @@
 <form name="<?= $info['name'] ?>" method="POST"
       action="<?php echo (isset($info['action'])) ? $info['action'] : '' ?>" id="<?= $info['name'] ?>">
     <h2 class="text-center"><?php echo (isset($info['title'])) ? $info['title'] : '' ?></h2>
+    <h6 class="text-center"><?php echo (isset($info['label'])) ? $info['label'] : '' ?></h6>
     <?= $innerPart ?>
     <div class="row">
-        <div class="col-md-12 <?php echo (isset($info['button']['position'])) ? 'text-' . $info['button']['position'] : '' ?>">
+        <div class="col-md-12
+        <?php echo (isset($info['button']['position'])) ? 'text-' . $info['button']['position'] : '' ?>
+        <?php echo (isset($info['button']['hidden'])) ? 'none' : '' ?>">
             <button type="submit"
                     class="btn btn-secondary my-2
                     <?php echo (isset($info['button']['size'])) ? 'w-' . $info['button']['size'] : '' ?>">

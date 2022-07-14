@@ -103,6 +103,31 @@ class UserController extends Controller
                     '/js/loginValidation'
                 ],
             ],
+            'form2' => [
+                'class' => 'form',
+                'type' => 'passwordRecovery',
+                'name' => 'passwordRecoveryForm',
+                'label' => 'Укажите логин и email указанный в аккаунте',
+                'title' => '',
+                'button' => [
+                    'hidden' => true,
+                    'name' => 'Войти',
+                    'size' => '100',
+                ],
+                'js' => [
+                    '/js/passwordRecovery'
+                ],
+                'modalWindow' => [
+                    'type' => 'simplyCase',
+                    'source' => 'Забыли пароль?',
+                    'title' => 'Восстановление пароля',
+                    'label' => 'Укажите логин и почту указанную в аккаунте для отправки нового пароля',
+                    'button' => [
+                        'close' => 'Закрыть',
+                        'action' => 'Восстановить'
+                    ],
+                ]
+            ],
             'page' => [
                 'type' => 'oneColumnDefault',
                 'title' => 'Авторизация',
@@ -137,5 +162,15 @@ class UserController extends Controller
         }
         header('Location: /login');
         return true;
+    }
+
+    public function actionSaveEmail(): bool
+    {
+        if (!empty($_POST) && $this->user != null) {
+            $status = User::saveEmail($_POST, $this->user);
+        } else {
+            return false;
+        }
+        return $status;
     }
 }
