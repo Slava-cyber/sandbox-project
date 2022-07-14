@@ -36,18 +36,28 @@ class View
     {
         extract($this->header);
 
+        $js = [];
         foreach ($data as $block => $value) {
             if ($block == 'page') {
                 break;
             }
-            $js = [];
             $className = 'App\View\\' . ucfirst($value['class']) . 'View';
             if (class_exists($className)) {
                 $method = $value['type'];
                 if (method_exists($className, $method)) {
                     $content[$block] = $className::$method($value, $user);
                     if (isset($value['js'])) {
-                        $js = $js + $value['js'];
+                        $js = array_merge($js, $value['js']);
+                        //$js = $js + $value['js'];
+                    }
+                    if (isset($value['modalWindow'])) {
+                        $className = 'App\View\\' . 'ModalWindowView';
+                        $method = $value['modalWindow']['type'];
+                        $content[$block] = $className::$method(
+                            $value['modalWindow'],
+                            $content[$block],
+                            $user
+                        );
                     }
                 }
             }
