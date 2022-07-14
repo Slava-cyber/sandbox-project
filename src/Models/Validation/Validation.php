@@ -114,6 +114,7 @@ class Validation
             'title' => 'required|min:5|max:30',
             'datetime' => 'required|after:current',
             'category' => 'in:category',
+            'email' => 'email',
         ];
     }
 
@@ -215,7 +216,17 @@ class Validation
                 'image' => 'avatar',
                 'profile' => 'file/path_image/name/surname/date_of_birth/town/phone_number/interest/description/avatar',
                 'eventAdd' => 'title/town/datetime/category/description',
+                'emailForm' => 'email',
             ];
+    }
+
+    private function checkEmail($value): string
+    {
+        $msg = '';
+        if (!preg_match("~^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$~", $value)) {
+            $msg = 'Проверьте формат email';
+        }
+        return $msg;
     }
 
     private function checkBefore($value): string
