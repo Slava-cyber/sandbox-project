@@ -28,7 +28,7 @@
         Рейтинг:
     </div>
     <div class="me-3">
-        <strong>5.0</strong>
+        <strong><?= $event->getAuthor()->getRating() ?></strong>
     </div>
 </div>
 <div class="col-md-12">

@@ -32,8 +32,10 @@ class MainController extends Controller
         } else {
             $events = Event::getAllEvents($_POST);
         }
-        $requests = Requests::getRequests($events, $this->user);
-        $dataPage['list']['data'] = self::arrayUnion($events, $requests, 'event', 'request');
+        if (!empty($events)) {
+            $requests = Requests::getRequests($events, $this->user);
+            $dataPage['list']['data'] = self::arrayUnion($events, $requests, 'event', 'request');
+        }
         $this->view->generateHtml($dataPage);
         return true;
     }
@@ -63,6 +65,7 @@ class MainController extends Controller
                 'type' => 'default',
                 'entity' => 'event',
                 'typePart' => 'wholeView',
+                'data' => [],
                 'paginator' => [
                     'perPage' => 3,
                     'prefix' => '/main/page/'

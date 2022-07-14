@@ -43,7 +43,7 @@ class RequestController extends Controller
                 $pageData['page']['title'] = 'Запросы к ивенту';
                 $pageData['list']['table']['countColumn'] = 3;
                 $pageData['list']['table']['data'] = [
-                    'Пользователь (рейтинг/отзывов)',
+                    'Пользователь (рейтинг/отзывы)',
                     'Статус запроса',
                     'Действие',
                 ];

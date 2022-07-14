@@ -2,7 +2,7 @@
     <a href="/profile/<?= $user->getLogin() ?>" role="button" id="">
         <?= $user->getLogin() ?>
     </a>
-    <span> 5.0 (10) </span>
+    <span> <?= $info['user']->getRating() ?> (<?= $info['user']->getNumberOfReviews() ?>) </span>
 </div>
 <div class="col-md-4">
     <div class="text-center

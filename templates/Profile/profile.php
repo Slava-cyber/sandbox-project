@@ -4,10 +4,12 @@
             <img class="rounded-circle" width="150px"
                  src="<?php echo ($info['user']->getAvatar() != null) ? $info['user']->getAvatar() : "/images/system/avatar_null.jpg"; ?>">
             <span class="font-weight-bold"><?= $info['user']->getLogin() ?></span>
-            <span class="text-black-50">Рейтинг: 0</span>
-            <span class="text-black-50">Всего отзывов: 0</span>
-            <a href="/event/archive" class="btn btn-secondary btn-sm" role="button" aria-disabled="true">Архив</a>
-            <span> </span>
+            <span class="text-black-50">Рейтинг: <?= $info['user']->getRating() ?></span>
+            <span class="text-black-50">Всего отзывов: <?= $info['user']->getNumberOfReviews() ?></span>
+            <?php if ($info['button']) : ?>
+                <a href="/event/archive" class="btn btn-secondary btn-sm" role="button" aria-disabled="true">Архив</a>
+                <span> </span>
+            <?php endif; ?>
         </div>
     </div>
     <div class="col-md-9 justify-content-start p-5">
@@ -41,8 +43,8 @@
             <?php endforeach; ?>
             <div class="col-sm-12 text-end">
                 <?php if ($info['button']) : ?>
-                <a href="/profile/edit" class="btn btn-secondary" role="button" aria-disabled="true">Редактировать
-                    профиль</a>
+                    <a href="/profile/edit" class="btn btn-secondary" role="button" aria-disabled="true">Редактировать
+                        профиль</a>
                 <?php endif; ?>
             </div>
         </div>

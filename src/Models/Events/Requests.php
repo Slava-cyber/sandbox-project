@@ -39,7 +39,7 @@ class Requests extends Model
         $this->status = $value;
     }
 
-    public static function getRequests(array $events, ?User $user): ?array
+    public static function getRequests(?array $events, ?User $user): ?array
     {
         $result = [];
         $i = 0;
