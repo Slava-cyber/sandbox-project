@@ -168,6 +168,7 @@ class UserController extends Controller
     {
         if (!empty($_POST) && $this->user != null) {
             $status = User::saveEmail($_POST, $this->user);
+            header('Location: /account/security');
         } else {
             return false;
         }

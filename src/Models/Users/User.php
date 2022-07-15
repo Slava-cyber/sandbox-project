@@ -186,7 +186,7 @@ class User extends Model
     public static function checkLoginEmail(array $userData): string
     {
         $msg = '';
-        if (isset($userData['login']) && isset($userData['email'])) {
+        if (!empty($userData['login']) && !empty($userData['email'])) {
             $db = Db::getInstance();
             $sql = "SELECT * FROM users WHERE `login` = :login AND `email` = :email";
             $result = $db->query(
@@ -219,6 +219,13 @@ class User extends Model
                 $user = null;
             }
         }
+        return $user;
+    }
+
+    public static function changePassword(User $user, string $newPassword): ?User
+    {
+        $user->password = password_hash($newPassword, PASSWORD_DEFAULT);
+        $user->save();
         return $user;
     }
 
