@@ -50,7 +50,7 @@ class AccountSecurityController extends Controller
                 ];
                 $status = SendEmail::passwordRecovery($data['data']['email'], $newPassword, $message);
                 echo json_encode($status);
-                if ($status== 'success') {
+                if ($status == 'success') {
                     $user = User::getUserByLogin($data['data']['login']);
                     User::changePassword($user, $newPassword);
                 }

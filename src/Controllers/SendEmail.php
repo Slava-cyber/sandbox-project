@@ -16,7 +16,6 @@ class SendEmail
     {
         // Настройки PHPMailer
         $mail = new PHPMailer(true);
-        //try {
         $mail->isSMTP();
         $mail->CharSet = "UTF-8";
         $mail->SMTPAuth = true;
@@ -43,8 +42,6 @@ class SendEmail
             $result = "error";
         }
 
-        // Отображение результата
-        //echo json_encode(["result" => $result]);
         return $result;
     }
 }

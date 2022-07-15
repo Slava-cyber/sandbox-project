@@ -64,7 +64,6 @@ class UserController extends Controller
             ]
         ];
         $this->view->generateHtml($data);
-        //$this->view->render('Registration/registrationForm');
         return true;
     }
 
