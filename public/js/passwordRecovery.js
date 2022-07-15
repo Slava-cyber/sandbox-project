@@ -3,8 +3,6 @@ let actionButton = document.getElementById('action');
 actionButton.addEventListener('click', function (event) {
     let login = document.getElementById('loginField');
     let email = document.getElementById('emailField');
-    console.log(login);
-    console.log(email);
     var formData = new FormData();
 
     let data = {
@@ -22,11 +20,33 @@ actionButton.addEventListener('click', function (event) {
     request.open("POST", url, true);
     request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
+            console.log(request.response);
             let jsonData = JSON.parse(request.response);
-            console.log(jsonData);
+            responseProcessing(jsonData);
         }
     };
 
     request.send(formData);
-    //passwordRecoveryForm.submit();
 });
+
+function responseProcessing(data) {
+    let beforeSend = document.getElementById('beforeSend');
+    if (data != 'success' && data != 'error') {
+        let smallError = document.getElementById('error');
+        smallError.classList.remove('none');
+        smallError.classList.add('error');
+        smallError.innerHTML = data;
+    } else if (data == 'success') {
+        let label = document.getElementById('label');
+        label.classList.add('none');
+        let success = document.getElementById('success');
+        beforeSend.classList.add('none');
+        success.classList.remove('none');
+    } else {
+        let label = document.getElementById('label');
+        label.classList.add('none');
+        let fail = document.getElementById('fail');
+        beforeSend.classList.add('none');
+        fail.classList.remove('none');
+    }
+}
