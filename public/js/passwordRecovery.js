@@ -36,17 +36,19 @@ function responseProcessing(data) {
         smallError.classList.remove('none');
         smallError.classList.add('error');
         smallError.innerHTML = data;
-    } else if (data == 'success') {
-        let label = document.getElementById('label');
-        label.classList.add('none');
-        let success = document.getElementById('success');
-        beforeSend.classList.add('none');
-        success.classList.remove('none');
     } else {
+        let action = document.getElementById('action');
+        action.classList.add('none');
         let label = document.getElementById('label');
         label.classList.add('none');
-        let fail = document.getElementById('fail');
+        let beforeSend = document.getElementById('beforeSend');
         beforeSend.classList.add('none');
-        fail.classList.remove('none');
+        if (data == 'success') {
+            let success = document.getElementById('success');
+            success.classList.remove('none');
+        } else {
+            let fail = document.getElementById('fail');
+            fail.classList.remove('none');
+        }
     }
 }

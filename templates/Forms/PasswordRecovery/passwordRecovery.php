@@ -12,9 +12,10 @@
         <small id="error" class="form-text form-muted none"></small>
     </div>
 </div>
-<div class="row none" id="success">
-    <h6>Успешно! Письмо с новыми данными для входа отправлено на почту</h6>
+<div class="row text-center none" id="success">
+    <h6>Успешно!</h6>
+    <h6>Письмо с новыми данными для входа отправлено на почту</h6>
 </div>
-<div class="row none" id="fail">
-    <h2>К сожалению  что-то пошлло не так, пожалуйстаб повторите процедуру  позже</h2>
+<div class="row text-center none" id="fail">
+    <h2>К сожалению  что-то пошлло не так, пожалуйста, повторите процедуру  позже</h2>
 </div>
