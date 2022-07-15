@@ -1,7 +1,6 @@
 <form name="<?= $info['name'] ?>" method="POST"
       action="<?php echo (isset($info['action'])) ? $info['action'] : '' ?>" id="<?= $info['name'] ?>">
     <h2 class="text-center"><?php echo (isset($info['title'])) ? $info['title'] : '' ?></h2>
-    <h6 class="text-center"><?php echo (isset($info['label'])) ? $info['label'] : '' ?></h6>
     <?= $innerPart ?>
     <div class="row">
         <div class="col-md-12
