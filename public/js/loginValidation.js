@@ -10,7 +10,6 @@ loginForm.addEventListener("submit", function (event) {
     let login = document.getElementById("login_sign_in");
     let psw = document.getElementById("password");
     var formData = new FormData();
-
     let data = {
         'form': 'login',
         'data':
