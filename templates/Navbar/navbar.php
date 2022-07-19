@@ -6,7 +6,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarContent">
         <div class="container-fluid d-flex justify-content-end">
-            <ul class="navbar-nav nav-pills mr-auto">
+            <ul class="navbar-nav nav-pills align-items-center mr-auto">
                 <?php foreach ($navbar['main'] as $mainElement => $mainLink) : ?>
                 <li class="nav-item text-center">
                     <a href="<?= $mainLink ?>"
