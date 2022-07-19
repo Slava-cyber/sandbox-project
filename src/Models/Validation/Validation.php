@@ -113,7 +113,7 @@ class Validation
             'path_image' => 'image',
             'avatar' => 'addImage',
             'file' => 'none',
-            'title' => 'required|min:5|max:30',
+            'title' => 'required|min:5|max:60',
             'datetime' => 'required|after:current',
             'category' => 'in:category',
             'email' => 'email',
@@ -344,7 +344,7 @@ class Validation
     private function checkAlphaDash($value): string
     {
         $msg = '';
-        if (!preg_match("~^([a-zA-Zа-яА-ЯёЁр-цР-Ц0-9_.-]+)$~", $value)) {
+        if (!preg_match("~^([a-zA-Zа-яА-ЯёЁр-цР-Ц0-9_. -]+)$~", $value)) {
             $msg = "Допустимы только буквы, цифры, символы: '.-_'. Начинаться должно с буквы";
         }
         return $msg;
