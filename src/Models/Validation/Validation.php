@@ -93,13 +93,15 @@ class Validation
 
     private function rules(): array
     {
-
+        date_default_timezone_set('UTC');
+        $dateMax = strtotime('-3 years');
+        $dateMin = strtotime('-103 years');
         return [
             'name' => 'required|alpha|max:20',
             'surname' => 'required|alpha|max:20',
             'sex' => 'required|equal:Male,Female',
             'login_sign_up' => 'required|unique:user,login|alphaDash|between:5,20',
-            'date_of_birth' => 'required|before:2022-17-05|after:1950-28-05',
+            'date_of_birth' => "required|before:$dateMax|after:$dateMin",
             'password_sign_up' => 'required|alphaDash|between:8,20',
             'password_confirm' => 'required|alphaDash|between:8,20|same:password_sign_up',
             'login_sign_in' => 'required',
@@ -232,7 +234,8 @@ class Validation
     private function checkBefore($value): string
     {
         $msg = '';
-        $border = mktime(0, 0, 0, date("m"), date("d"), date("Y") - 3);
+        $params = ucfirst(explode(':', $this->paramsFunction)[1]);
+        $border = $params;
         if ($value > (date("Y-m-d", $border))) {
             $msg = 'Введите корректную дату, до ' . date("Y-m-d", $border);
         }
@@ -247,7 +250,7 @@ class Validation
         if ($params == 'Current') {
             $border = mktime(0, 0, 0, date("m"), date("d"), date("Y"));
         } else {
-            $border = mktime(0, 0, 0, date("m"), date("d"), date("Y") - 80);
+            $border = $params;
         }
         if ($value < date("Y-m-d", $border)) {
             $msg = 'Введите корректную дату, начиная с ' . date("Y-m-d", $border);
