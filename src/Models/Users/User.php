@@ -115,6 +115,7 @@ class User extends Model
     public static function signUp(array $userData): ?User
     {
         $user = null;
+
         $valid = new Validation($userData, 'registration');
         $status = $valid->validate();
         if ($status['status']) {
@@ -159,11 +160,8 @@ class User extends Model
         $segments = explode('/', $path);
         $prefix = ROOT . '../public';
         $storePrefixPath = $prefix . '/images/avatar/';
-        array_shift($segments);
-        array_shift($segments);
-        array_shift($segments);
+        $segments = array_slice($segments, 3);
         $imageName = implode($segments);
-        //$newPath = '/images/avatar/' . implode($segments);
         if (file_exists($storePrefixPath . $imageName)) {
             $imageName = Validation::generateNewName($storePrefixPath, $imageName);
         }
@@ -206,7 +204,7 @@ class User extends Model
         return $msg;
     }
 
-    public static function prepareSignIn(array $userData): ?User
+    public static function signInPreparation(array $userData): ?User
     {
         $valid = new Validation($userData, 'login');
         $status = $valid->validate();
