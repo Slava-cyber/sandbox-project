@@ -102,21 +102,19 @@ class Event extends Model
 
     public static function getAllEvents(array $data): ?array
     {
-        if (!isset($data['town'])) {
-            $data['town'] = 'Москва';
+        $db = Db::getInstance();
+        $sql = "SELECT * FROM " . static::getNameTable() . " WHERE 
+        ( `datetime` > '" . $data['datetime'] . "' AND `town` = '" .
+            $data['town'] . "' AND `title` LIKE  '" . $data['title'] . "')";
+        if (isset($data['category']) && !empty($data['category'])) {
+            $sql = $sql . " and ( `category` = '" . $data['category'] . "')";
         }
-        if (!isset($data['datetime']) || empty($data['datetime'])) {
-            $time = new TimeZone($data['town']);
-            date_default_timezone_set('UTC');
-            $duration = $time->timezone();
-            $data['datetime'] = date("Y-m-d H:i:s", strtotime("+$duration sec"));
+        $sql = $sql . "ORDER BY `datetime` ASC";
+        $result = $db->query($sql, [], static::class);
+        if ($result === []) {
+            return null;
         }
-        if (!isset($data['title'])) {
-            $data['title'] = '%%';
-        } else {
-            $data['title'] = '%' . $data['title'] . '%';
-        }
-        return Event::getAll($data);
+        return $result;
     }
 
     public static function checkExistenceEventByUser(User $user, int $id): ?Event

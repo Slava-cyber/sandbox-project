@@ -15,10 +15,8 @@ class EventController extends Controller
     {
         if ($this->user instanceof User) {
             if (empty($_POST)) {
-                $data = [
+                $pageData = [
                     'navbar' => [
-                        'class' => 'navbar',
-                        'type' => 'default',
                         'active' => 'Создать ивент',
                     ],
                     'form' => [
@@ -32,16 +30,16 @@ class EventController extends Controller
                             'size' => 25,
                         ],
                         'js' => [
-                            '../js/validation',
-                            '../js/eventValidation'
+                            '../js/validation.js',
+                            '../js/eventValidation.js'
                         ]
                     ],
                     'page' => [
-                        'type' => 'oneColumnDefault',
                         'title' => 'Создание ивента'
                     ]
                 ];
-                $this->view->generateHtml($data);
+                $pageData = self::addBasicPageDataArray($this->data, $pageData);
+                $this->view->print($pageData);
             } else {
                 $event = Event::create($_POST, $this->user);
                 if ($event instanceof Event) {
@@ -60,14 +58,14 @@ class EventController extends Controller
     {
         if ($this->user instanceof User) {
             $pageData = self::pageListData();
-            $pageData['list']['paginator']['currentPage'] = self::getCurrentPage();
             $pageData['navbar']['active'] = 'Текущие ивенты';
+            $pageData['list']['paginator']['currentPage'] = self::getCurrentPage();
             $pageData['list']['paginator']['prefix'] = '/event/current/page/';
             $pageData['list']['title'] = 'Текущие ивенты';
             $pageData['page']['title'] = 'Текущие ивенты';
             $pageData['list']['data'] = self::formListData($this->user, 'current');
-
-            $this->view->generateHtml($pageData);
+            $pageData = self::addBasicPageDataArray($this->data, $pageData);
+            $this->view->print($pageData);
         } else {
             header('Location: /login');
         }
@@ -83,7 +81,8 @@ class EventController extends Controller
             $pageData['list']['title'] = 'Прошедшие ивенты';
             $pageData['page']['title'] = 'Архив';
             $pageData['list']['data'] = self::formListData($this->user, 'archive');
-            $this->view->generateHtml($pageData);
+            $pageData = self::addBasicPageDataArray($this->data, $pageData);
+            $this->view->print($pageData);
         } else {
             header('Location: /login');
         }
@@ -103,13 +102,9 @@ class EventController extends Controller
     private static function pageListData(): array
     {
         return [
-            'navbar' => [
-                'class' => 'navbar',
-                'type' => 'default',
-            ],
             'list' => [
                 'class' => 'list',
-                'type' => 'default',
+                'type' => 'oneColumnWithDivider',
                 'entity' => 'event',
                 'typePart' => 'wholeView',
                 'paginator' => [
@@ -118,9 +113,6 @@ class EventController extends Controller
                 'js' => [
                 ]
             ],
-            'page' => [
-                'type' => 'oneColumnDefault',
-            ]
         ];
     }
 }

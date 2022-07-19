@@ -46,24 +46,6 @@ abstract class Model
         return ($result != null) ? $result[0] : null;
     }
 
-    public static function getAll(array $data): ?array
-    {
-        $db = Db::getInstance();
-        $sql = "SELECT * FROM " . static::getNameTable() . " WHERE 
-        ( `datetime` > '" . $data['datetime'] . "' AND `town` = '" .
-            $data['town'] . "' AND `title` LIKE  '" . $data['title'] . "')";
-        if (isset($data['category']) && !empty($data['category'])) {
-            $sql = $sql . " and ( `category` = '" . $data['category'] . "')";
-        }
-        $sort = "ORDER BY `datetime` ASC";
-        $sql = $sql . $sort;
-        $result = $db->query($sql, [], static::class);
-        if ($result === []) {
-            return null;
-        }
-        return $result;
-    }
-
     public static function getById(int $id): ?self
     {
         $db = Db::getInstance();
