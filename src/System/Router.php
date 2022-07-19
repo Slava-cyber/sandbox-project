@@ -23,7 +23,6 @@ class Router
     {
         $uri = urldecode($this->getURI());
         foreach ($this->routes as $uriPattern => $path) {
-            $result = false;
             $result = $this->callMethod($uriPattern, $uri, $path);
             if ($result != null) {
                 break;
