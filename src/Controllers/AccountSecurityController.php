@@ -17,8 +17,8 @@ class AccountSecurityController extends Controller
 
         if (empty($_POST)) {
             $pageData = self::pageListData();
-
-            $this->view->generateHtml($pageData);
+            $pageData = self::addBasicPageDataArray($this->data, $pageData);
+            $this->view->print($pageData);
         } else {
             return false;
         }
@@ -76,10 +76,6 @@ class AccountSecurityController extends Controller
     private static function pageListData(): array
     {
         return [
-            'navbar' => [
-                'class' => 'navbar',
-                'type' => 'default',
-            ],
             'form' => [
                 'class' => 'form',
                 'type' => 'email',
@@ -98,7 +94,6 @@ class AccountSecurityController extends Controller
             ],
             'page' => [
                 'title' => 'Безопасность аккаунта',
-                'type' => 'oneColumnDefault',
             ]
         ];
     }
