@@ -20,7 +20,8 @@ class UserController extends Controller
         }
 
         if (!empty($_POST)) {
-            $user = User::signUp($_POST);
+            $userData = self::trimmer($_POST);
+            $user = User::signUp($userData);
 
             if ($user instanceof User) {
                 Authorization::signIn($user);
@@ -29,15 +30,10 @@ class UserController extends Controller
             }
             return false;
         }
-        $data = [
-            'navbar' => [
-                'class' => 'navbar',
-                'type' => 'default',
-                'active' => '',
-            ],
+        $pageData = [
             'form' => [
                 'class' => 'form',
-                'type' => 'registration',
+                'type' => 'oneColumnTemplate',
                 'name' => 'registration',
                 'title' => 'Регистрация',
                 'button' => [
@@ -51,19 +47,19 @@ class UserController extends Controller
                 ],
                 'page' => 'registration',
                 'js' => [
-                    '/js/validation',
-                    '/js/registrationValidation'
+                    '/js/validation.js',
+                    '/js/registrationValidation.js'
                 ],
             ],
             'page' => [
-                'type' => 'oneColumnDefault',
                 'title' => 'Регистрация',
                 'widthColumn' => 'col-md-6',
                 'align' => 'center',
                 'color' => true,
             ]
         ];
-        $this->view->generateHtml($data);
+        $pageData = self::addBasicPageDataArray($this->data, $pageData);
+        $this->view->print($pageData);
         return true;
     }
 
@@ -76,15 +72,13 @@ class UserController extends Controller
             return true;
         }
 
-        $data = [
+        $pageData = [
             'navbar' => [
-                'class' => 'navbar',
-                'type' => 'default',
                 'active' => 'Войти',
             ],
             'form' => [
                 'class' => 'form',
-                'type' => 'registration',
+                'type' => 'oneColumnTemplate',
                 'name' => 'login',
                 'title' => 'Авторизация',
                 'button' => [
@@ -98,8 +92,8 @@ class UserController extends Controller
                 ],
                 'page' => 'login',
                 'js' => [
-                    '/js/validation',
-                    '/js/loginValidation'
+                    '/js/validation.js',
+                    '/js/loginValidation.js'
                 ],
             ],
             'form2' => [
@@ -114,10 +108,10 @@ class UserController extends Controller
                     'size' => '100',
                 ],
                 'js' => [
-                    '/js/passwordRecovery'
+                    '/js/passwordRecovery.js'
                 ],
                 'modalWindow' => [
-                    'type' => 'simplyCase',
+                    'type' => 'onlyForm',
                     'source' => 'Забыли пароль?',
                     'title' => 'Восстановление пароля',
                     'label' => 'Укажите логин и почту указанную в аккаунте для отправки нового пароля',
@@ -128,7 +122,6 @@ class UserController extends Controller
                 ]
             ],
             'page' => [
-                'type' => 'oneColumnDefault',
                 'title' => 'Авторизация',
                 'widthColumn' => 'col-md-4',
                 'align' => 'center',
@@ -138,18 +131,18 @@ class UserController extends Controller
 
 
         if (!empty($_POST)) {
-            $user = User::prepareSignIn($_POST);
+            $userData = self::trimmer($_POST);
+            $user = User::signInPreparation($userData);
             if ($user instanceof User) {
                 Authorization::signIn($user);
                 header('Location: /main');
                 exit();
             } else {
-                $data['form']['error'] = 'Такого пользователя не существует';
-                $this->view->generateHtml($data);
-                return true;
+                $pageData['form']['error'] = 'Такого пользователя не существует';
             }
         }
-        $this->view->generateHtml($data);
+        $pageData = self::addBasicPageDataArray($this->data, $pageData);
+        $this->view->print($pageData);
         return true;
     }
 

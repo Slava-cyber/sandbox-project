@@ -25,7 +25,9 @@ class RequestController extends Controller
         } else {
             return false;
         }
-        return ($request instanceof Requests) ? true : false;
+        $response = ($request instanceof Requests) ? true : false;
+        echo json_encode($response);
+        return $response;
     }
 
     public function actionView($id): bool
@@ -36,7 +38,7 @@ class RequestController extends Controller
                 $pageData = self::pageListData();
                 $path = explode('/', $_SERVER['REQUEST_URI']);
                 if (count($path) > 2) {
-                    $pageData['list']['js'][0] = '../../../../js/eventRequest';
+                    $pageData['list']['js'][0] = '../../../../js/eventRequest.js';
                 }
                 $pageData['list']['paginator']['currentPage'] = self::getCurrentPage();
                 $pageData['list']['paginator']['prefix'] = '/event/' . $event->getId() . 'request/page/';
@@ -50,7 +52,8 @@ class RequestController extends Controller
 
 
                 $pageData['list']['data'] = self::formListData($event);
-                $this->view->generateHtml($pageData);
+                $pageData = self::addBasicPageDataArray($this->data, $pageData);
+                $this->view->print($pageData);
             } else {
                 return false;
             }
@@ -71,13 +74,9 @@ class RequestController extends Controller
     private static function pageListData(): array
     {
         return [
-            'navbar' => [
-                'class' => 'navbar',
-                'type' => 'default',
-            ],
             'list' => [
                 'class' => 'list',
-                'type' => 'default',
+                'type' => 'oneColumnWithDivider',
                 'entity' => 'request',
                 'typePart' => 'view',
                 'data' => [],
@@ -85,12 +84,9 @@ class RequestController extends Controller
                     'perPage' => 3,
                 ],
                 'js' => [
-                    '/js/eventRequest'
+                    '/js/eventRequest.js'
                 ]
             ],
-            'page' => [
-                'type' => 'oneColumnDefault',
-            ]
         ];
     }
 }

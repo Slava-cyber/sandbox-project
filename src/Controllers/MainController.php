@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\System\Controller;
+use App\System\TimeZone;
 use App\System\View as View;
 use App\Models\Users\User as User;
 use App\Models\Events\Event as Event;
@@ -13,39 +14,52 @@ class MainController extends Controller
 {
     public function actionIndex(): bool
     {
-        $dataPage = self::pageData();
+        $pageData = self::pageData();
         $path = explode('/', $_SERVER['REQUEST_URI']);
         (isset($path[2])) ? $currentPage = $path[3] : $currentPage = 1;
         //if (count($path) > 2) {
-            $dataPage['list']['js'][0] = '../../js/mainPagination';
+            $pageData['list']['js'][0] = '../../js/mainPagination.js';
         //}
-        $dataPage['list']['paginator']['currentPage'] = $currentPage;
-
-
-        if (empty($_POST)) {
-            if ($this->user != null && $this->user->getTown() != null) {
-                $data['town'] = $this->user->getTown();
-            } else {
-                $data['town'] = 'Москва';
-            }
-            $events = Event::getAllEvents($data);
-        } else {
-            $events = Event::getAllEvents($_POST);
-        }
+        $pageData['list']['paginator']['currentPage'] = $currentPage;
+        $searchParameters = self::prepareSearchParameters($_POST, $this->user);
+        $events = Event::getallEvents($searchParameters);
         if (!empty($events)) {
             $requests = Requests::getRequests($events, $this->user);
-            $dataPage['list']['data'] = self::arrayUnion($events, $requests, 'event', 'request');
+            $pageData['list']['data'] = self::arrayUnion($events, $requests, 'event', 'request');
         }
-        $this->view->generateHtml($dataPage);
+        $pageData = self::addBasicPageDataArray($this->data, $pageData);
+        $this->view->print($pageData);
         return true;
+    }
+
+    private static function prepareSearchParameters(?array $parameters, $user): array
+    {
+        $result = $parameters;
+        if (empty($result['town'])) {
+            if ($user != null && $user->getTown() != null) {
+                $result['town'] = $user->getTown();
+            } else {
+                $result['town'] = 'Москва';
+            }
+        }
+        if (empty($result['datetime'])) {
+            $time = new TimeZone($result['town']);
+            date_default_timezone_set('UTC');
+            $duration = $time->timezone();
+            $result['datetime'] = date("Y-m-d H:i:s", strtotime("+$duration sec"));
+        }
+        if (!isset($result['title'])) {
+            $result['title'] = '%%';
+        } else {
+            $result['title'] = '%' . $result['title'] . '%';
+        }
+        return $result;
     }
 
     private static function pageData(): ?array
     {
         return [
             'navbar' => [
-                'class' => 'navbar',
-                'type' => 'default',
                 'active' => 'Главная',
             ],
             'form' => [
@@ -62,7 +76,7 @@ class MainController extends Controller
             ],
             'list' => [
                 'class' => 'list',
-                'type' => 'default',
+                'type' => 'oneColumnWithDivider',
                 'entity' => 'event',
                 'typePart' => 'wholeView',
                 'data' => [],
@@ -71,12 +85,11 @@ class MainController extends Controller
                     'prefix' => '/main/page/'
                 ],
                 'js' => [
-                    '/js/mainPagination',
-                    '/js/mainRequest'
+                    '/js/mainPagination.js',
+                    '/js/mainRequest.js'
                 ]
             ],
             'page' => [
-                'type' => 'oneColumnDefault',
                 'title' => 'Главная'
             ]
         ];

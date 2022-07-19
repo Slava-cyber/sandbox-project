@@ -23,25 +23,20 @@ class ProfileController extends Controller
             } else {
                 $button = false;
             }
-            $data = [
-                'navbar' => [
-                    'class' => 'navbar',
-                    'type' => 'default',
-                    'active' => '',
-                ],
+            $pageData = [
                 'display' => [
-                    'class' => 'display',
-                    'type' => 'profile',
+                    'class' => 'profile',
+                    'type' => 'wholeProfile',
                     'button' => $button,
                     'user' => $user,
                 ],
                 'page' => [
-                    'type' => 'oneColumnDefault',
                     'title' => 'Профиль',
                     'widthColumn' => 'col-md-12',
                 ]
             ];
-            $this->view->generateHtml($data);
+            $pageData = self::addBasicPageDataArray($this->data, $pageData);
+            $this->view->print($pageData);
             return true;
         }
 
@@ -52,12 +47,7 @@ class ProfileController extends Controller
     {
         if ($this->user instanceof User) {
             if (empty($_POST)) {
-                $data = [
-                    'navbar' => [
-                        'class' => 'navbar',
-                        'type' => 'default',
-                        'active' => '',
-                    ],
+                $pageData = [
                     'form' => [
                         'class' => 'form',
                         'type' => 'profile',
@@ -69,17 +59,17 @@ class ProfileController extends Controller
                         ],
                         'page' => 'profile',
                         'js' => [
-                            '../js/validation',
-                            '../js/profileValidation'
+                            '../js/validation.js',
+                            '../js/profileValidation.js'
                         ],
                     ],
                     'page' => [
-                        'type' => 'oneColumnDefault',
                         'title' => 'Редактирование профиля',
                         'widthColumn' => 'col-md-10',
                     ]
                 ];
-                $this->view->generateHtml($data);
+                $pageData = self::addBasicPageDataArray($this->data, $pageData);
+                $this->view->print($pageData);
             } else {
                 $user = User::profileEdit($_POST, $this->user);
                 if ($user instanceof User) {
@@ -94,4 +84,3 @@ class ProfileController extends Controller
         return true;
     }
 }
-
