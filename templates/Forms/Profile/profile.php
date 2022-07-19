@@ -2,7 +2,7 @@
     <div class="col-md-5">
         <div class="d-flex flex-column align-items-center text-center py-5">
             <div class="profile-img">
-                <img class="rounded-circle" id="image"
+                <img class="rounded-circle image" id="image"
                      src="<?php echo ($user->getAvatar() != null) ? $user->getAvatar() : "/images/system/avatar_null.jpg"; ?>"
                      width="200px" alt=""/>
                 <div class="file_item form-group">
