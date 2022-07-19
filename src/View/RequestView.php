@@ -14,7 +14,7 @@ class RequestView extends View
             'Request/request',
             $user,
             [
-                'user' => $data['user'],
+                'author' => $data['user'],
                 'request' => $data['request'],
                 'number' => $number,
             ]
