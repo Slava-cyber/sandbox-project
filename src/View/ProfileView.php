@@ -5,16 +5,16 @@ namespace App\View;
 use App\System\View as View;
 use App\Models\Users\User as User;
 
-class DisplayView extends View
+class ProfileView extends View
 {
 
-    public static function profile(array $info, ?User $user): string
+    public static function wholeProfile(array $info, ?User $user): string
     {
         return FormView::render(
             'Profile/profile',
             $user,
             [
-                'data' => DisplayView::profileData($info['user']),
+                'data' => ProfileView::profileData($info['user']),
                 'info' => $info,
                 'user' => $user,
             ]

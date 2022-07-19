@@ -9,7 +9,7 @@ use App\Models\Users\User as User;
 
 class NavbarView extends View
 {
-    public static function default(array $info, ?User $user): string
+    public static function mainTopNavbar(array $info, ?User $user): string
     {
         if ($user == null) {
             $navbar =

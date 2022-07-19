@@ -12,7 +12,7 @@ class PageView extends View
         $navbar = $content['navbar'];
         unset($content['navbar']);
         return PageView::render(
-            'PageType/OneColumnDefault',
+            'PageType/oneColumnDefault',
             $user,
             [
                 'page' => $page,

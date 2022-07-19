@@ -7,7 +7,7 @@ use App\Models\Users\User as User;
 
 class ListView extends View
 {
-    public static function default(array $info, ?User $user): string
+    public static function oneColumnWithDivider(array $info, ?User $user): string
     {
         if (!empty($info['data'])) {
             if (isset($info['paginator'])) {
