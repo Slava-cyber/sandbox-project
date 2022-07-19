@@ -12,7 +12,7 @@ require ROOT . 'Lib/PHPMailer/Exception.php';
 
 class SendEmail
 {
-    public static function passwordRecovery(string $email, string $newPassword, array $message): string
+    public static function simpleMessageWithoutFiles(string $email, array $message): string
     {
         // Настройки PHPMailer
         $mail = new PHPMailer(true);
@@ -21,12 +21,13 @@ class SendEmail
         $mail->SMTPAuth = true;
 
         // Настройки вашей почты
-        $mail->Host = 'ssl://smtp.gmail.com'; // SMTP сервера вашей почты
-        $mail->Username = 'sandbox.technical.spt@gmail.com'; // Логин на почте
-        $mail->Password = 'nstuuynubbwhqkho'; // Пароль на почте
+        $parameters = require ROOT . '../settings/email.php';
+        $mail->Host = $parameters['host'] ; // SMTP сервера вашей почты
+        $mail->Username = $parameters['userName']; // Логин на почте
+        $mail->Password = $parameters['password']; // Пароль на почте
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
-        $mail->setFrom('sandbox.technical.spt@gmail.com'); // Адрес самой почты и имя отправителя
+        $mail->setFrom($parameters['email']); // Адрес самой почты и имя отправителя
 
         // Получатель письма
         $mail->addAddress($email);

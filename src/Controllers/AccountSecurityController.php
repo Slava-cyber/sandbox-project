@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\System\Controller;
 use App\Models\Users\User;
 use App\Controllers\SendEmail;
+use App\System\View;
 
 class AccountSecurityController extends Controller
 {
@@ -34,21 +35,18 @@ class AccountSecurityController extends Controller
                 echo json_encode($response);
             } else {
                 $newPassword = self::newPasswordGeneration();
+                $body = View::render(
+                    'SendEmail/passwordRecovery',
+                    $this->user,
+                    [
+                        'newPassword' => $newPassword,
+                    ]
+                );
                 $message = [
                     'title' => 'Восстановление пароля на Sandbox',
-                    'body' => "
-                        <h2>Новое письмо</h2>
-                        <p>
-                            <b>Новый пароль:</b>$newPassword
-                        </p>
-                        <b>Рекомендуем после восстановление изменить пароль на свое усмотрение</b>
-                    ",
-                    'email' => [
-                        'email' => 'muravlevsvyatoslav@gmail.com',
-                        'name' => 'Техническая поддержка Sandbox'
-                    ]
+                    'body' => $body,
                 ];
-                $status = SendEmail::passwordRecovery($data['data']['email'], $newPassword, $message);
+                $status = SendEmail::simpleMessageWithoutFiles($data['data']['email'], $message);
                 echo json_encode($status);
                 if ($status == 'success') {
                     $user = User::getUserByLogin($data['data']['login']);
