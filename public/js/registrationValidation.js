@@ -10,7 +10,7 @@ registrationForm.addEventListener("submit", function (event) {
     let name = document.getElementById("name");
     let surname = document.getElementById("surname");
     let birthDate = document.getElementById("date_of_birth");
-    let sex = document.getElementById("sex");
+    let sex = document.querySelector('input[name="sex"]:checked');
     let login = document.getElementById("login_sign_up");
     let psw = document.getElementById("password_sign_up");
     let pswConfirm = document.getElementById("password_confirm");

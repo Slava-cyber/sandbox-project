@@ -3,19 +3,19 @@
         <div class="form-group py-2">
             <label>Укажите ваш пол</label>
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="sex" name="sex" value="Male" checked>
-                <label for="radio1" class="form-check-label">Мужской</label><br/>
+                <input type="radio" class="form-check-input" id="Male" name="sex" value="Male" checked>
+                <label for="Male" class="form-check-label">Мужской</label><br/>
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="sex" name="sex" value="Female">
-                <label for="radio2" class="form-check-label">Женский</label><br/>
+                <input type="radio" class="form-check-input" id="Female" name="sex" value="Female">
+                <label for="Female" class="form-check-label">Женский</label><br/>
             </div>
         </div>
     <?php elseif ($nameField == 'date_of_birth') : ?>
         <div class="form-group py-2">
             <label for="birth_date">Дата рождения</label>
             <input type="date" class="form-control" name="date_of_birth" placeholder="Выберите дату рождения"
-                   min="1920-01-01" max="2022-05-01" id="date_of_birth">
+                   min="<?= date('Y-m-d', $value['min']) ?>" max="<?= date('Y-m-d', $value['max']) ?>" id="date_of_birth">
             <small id="birthHelp" class="form-text form-muted">Выберите дату рождения</small>
         </div>
     <?php elseif ($nameField != 'error') : ?>
