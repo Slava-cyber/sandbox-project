@@ -7,7 +7,7 @@ use App\Models\Users\User as User;
 
 class ModalWindowView extends View
 {
-    public static function simplyCase(array $info, string $innerContent, ?User $user): string
+    public static function onlyForm(array $info, string $innerContent, ?User $user): string
     {
         return self::render(
             'ModalWindow/simplyCase',

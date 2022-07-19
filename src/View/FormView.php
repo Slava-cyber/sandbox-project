@@ -16,14 +16,7 @@ class FormView extends View
                 'info' => $info
             ]
         );
-        return FormView::render(
-            'Forms/formPattern',
-            $user,
-            [
-                'innerPart' => $innerPart,
-                'info' => $info,
-            ]
-        );
+        return self::renderFormTemplate($user, $info, $innerPart);
     }
 
     public static function profile(array $info, ?User $user): string
@@ -36,14 +29,7 @@ class FormView extends View
                 'info' => $info
             ]
         );
-        return FormView::render(
-            'Forms/formPattern',
-            $user,
-            [
-                'innerPart' => $innerPart,
-                'info' => $info,
-            ]
-        );
+        return self::renderFormTemplate($user, $info, $innerPart);
     }
 
     public static function email(array $info, ?User $user): string
@@ -55,20 +41,13 @@ class FormView extends View
                 'info' => $info
             ]
         );
-        return FormView::render(
-            'Forms/formPattern',
-            $user,
-            [
-                'innerPart' => $innerPart,
-                'info' => $info,
-            ]
-        );
+        return self::renderFormTemplate($user, $info, $innerPart);
     }
 
     public static function event(array $info, ?User $user): string
     {
         $innerPart = FormView::render(
-            'Forms/EventPattern/eventInner',
+            'Forms/EventTemplate/eventContent',
             $user,
             [
                 'data' => FormView::arrayForEvent(),
@@ -76,24 +55,17 @@ class FormView extends View
             ]
         );
         $innerPart = FormView::render(
-            'Forms/EventPattern/eventPattern',
+            'Forms/EventTemplate/eventTemplate',
             $user,
             [
                 'innerPart' => $innerPart,
                 'info' => $info,
             ]
         );
-        return FormView::render(
-            'Forms/formPattern',
-            $user,
-            [
-                'innerPart' => $innerPart,
-                'info' => $info,
-            ]
-        );
+        return self::renderFormTemplate($user, $info, $innerPart);
     }
 
-    public static function registration(array $info, ?User $user)
+    public static function oneColumnTemplate(array $info, ?User $user)
     {
         if ($info['page'] == 'login') {
             $data = null;
@@ -104,14 +76,19 @@ class FormView extends View
             $data['error'] = $info['error'];
         }
         $innerPart = FormView::render(
-            'Forms/Registration/' . $info['name'],
+            'Forms/OneColumnTemplate/' . $info['name'],
             $user,
             [
                 'data' => $data,
             ]
         );
-        return FormView::render(
-            'Forms/formPattern',
+        return self::renderFormTemplate($user, $info, $innerPart);
+    }
+
+    private static function renderFormTemplate(?User $user, array $info, string $innerPart): ?string
+    {
+        return self::render(
+            'Forms/formTemplate',
             $user,
             [
                 'innerPart' => $innerPart,
@@ -177,6 +154,10 @@ class FormView extends View
 
     private static function registrationData()
     {
+        date_default_timezone_set('UTC');
+        //$date = date('Y-m-d');
+        $dateMax = strtotime('-3 years');
+        $dateMin = strtotime('-103 years');
         return [
             'name' => [
                 'type' => 'text',
@@ -189,7 +170,10 @@ class FormView extends View
                 'placeholder' => 'Введите имя',
             ],
             'sex' => 'default',
-            'date_of_birth' => 'default',
+            'date_of_birth' => [
+                'max' => $dateMax,
+                'min' => $dateMin,
+            ],
             'login_sign_up' => [
                 'type' => 'text',
                 'label' => 'Логин',
