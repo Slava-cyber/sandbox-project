@@ -1,8 +1,8 @@
 <div class="col-md-4 text-center">
-    <a href="/profile/<?= $user->getLogin() ?>" role="button" id="">
-        <?= $user->getLogin() ?>
+    <a href="/profile/<?= $author->getLogin() ?>" role="button" id="">
+        <?= $author->getLogin() ?>
     </a>
-    <span> <?= $info['user']->getRating() ?> (<?= $info['user']->getNumberOfReviews() ?>) </span>
+    <span> <?= $author->getRating() ?> (<?= $author->getNumberOfReviews() ?>) </span>
 </div>
 <div class="col-md-4">
     <div class="text-center
