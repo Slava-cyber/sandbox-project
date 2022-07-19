@@ -32,14 +32,14 @@ class View
         return $buffer;
     }
 
-    public function generateHtml(array $data = [])
+    public function print(array $data = [])
     {
         extract($this->header);
 
         $js = [];
         foreach ($data as $block => $value) {
             if ($block == 'page') {
-                break;
+                continue;
             }
             $className = 'App\View\\' . ucfirst($value['class']) . 'View';
             if (class_exists($className)) {
@@ -48,7 +48,6 @@ class View
                     $content[$block] = $className::$method($value, $user);
                     if (isset($value['js'])) {
                         $js = array_merge($js, $value['js']);
-                        //$js = $js + $value['js'];
                     }
                     if (isset($value['modalWindow'])) {
                         $className = 'App\View\\' . 'ModalWindowView';
@@ -62,6 +61,9 @@ class View
                 }
             }
         }
+        $js[] = 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"';
         $method = $data['page']['type'];
         $pageHtml = PageView::$method($content, $js, $user, $data['page']);
         echo $pageHtml;
