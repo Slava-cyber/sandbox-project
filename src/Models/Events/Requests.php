@@ -44,15 +44,31 @@ class Requests extends Model
         $result = [];
         $i = 0;
         foreach ($events as $event) {
-            if ($user == $event->getAuthor() || $user == null) {
+            if ($user == null || $user->getId() === $event->getAuthor()->getId()) {
                 $result[$i]['possibility'] = false;
             } else {
                 $result[$i]['possibility'] = true;
+                $result[$i]['data'] = Requests::checkExistRequest($event, $user);
             }
-            $result[$i]['data'] = Requests::findOneByColumn('event', $event->getId());
             $i += 1;
         }
         return $result;
+    }
+
+    public static function checkExistRequest(Event $event, User $user): ?Requests
+    {
+        $db = DB::getInstance();
+        $sql = "SELECT * FROM event_requests WHERE (`event` = :eventId AND `user` = :userId AND `author` = :authorId) LIMIT 1";
+        $result =  $db->query(
+            $sql,
+            [
+                'eventId' => $event->getId(),
+                'userId' => $user->getId(),
+                'authorId' => $event->getAuthor()->getId()
+            ],
+            static::class
+        );
+        return ($result != null) ? $result[0] : null;
     }
 
     public static function requestsForOneEvent(Event $event): ?array

@@ -26,15 +26,6 @@ abstract class Model
         return lcfirst(str_replace('_', '', ucwords($source, '_')));
     }
 
-
-   /* public static function getAllRecordsByOneColumn(string $columnName, $value): ?array
-    {
-        $db = Db::getInstance();
-        $sql = "SELECT * FROM " . static::getNameTable() . " WHERE " . $columnName . " = :value";
-        $result = $db->query($sql, ['value' => $value], static::class);
-        return $result;
-    }*/
-
     public static function findOneByColumn(string $columnName, $value): ?self
     {
         $db = Db::getInstance();
