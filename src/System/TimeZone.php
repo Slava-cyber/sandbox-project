@@ -11,6 +11,10 @@ class TimeZone
         $api_key = 'a160c18ee4ada4b40d900466c832d026';
         $city_info =
             file_get_contents('http://api.openweathermap.org/geo/1.0/direct?q=' . $city . '&limit=1&appid=' . $api_key);
+        if ($city_info == '[]') {
+            $city_info =
+                file_get_contents('http://api.openweathermap.org/geo/1.0/direct?q=' . 'Москва' . '&limit=1&appid=' . $api_key);
+        }
         $city_info = json_decode($city_info, true);
         $lat = $city_info[0]['lat'];
         $lon = $city_info[0]['lon'];
