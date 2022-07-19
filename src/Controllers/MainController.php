@@ -17,9 +17,7 @@ class MainController extends Controller
         $pageData = self::pageData();
         $path = explode('/', $_SERVER['REQUEST_URI']);
         (isset($path[2])) ? $currentPage = $path[3] : $currentPage = 1;
-        //if (count($path) > 2) {
-            $pageData['list']['js'][0] = '../../js/mainPagination.js';
-        //}
+        $pageData['list']['js'][0] = '../../js/mainPagination.js';
         $pageData['list']['paginator']['currentPage'] = $currentPage;
         $searchParameters = self::prepareSearchParameters($_POST, $this->user);
         $events = Event::getallEvents($searchParameters);
