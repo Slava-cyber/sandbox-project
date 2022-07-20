@@ -37,9 +37,6 @@ class RequestController extends Controller
             if ($event != null) {
                 $pageData = self::pageListData();
                 $path = explode('/', $_SERVER['REQUEST_URI']);
-                if (count($path) > 2) {
-                    $pageData['list']['js'][0] = '../../../../js/eventRequest.js';
-                }
                 $pageData['list']['paginator']['currentPage'] = self::getCurrentPage();
                 $pageData['list']['paginator']['prefix'] = '/event/' . $event->getId() . 'request/page/';
                 $pageData['page']['title'] = 'Запросы к ивенту';

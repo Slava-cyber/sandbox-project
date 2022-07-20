@@ -30,8 +30,8 @@ class EventController extends Controller
                             'size' => 25,
                         ],
                         'js' => [
-                            '../js/validation.js',
-                            '../js/eventValidation.js'
+                            '/js/validation.js',
+                            '/js/eventValidation.js'
                         ]
                     ],
                     'page' => [

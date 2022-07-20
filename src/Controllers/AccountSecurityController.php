@@ -86,8 +86,8 @@ class AccountSecurityController extends Controller
                 ],
                 'page' => 'account/security',
                 'js' => [
-                    '../js/emailValidation',
-                    '../js/validation'
+                    '/js/emailValidation.js',
+                    '/js/validation.js'
                 ],
             ],
             'page' => [

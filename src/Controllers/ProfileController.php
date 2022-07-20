@@ -59,8 +59,8 @@ class ProfileController extends Controller
                         ],
                         'page' => 'profile',
                         'js' => [
-                            '../js/validation.js',
-                            '../js/profileValidation.js'
+                            '/js/validation.js',
+                            '/js/profileValidation.js'
                         ],
                     ],
                     'page' => [
