@@ -72,18 +72,4 @@ abstract class Controller
         }
         return $userData;
     }
-
-
-    /*protected static function basicDataArrayForAllPages(): array
-    {
-        return [
-            'navbar' => [
-                'class' => 'navbar',
-                'type' => 'mainTopNavbar',
-            ],
-            'page' => [
-                'type' => 'oneColumnDefault',
-            ]
-        ];
-    }*/
 }
