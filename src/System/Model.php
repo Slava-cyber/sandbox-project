@@ -9,6 +9,12 @@ abstract class Model
 {
 
     protected $id;
+    protected $dateCreated;
+
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
 
     public function getId(): int
     {
@@ -35,6 +41,13 @@ abstract class Model
             return null;
         }
         return ($result != null) ? $result[0] : null;
+    }
+
+    public static function getAllObjects(): ?array
+    {
+        $db = Db::getInstance();
+        $sql = "SELECT * FROM " . static::getNameTable();
+        return $db->query($sql, [], static::class);
     }
 
     public static function getById(int $id): ?self
