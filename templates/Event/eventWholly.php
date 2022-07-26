@@ -12,7 +12,7 @@
         Дата и время:
     </div>
     <div class="me-3">
-        <strong><?= $event->getDate() ?></strong>
+        <strong><?= $event->getDatetime() ?></strong>
     </div>
 </div>
 <div class="d-sm-inline-flex col-md-12">

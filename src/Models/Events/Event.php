@@ -20,7 +20,6 @@ class Event extends Model
     protected $subcategory;
     protected $description;
 
-
     public function getTitle(): string
     {
         return $this->title;
@@ -41,7 +40,12 @@ class Event extends Model
         return $this->category;
     }
 
-    public function getDate()
+    public function getSubcategory(): string
+    {
+        return ($this->description != null) ? $this->description : "";
+    }
+
+    public function getDatetime()
     {
         return $this->datetime;
     }
