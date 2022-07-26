@@ -3,3 +3,6 @@ Database/
 public/images/
 settings/db.php
 settings/email.php
+sandbox-admin-react-project/
+public/admin
+public/.htaccess
