@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Users\User;
 use App\Models\Events\Event;
 use App\Models\Events\Requests;
+use App\System\Model;
 
 class AdminApiRequestController
 {
@@ -38,6 +39,30 @@ class AdminApiRequestController
             $result[$i]['user'] = User::getUserById($result[$i]['user'])->getLogin();
         }
         echo json_encode(self::transformArrayOfArraysToArrayOfJsonStrings($result));
+        return true;
+    }
+
+    public function actionUserDelete(): bool
+    {
+        $data = json_decode(file_get_contents('php://input', true));
+        $class = ucfirst($data->entityType);
+        $id = $data->id;
+        if ($class == 'User') {
+            $object = User::findOneByColumn('id', $id);
+        } elseif ($class == 'Event') {
+            $object = Event::findOneByColumn('id', $id);
+        } elseif ($class == 'Request') {
+            $object = Requests::findOneByColumn('id', $id);
+        } else {
+            $object = null;
+        }
+        if ($object != null) {
+            $object->delete();
+            $status = 'success';
+        } else {
+            $status = 'false';
+        }
+        echo json_encode(['status' => $status]);
         return true;
     }
 

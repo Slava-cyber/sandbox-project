@@ -22,7 +22,8 @@ return array
     '^(passwordRecovery)$' => 'accountSecurity/passwordRecovery',
     '^(userApiRequest)$' => 'adminApiRequest/userTable',
     '^(eventApiRequest)$' => 'adminApiRequest/eventTable',
-    'requestApiRequest' => 'adminApiRequest/requestTable'
+    '^(requestApiRequest)$' => 'adminApiRequest/requestTable',
+    '^(userApiDelete)$' => 'adminApiRequest/userDelete',
     //'Profile/([a-z,0-9]+)/comments' =>  ,
     //'Profile/([a-z,0-9]+)/comments/add' =>  ,
     //'Profile/([a-z,0-9]+)/comments/([0-9]+)/edit' =>  ,
