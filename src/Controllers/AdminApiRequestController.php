@@ -9,7 +9,22 @@ use App\System\Model;
 
 class AdminApiRequestController
 {
-    public function actionUserTable(): bool
+
+    public function actionAllDataRelease(): bool
+    {
+        $data = json_decode(file_get_contents('php://input', true));
+        $entity = $data->entity;
+        if ($entity == 'user') {
+            self::actionUserTable();
+        } elseif ($entity == 'event') {
+            self::actionEventTable();
+        } elseif ($entity == 'request') {
+            self::actionRequestTable();
+        }
+        return true;
+    }
+
+    public static function actionUserTable(): bool
     {
         $data = User::getAllObjects();
         $result = self::formArrayOfArraysInsteadOfClassObjects($data);
@@ -17,7 +32,7 @@ class AdminApiRequestController
         return true;
     }
 
-    public function actionEventTable(): bool
+    public static function actionEventTable(): bool
     {
         $data = Event::getAllObjects();
         $result = self::formArrayOfArraysInsteadOfClassObjects($data);
@@ -29,7 +44,7 @@ class AdminApiRequestController
         return true;
     }
 
-    public function actionRequestTable(): bool
+    public static function actionRequestTable(): bool
     {
         $data = Requests::getAllObjects();
         $result = self::formArrayOfArraysInsteadOfClassObjects($data);
@@ -80,7 +95,7 @@ class AdminApiRequestController
                 $mappedProperties[$propertyName] = $object->$getter();
             }
             $result[$i] = $mappedProperties;
-            $i += 1;
+            $i++;
         }
         return $result;
     }
