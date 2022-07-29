@@ -344,8 +344,8 @@ class Validation
     private function checkAlphaDash($value): string
     {
         $msg = '';
-        if (!preg_match("~^([a-zA-Zа-яА-ЯёЁр-цР-Ц0-9_. -]+)$~", $value)) {
-            $msg = "Допустимы только буквы, цифры, символы: '.-_'. Начинаться должно с буквы";
+        if (!preg_match("~^([a-zA-Zа-яА-ЯёЁр-цР-Ц0-9,:!?_. -]+)$~", $value)) {
+            $msg = "Допустимы только буквы, цифры, символы: ':!?,.-_'. Начинаться должно с буквы";
         }
         return $msg;
     }
