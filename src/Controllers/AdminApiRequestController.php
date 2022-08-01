@@ -14,17 +14,12 @@ class AdminApiRequestController
     {
         $data = json_decode(file_get_contents('php://input', true));
         $entity = $data->entity;
-        if ($entity == 'user') {
-            self::actionUserTable();
-        } elseif ($entity == 'event') {
-            self::actionEventTable();
-        } elseif ($entity == 'request') {
-            self::actionRequestTable();
-        }
+        $function = self::entityFunctionArrayForGettingData()[$entity];
+        self::$function();
         return true;
     }
 
-    public static function actionUserTable(): bool
+    private static function actionUserTable(): bool
     {
         $data = User::getAllObjects();
         $result = self::formArrayOfArraysInsteadOfClassObjects($data);
@@ -32,7 +27,7 @@ class AdminApiRequestController
         return true;
     }
 
-    public static function actionEventTable(): bool
+    private static function actionEventTable(): bool
     {
         $data = Event::getAllObjects();
         $result = self::formArrayOfArraysInsteadOfClassObjects($data);
@@ -44,7 +39,7 @@ class AdminApiRequestController
         return true;
     }
 
-    public static function actionRequestTable(): bool
+    private static function actionRequestTable(): bool
     {
         $data = Requests::getAllObjects();
         $result = self::formArrayOfArraysInsteadOfClassObjects($data);
@@ -60,17 +55,10 @@ class AdminApiRequestController
     public function actionUserDelete(): bool
     {
         $data = json_decode(file_get_contents('php://input', true));
-        $class = ucfirst($data->entityType);
+        $class = $data->entityType;
         $id = $data->id;
-        if ($class == 'User') {
-            $object = User::findOneByColumn('id', $id);
-        } elseif ($class == 'Event') {
-            $object = Event::findOneByColumn('id', $id);
-        } elseif ($class == 'Request') {
-            $object = Requests::findOneByColumn('id', $id);
-        } else {
-            $object = null;
-        }
+        $entityClassName = self::entityClassNameArray()[$class];
+        $object = $entityClassName::findOneByColumn('id', $id);
         if ($object != null) {
             $object->delete();
             $status = 'success';
@@ -109,5 +97,25 @@ class AdminApiRequestController
         }
         return $result;
     }
+
+    private static function entityFunctionArrayForGettingData(): ?array
+    {
+        return [
+            'user' => 'actionUserTable',
+            'event' => 'actionEventTable',
+            'request' => 'actionRequestTable',
+        ];
+    }
+
+    private static function entityClassNameArray(): ?array
+    {
+        return [
+            'user' => 'App\Models\Users\User',
+            'event' => 'App\Models\Events\Event',
+            'request' => 'App\Models\Events\Requests',
+        ];
+    }
+
+
 }
 
