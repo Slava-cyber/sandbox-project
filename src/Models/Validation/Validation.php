@@ -5,6 +5,7 @@ namespace App\Models\Validation;
 use App\Controllers\ValidationController;
 use App\Exceptions\InvalidArgumentException as InvalidArgumentException;
 use App\Models\Users\User as User;
+use App\Models\Events\Event;
 use App\System\Model as Model;
 
 class Validation
@@ -117,7 +118,42 @@ class Validation
             'datetime' => 'required|after:current',
             'category' => 'in:category',
             'email' => 'email',
+            'author' => 'required|userExist',
+            'event' => 'required|numeric|eventExist',
+            'request_author' => 'required',
+            'user' => 'required|userExist',
+            'status' => 'required'
         ];
+    }
+
+    private function checkNumeric($value): string
+    {
+        $msg = "";
+        if (!is_numeric($value)) {
+            $msg = "Введите целое число";
+        }
+        return $msg;
+    }
+
+
+    private function checkEventExist($value): string
+    {
+        $msg = "";
+        $user = Event::findOneByColumn('id', $value);
+        if ($user == null) {
+            $msg = "Такого ивента не существует";
+        }
+        return $msg;
+    }
+
+    private function checkUserExist($value): string
+    {
+        $msg = "";
+        $user = User::findOneByColumn('login', $value);
+        if ($user == null) {
+            $msg = "Такого пользователя не существует";
+        }
+        return $msg;
     }
 
     private function checkIn($value): string
@@ -219,6 +255,8 @@ class Validation
                 'profile' => 'file/path_image/name/surname/date_of_birth/town/phone_number/interest/description/avatar',
                 'eventAdd' => 'title/town/datetime/category/description',
                 'emailForm' => 'email',
+                'adminEvent' => 'title/town/datetime/category/description/author',
+                'adminRequest' => 'event/user/request_author/status'
             ];
     }
 
