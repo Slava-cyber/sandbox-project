@@ -8,6 +8,7 @@ use App\Models\Events\Event;
 use App\Models\Users\User;
 use App\Controllers\EventController;
 use App\System\View;
+use http\Env\Request;
 
 class RequestController extends Controller
 {

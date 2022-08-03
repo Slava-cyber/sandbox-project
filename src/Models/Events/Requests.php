@@ -59,7 +59,7 @@ class Requests extends Model
     {
         $db = DB::getInstance();
         $sql = "SELECT * FROM event_requests WHERE (`event` = :eventId AND `user` = :userId AND `author` = :authorId) LIMIT 1";
-        $result =  $db->query(
+        $result = $db->query(
             $sql,
             [
                 'eventId' => $event->getId(),
@@ -78,6 +78,26 @@ class Requests extends Model
         return $db->query($sql, ['id' => $event->getId()], static::class);
     }
 
+    public static function createRequest(?array $data): ?Requests
+    {
+        $db = DB::getInstance();
+        $userId = User::getUserByLogin($data['user'])->getId();
+        $authorId = User::getUserByLogin($data['request_author'])->getId();
+        $eventId = $data['event'];
+        $sql = "SELECT * FROM event_requests WHERE (`event` = :id AND `user` = :userId AND `author` = :authorId) LIMIT 1";
+        $request = $db->query($sql, ['id' => $eventId, 'userId' => $userId, 'authorId' => $authorId], static::class);
+        if (empty($request)) {
+            $request = new Requests();
+        } else {
+            $request = $request[0];
+        }
+        $request->user = $userId;
+        $request->event = $eventId;
+        $request->author = $authorId;
+        $request->status = $data['status'];
+        $request->save();
+        return $request;
+    }
 
     public static function changeRequestStatus(array $data, string $type): ?Requests
     {
