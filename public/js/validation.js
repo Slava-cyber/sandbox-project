@@ -4,6 +4,7 @@ function validate(data, form) {
     if (data.status == true) {
         formControl.submit();
     } else {
+        console.log(data);
         removeClass(form);
         if (php_error != null) {
             php_error.classList.add("none");
