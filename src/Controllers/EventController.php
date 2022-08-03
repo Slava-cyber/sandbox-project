@@ -41,7 +41,7 @@ class EventController extends Controller
                 $pageData = self::addBasicPageDataArray($this->data, $pageData);
                 $this->view->print($pageData);
             } else {
-                $event = Event::create($_POST, $this->user);
+                $event = Event::create($_POST, $this->user, 'eventAdd');
                 if ($event instanceof Event) {
                     header('Location: /main');
                 } else {

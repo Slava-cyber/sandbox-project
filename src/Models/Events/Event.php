@@ -37,7 +37,7 @@ class Event extends Model
 
     public function getCategory(): string
     {
-        return $this->category;
+        return ($this->category != null) ? $this->category : "";;
     }
 
     public function getSubcategory(): string
@@ -56,10 +56,10 @@ class Event extends Model
     }
 
 
-    public static function create(array $userData, User $user): ?Event
+    public static function create(array $userData, User $user, string $form): ?Event
     {
         $event = null;
-        $valid = new Validation($userData, 'eventAdd');
+        $valid = new Validation($userData, $form);
         $status = $valid->validate();
         if ($status['status']) {
             $event = new Event();
