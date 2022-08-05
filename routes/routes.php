@@ -28,6 +28,7 @@ return array
     '^(EventCreateApi)$' => 'adminApiRequest/eventCreate',
     '^(eventAuthorIdentification)$' => 'adminApiRequest/eventAuthorIdentification',
     '^(RequestCreateApi)$' => 'adminApiRequest/requestCreate',
+    '^(UserCreateApi)$' => 'adminApiRequest/userCreate',
     //'Profile/([a-z,0-9]+)/comments' =>  ,
     //'Profile/([a-z,0-9]+)/comments/add' =>  ,
     //'Profile/([a-z,0-9]+)/comments/([0-9]+)/edit' =>  ,

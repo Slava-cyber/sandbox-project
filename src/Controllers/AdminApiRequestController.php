@@ -51,6 +51,23 @@ class AdminApiRequestController
         return true;
     }
 
+    public function actionUserCreate(): bool
+    {
+        $data = json_decode(file_get_contents('php://input', true));
+        $data = json_decode(json_encode($data), true)['data'];
+        $valid = new Validation($data, 'adminUser');
+        $response = $valid->validate();
+        if ($response['status']) {
+            $user = User::createUserByAdmin($data);
+            if ($user == null) {
+                $response['status'] = false;
+            }
+        }
+        echo json_encode($response);
+        return true;
+    }
+
+
     public function actionAllDataRelease(): bool
     {
         $data = json_decode(file_get_contents('php://input', true));
