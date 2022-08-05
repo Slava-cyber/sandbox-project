@@ -100,7 +100,7 @@ class Validation
         return [
             'name' => 'required|alpha|max:20',
             'surname' => 'required|alpha|max:20',
-            'sex' => 'required|equal:Male,Female',
+            'sex' => 'required|equal:Мужской,Женский',
             'login_sign_up' => 'required|unique:user,login|alphaDash|between:5,20',
             'date_of_birth' => "required|before:$dateMax|after:$dateMin",
             'password_sign_up' => 'required|alphaDash|between:8,20',
@@ -122,7 +122,8 @@ class Validation
             'event' => 'required|numeric|eventExist',
             'request_author' => 'required',
             'user' => 'required|userExist',
-            'status' => 'required'
+            'status' => 'required',
+            'role' => 'required|in:role',
         ];
     }
 
@@ -165,6 +166,11 @@ class Validation
                 $msg = "Некорректная категория";
             }
         }
+        if ($params == 'role') {
+            if (!in_array($value, $this->arrayUserRoles())) {
+                $msg = "Некорректная роль";
+            }
+        }
         return $msg;
     }
 
@@ -182,6 +188,14 @@ class Validation
         ];
     }
 
+    private function arrayUserRoles(): array
+    {
+        return [
+            'user',
+            'advanced user',
+            'admin'
+        ];
+    }
 
     private function checkNone($value): string
     {
@@ -256,7 +270,10 @@ class Validation
                 'eventAdd' => 'title/town/datetime/category/description',
                 'emailForm' => 'email',
                 'adminEvent' => 'title/town/datetime/category/description/author',
-                'adminRequest' => 'event/user/request_author/status'
+                'adminRequest' => 'event/user/request_author/status',
+                'adminUser' =>
+                    'name/surname/sex/date_of_birth/login_sign_up/password_sign_up/password_confirm/email/' .
+                    'path_image/name/surname/date_of_birth/town/phone_number/interest/description/avatar'
             ];
     }
 
@@ -373,7 +390,7 @@ class Validation
         $msg = "";
         $pattern = explode(':', $this->paramsFunction)[1];
         if (!preg_match($pattern, $value)) {
-            $msg = 'Номер должен иметь формать (+7/7/8){9 цифр}';
+            $msg = 'Номер должен иметь формать (+7/7/8){10 цифр}';
         }
 
         return $msg;

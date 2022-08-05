@@ -112,6 +112,30 @@ class User extends Model
         return $this->email;
     }
 
+    public static function createUserByAdmin(array $userData): ?User
+    {
+        $user = new User();
+        $user->name = $userData['name'];
+        $user->surname = $userData['surname'];
+        $user->dateOfBirth = $userData['date_of_birth'];
+        $user->town = $userData['town'];
+        $user->sex = $userData['sex'];
+        $user->login = $userData['login_sign_up'];
+        $user->password = password_hash($userData['password_sign_up'], PASSWORD_DEFAULT);
+        $user->interest = $userData['interest'];
+        $user->description = $userData['description'];
+        $user->phoneNumber = $userData['phone_number'];
+        $user->email = $userData['email'];
+        $user->role = 'user';
+        if ($userData['path_image'] != "") {
+            unlink(ROOT . '../public' . $user->avatar);
+            $newPath = User::storeImage($userData['path_image']);
+            $user->avatar = $newPath;
+        }
+        $user->save();
+        return $user;
+    }
+
     public static function signUp(array $userData): ?User
     {
         $user = null;
