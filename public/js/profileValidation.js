@@ -4,6 +4,7 @@ let avatar = document.getElementById("avatar");
 avatar.addEventListener('change', function(event) {
 
     file = avatar.files[0];
+    console.log(file);
     var formData = new FormData();
     let data = {
         'form' : 'image',

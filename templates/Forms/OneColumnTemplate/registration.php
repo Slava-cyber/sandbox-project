@@ -3,11 +3,11 @@
         <div class="form-group py-2">
             <label>Укажите ваш пол</label>
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="Male" name="sex" value="Male" checked>
+                <input type="radio" class="form-check-input" id="Male" name="sex" value="Мужской" checked>
                 <label for="Male" class="form-check-label">Мужской</label><br/>
             </div>
             <div class="form-check">
-                <input type="radio" class="form-check-input" id="Female" name="sex" value="Female">
+                <input type="radio" class="form-check-input" id="Female" name="sex" value="Женский">
                 <label for="Female" class="form-check-label">Женский</label><br/>
             </div>
         </div>
