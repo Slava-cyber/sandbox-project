@@ -193,7 +193,7 @@ class Validation
         return [
             'user',
             'advanced user',
-            'admin'
+            'administrator'
         ];
     }
 

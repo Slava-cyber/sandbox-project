@@ -6,9 +6,10 @@ use App\Models\Users\User;
 use App\Models\Events\Event;
 use App\Models\Events\Requests;
 use App\Models\Validation\Validation as Validation;
+use App\System\Controller;
 use App\System\Model;
 
-class AdminApiRequestController
+class AdminApiRequestController extends Controller
 {
 
     public function actionEventAuthorIdentification(): bool
@@ -26,25 +27,28 @@ class AdminApiRequestController
 
     public function actionRequestCreate(): bool
     {
-        $data = json_decode(file_get_contents('php://input', true));
-        $data = json_decode(json_encode($data), true)['data'];
-        $_POST = $data;
-        $valid = new Validation($data, 'adminRequest');
-        $response = $valid->validate();
-        $event = Event::findOneByColumn('id', $_POST['event']);
-        if (
-            $event != null &&
-            $event->getAuthor()->getLogin() != $_POST['request_author'] &&
-            empty($response['error']['request_author'])
-        ) {
-            $response['status'] = false;
-            $response['error']['request_author'] = "не является автором указанного ивента";
-        }
-
-        if ($response['status']) {
-            $request = Requests::createRequest($_POST);
-            if ($request == null) {
+        $response['status'] = true;
+        if ($this->user instanceof User && $this->user->getRole() == 'administrator') {
+            $data = json_decode(file_get_contents('php://input', true));
+            $data = json_decode(json_encode($data), true)['data'];
+            $_POST = $data;
+            $valid = new Validation($data, 'adminRequest');
+            $response = $valid->validate();
+            $event = Event::findOneByColumn('id', $_POST['event']);
+            if (
+                $event != null &&
+                $event->getAuthor()->getLogin() != $_POST['request_author'] &&
+                empty($response['error']['request_author'])
+            ) {
                 $response['status'] = false;
+                $response['error']['request_author'] = "не является автором указанного ивента";
+            }
+
+            if ($response['status']) {
+                $request = Requests::createRequest($_POST);
+                if ($request == null) {
+                    $response['status'] = false;
+                }
             }
         }
         echo json_encode($response);
@@ -53,14 +57,17 @@ class AdminApiRequestController
 
     public function actionUserCreate(): bool
     {
-        $data = json_decode(file_get_contents('php://input', true));
-        $data = json_decode(json_encode($data), true)['data'];
-        $valid = new Validation($data, 'adminUser');
-        $response = $valid->validate();
-        if ($response['status']) {
-            $user = User::createUserByAdmin($data);
-            if ($user == null) {
-                $response['status'] = false;
+        $response['status'] = true;
+        if ($this->user instanceof User && $this->user->getRole() == 'administrator') {
+            $data = json_decode(file_get_contents('php://input', true));
+            $data = json_decode(json_encode($data), true)['data'];
+            $valid = new Validation($data, 'adminUser');
+            $response = $valid->validate();
+            if ($response['status']) {
+                $user = User::createUserByAdmin($data);
+                if ($user == null) {
+                    $response['status'] = false;
+                }
             }
         }
         echo json_encode($response);
@@ -70,42 +77,54 @@ class AdminApiRequestController
 
     public function actionAllDataRelease(): bool
     {
-        $data = json_decode(file_get_contents('php://input', true));
-        $entity = $data->entity;
-        $function = self::entityFunctionArrayForGettingData()[$entity];
-        self::$function();
+        if ($this->user instanceof User && $this->user->getRole() == 'administrator') {
+            $data = json_decode(file_get_contents('php://input', true));
+            $entity = $data->entity;
+            $function = self::entityFunctionArrayForGettingData()[$entity];
+            self::$function();
+            return true;
+        } else {
+            echo json_encode(['status' => false]);
+        }
         return true;
     }
 
     public function actionUserDelete(): bool
     {
-        $data = json_decode(file_get_contents('php://input', true));
-        $class = $data->entityType;
-        $id = $data->id;
-        $entityClassName = self::entityClassNameArray()[$class];
-        $object = $entityClassName::findOneByColumn('id', $id);
-        if ($object != null) {
-            $object->delete();
-            $status = 'success';
-        } else {
-            $status = 'false';
+        $status = false;
+        if ($this->user instanceof User && $this->user->getRole() == 'administrator') {
+            $data = json_decode(file_get_contents('php://input', true));
+            $class = $data->entityType;
+            $id = $data->id;
+            $entityClassName = self::entityClassNameArray()[$class];
+            $object = $entityClassName::findOneByColumn('id', $id);
+            if ($object != null) {
+                $object->delete();
+                $status = 'success';
+            } else {
+                $status = 'false';
+            }
         }
         echo json_encode(['status' => $status]);
+
         return true;
     }
 
     public function actionEventCreate(): bool
     {
-        $data = json_decode(file_get_contents('php://input', true));
-        $data = json_decode(json_encode($data), true)['data'];
-        $_POST = $data;
-        $valid = new Validation($data, 'adminEvent');
-        $response = $valid->validate();
-        if ($response['status'] === true) {
-            $user = User::findOneByColumn('login', $_POST['author']);
-            $event = Event::create($_POST, $user, 'adminEvent');
-            if ($event == null) {
-                $response['status'] = false;
+        $response['status'] = true;
+        if ($this->user instanceof User && $this->user->getRole() == 'administrator') {
+            $data = json_decode(file_get_contents('php://input', true));
+            $data = json_decode(json_encode($data), true)['data'];
+            $_POST = $data;
+            $valid = new Validation($data, 'adminEvent');
+            $response = $valid->validate();
+            if ($response['status'] === true) {
+                $user = User::findOneByColumn('login', $_POST['author']);
+                $event = Event::create($_POST, $user, 'adminEvent');
+                if ($event == null) {
+                    $response['status'] = false;
+                }
             }
         }
         echo json_encode($response);
