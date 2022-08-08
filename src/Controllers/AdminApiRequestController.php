@@ -65,7 +65,7 @@ class AdminApiRequestController extends Controller
             $response = $valid->validate();
             if ($response['status']) {
                 $user = User::createUserByAdmin($data);
-                if ($user == null) {
+                if (!($user instanceof User)) {
                     $response['status'] = false;
                 }
             }

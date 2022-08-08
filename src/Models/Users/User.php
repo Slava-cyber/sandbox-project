@@ -128,7 +128,9 @@ class User extends Model
         $user->email = $userData['email'];
         $user->role = 'user';
         if ($userData['path_image'] != "") {
-            unlink(ROOT . '../public' . $user->avatar);
+            if ($user->avatar != null) {
+                unlink(ROOT . '../public' . $user->avatar);
+            }
             $newPath = User::storeImage($userData['path_image']);
             $user->avatar = $newPath;
         }
@@ -170,7 +172,9 @@ class User extends Model
             $user->description = $userData['description'];
             $user->phoneNumber = $userData['phone_number'];
             if ($userData['path_image'] != "") {
-                unlink(ROOT . '../public' . $user->avatar);
+                if ($user->avatar != null) {
+                    unlink(ROOT . '../public' . $user->avatar);
+                }
                 $newPath = User::storeImage($userData['path_image']);
                 $user->avatar = $newPath;
             }
