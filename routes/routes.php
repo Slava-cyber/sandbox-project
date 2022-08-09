@@ -29,6 +29,8 @@ return array
     '^(eventAuthorIdentification)$' => 'adminApiRequest/eventAuthorIdentification',
     '^(RequestCreateApi)$' => 'adminApiRequest/requestCreate',
     '^(UserCreateApi)$' => 'adminApiRequest/userCreate',
+    '^(userChangeRole)$' => 'adminApiRequest/userChangeRole',
+    '^(EventGetDataById)$' => 'adminApiRequest/EventGetDataById'
     //'Profile/([a-z,0-9]+)/comments' =>  ,
     //'Profile/([a-z,0-9]+)/comments/add' =>  ,
     //'Profile/([a-z,0-9]+)/comments/([0-9]+)/edit' =>  ,

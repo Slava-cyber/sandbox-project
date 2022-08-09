@@ -56,7 +56,7 @@ class Event extends Model
     }
 
 
-    public static function create(array $userData, User $user, string $form): ?Event
+    public static function create(array $userData, User $user, string $form, int $id): ?Event
     {
         $event = null;
         $valid = new Validation($userData, $form);
@@ -72,6 +72,12 @@ class Event extends Model
             $event->town = $userData['town'];
             $event->category = $userData['category'];
             $event->description = ($userData['description'] != null) ? $userData['description'] : "";
+
+            $checkId = Event::findOneByColumn('id', $id);
+            if ($checkId != null) {
+                $event->id = $id;
+            }
+
             $event->save();
         }
         return $event;

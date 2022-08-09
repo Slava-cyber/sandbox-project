@@ -112,6 +112,11 @@ class User extends Model
         return $this->email;
     }
 
+    public function setRole(?string $role)
+    {
+        $this->role = $role;
+    }
+
     public static function createUserByAdmin(array $userData): ?User
     {
         $user = new User();
