@@ -69,7 +69,7 @@ class Validation
                 if ($msg != '' || $fields == 'avatar') {
                     $errors[$fields] = $msg;
                 }
-                $i += 1;
+                $i++;
             }
         }
         return $errors;
@@ -254,7 +254,7 @@ class Validation
             if (!file_exists($imageFolder . $newName)) {
                 break;
             }
-            $i += 1;
+            $i++;
         }
         return $newName;
     }

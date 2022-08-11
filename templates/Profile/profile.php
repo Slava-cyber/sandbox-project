@@ -28,7 +28,7 @@
                         <div class="col-sm-9 justify-content-start">
                             <?= $input ?>
                         </div>
-                        <?php $i += 1 ?>
+                        <?php $i++ ?>
                     <?php else : ?>
                         <div class="col-sm-12">
                             <strong><?= $nameField ?></strong>

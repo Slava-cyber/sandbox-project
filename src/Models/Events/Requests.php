@@ -48,14 +48,14 @@ class Requests extends Model
                 $result[$i]['possibility'] = false;
             } else {
                 $result[$i]['possibility'] = true;
-                $result[$i]['data'] = Requests::checkExistRequest($event, $user);
+                $result[$i]['data'] = Requests::checkIfRequestExists($event, $user);
             }
-            $i += 1;
+            $i++;
         }
         return $result;
     }
 
-    public static function checkExistRequest(Event $event, User $user): ?Requests
+    public static function checkIfRequestExists(Event $event, User $user): ?Requests
     {
         $db = DB::getInstance();
         $sql = "SELECT * FROM event_requests WHERE (`event` = :eventId AND `user` = :userId AND `author` = :authorId) LIMIT 1";

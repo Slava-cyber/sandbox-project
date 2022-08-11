@@ -266,7 +266,7 @@ class User extends Model
         $i = 0;
         foreach ($requests as $request) {
             $result[$i] = User::findOneByColumn('id', $request->getUser());
-            $i += 1;
+            $i++;
         }
         return $result;
     }

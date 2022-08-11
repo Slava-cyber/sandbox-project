@@ -7,7 +7,7 @@
                 <li class="page-item <?php echo ($currentPage == $name) ? 'active' : '' ?>" id="<?= 'liPage' . $i ?>">
                     <a class="page-link" href="<?= $prefix . $link ?>"><?= $name ?></a>
                 </li>
-                <?php $i += 1 ?>
+                <?php $i++ ?>
             <?php endforeach; ?>
         </ul>
     </nav>

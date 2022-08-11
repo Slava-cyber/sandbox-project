@@ -120,8 +120,8 @@ class AdminApiRequestController extends Controller
             $data = json_decode(file_get_contents('php://input', true));
             $entity = $data->entity;
             $function = self::entityFunctionArrayForGettingData()[$entity];
-            self::$function();
-            return true;
+            $result = self::$function();
+            echo json_encode(self::transformArrayOfArraysToArrayOfJsonStrings($result));
         } else {
             echo json_encode(['status' => false]);
         }
@@ -133,19 +133,17 @@ class AdminApiRequestController extends Controller
         $status = false;
         if ($this->user instanceof User && $this->user->getRole() == 'administrator') {
             $data = json_decode(file_get_contents('php://input', true));
-            $class = $data->entityType;
+            $entity = $data->entityType;
             $id = $data->id;
-            $entityClassName = self::entityClassNameArray()[$class];
+            $entityClassName = self::entityClassNameArray()[$entity];
             $object = $entityClassName::findOneByColumn('id', $id);
             if ($object != null) {
-                if (isset(self::arrayOfRemovalNotificationFormEmailFunctions()[$class])) {
-                    $functionName = self::arrayOfRemovalNotificationFormEmailFunctions()[$class];
+                if (isset(self::arrayOfRemovalNotificationFormEmailFunctions()[$entity])) {
+                    $functionName = self::arrayOfRemovalNotificationFormEmailFunctions()[$entity];
                     self::$functionName($this->user, $object);
                 }
                 $object->delete();
-                $status = 'success';
-            } else {
-                $status = 'false';
+                $status = true;
             }
         }
         echo json_encode(['status' => $status]);
@@ -222,37 +220,33 @@ class AdminApiRequestController extends Controller
         return true;
     }
 
-    private static function actionUserTable(): bool
+    private static function userTable(): ?array
     {
         $data = User::getAllObjects();
-        $result = self::formArrayOfArraysInsteadOfClassObjects($data);
-        echo json_encode(self::transformArrayOfArraysToArrayOfJsonStrings($result));
-        return true;
+        return self::formArrayOfArraysInsteadOfClassObjects($data);
     }
 
-    private static function actionEventTable(): bool
+    private static function eventTable(): ?array
     {
         $data = Event::getAllObjects();
-        $result = self::formArrayOfArraysInsteadOfClassObjects($data);
-        $arraySize = count($result);
+        $data = self::formArrayOfArraysInsteadOfClassObjects($data);
+        $arraySize = count($data);
         for ($i = 0; $i < $arraySize; $i++) {
-            $result[$i]['author'] = $result[$i]['author']->getLogin();
+            $data[$i]['author'] = $data[$i]['author']->getLogin();
         }
-        echo json_encode(self::transformArrayOfArraysToArrayOfJsonStrings($result));
-        return true;
+        return $data;
     }
 
-    private static function actionRequestTable(): bool
+    private static function requestTable(): ?array
     {
         $data = Requests::getAllObjects();
-        $result = self::formArrayOfArraysInsteadOfClassObjects($data);
-        $arraySize = count($result);
+        $data = self::formArrayOfArraysInsteadOfClassObjects($data);
+        $arraySize = count($data);
         for ($i = 0; $i < $arraySize; $i++) {
-            $result[$i]['author'] = User::getUserById($result[$i]['author'])->getLogin();
-            $result[$i]['user'] = User::getUserById($result[$i]['user'])->getLogin();
+            $data[$i]['author'] = User::getUserById($data[$i]['author'])->getLogin();
+            $data[$i]['user'] = User::getUserById($data[$i]['user'])->getLogin();
         }
-        echo json_encode(self::transformArrayOfArraysToArrayOfJsonStrings($result));
-        return true;
+        return $data;
     }
 
     private static function formArrayOfArraysInsteadOfClassObjects(?array $data): ?array
@@ -287,9 +281,9 @@ class AdminApiRequestController extends Controller
     private static function entityFunctionArrayForGettingData(): ?array
     {
         return [
-            'user' => 'actionUserTable',
-            'event' => 'actionEventTable',
-            'request' => 'actionRequestTable',
+            'user' => 'userTable',
+            'event' => 'eventTable',
+            'request' => 'requestTable',
         ];
     }
 
