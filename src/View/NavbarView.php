@@ -21,9 +21,6 @@ class NavbarView extends View
                     ],
                 ];
         } else {
-            if ($user->getRole() == 'admin') {
-                $navbar['main']['Админ'] = '/admin';
-            }
             $navbar =
                 [
                     'active' => (isset($info['active'])) ? $info['active'] : '',
@@ -42,8 +39,10 @@ class NavbarView extends View
                             'Выйти' => '/logout',
                         ]
                 ];
+            if ($user->getRole() == 'administrator') {
+                $navbar['main']['Админ'] = '/admin';
+            }
         }
-
         return NavbarView::render('Navbar/navbar', $user, ['navbar' => $navbar]);
     }
 }
