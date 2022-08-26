@@ -27,7 +27,8 @@ return array
     '^(RequestCreateApi)$' => 'adminRecordsCreation/requestCreate',
     '^(UserCreateApi)$' => 'adminRecordsCreation/userCreate',
     '^(userChangeRole)$' => 'adminTableActions/userChangeRole',
-    '^(EventGetDataById)$' => 'adminRecordsCreation/EventGetDataById'
+    '^(EventGetDataById)$' => 'adminRecordsCreation/EventGetDataById',
+    '^(userApiCheckAdminRights)$' => 'adminUserEntity/checkAdminStatus'
     //'Profile/([a-z,0-9]+)/comments' =>  ,
     //'Profile/([a-z,0-9]+)/comments/add' =>  ,
     //'Profile/([a-z,0-9]+)/comments/([0-9]+)/edit' =>  ,
