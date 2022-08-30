@@ -50,14 +50,14 @@ class BaseEntityController extends Controller
             $function = self::entityFunctionForGettingData()[$entity];
             $entityControllerName = 'App\Controllers\Admin\\' . self::entityControllerName()[$entity];
             $result = $entityControllerName::$function();
-            echo json_encode(self::transformArrayOfArraysToArrayOfJsonStrings($result));
+            echo json_encode(self::transformNestedArrayToArrayOfJsonStrings($result));
         } else {
             echo json_encode(['status' => false]);
         }
         return true;
     }
 
-    protected static function formArrayOfArraysInsteadOfClassObjects(?array $data): ?array
+    protected static function formNestedArrayInsteadOfObjects(?array $data): ?array
     {
         $result = [];
         $i = 0;
@@ -76,7 +76,7 @@ class BaseEntityController extends Controller
         return $result;
     }
 
-    protected static function transformArrayOfArraysToArrayOfJsonStrings(?array $data): ?array
+    protected static function transformNestedArrayToArrayOfJsonStrings(?array $data): ?array
     {
         $result = [];
         foreach ($data as $item) {

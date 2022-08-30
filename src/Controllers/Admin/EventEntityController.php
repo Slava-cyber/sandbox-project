@@ -42,7 +42,7 @@ class EventEntityController extends BaseEntityController
             if ($event != null) {
                 $status = true;
                 $eventData[0] = $event;
-                $result = self::formArrayOfArraysInsteadOfClassObjects($eventData);
+                $result = self::formNestedArrayInsteadOfObjects($eventData);
                 $result[0]['author'] = $result[0]['author']->getLogin();
                 $eventData = $result[0];
             } else {
@@ -58,7 +58,7 @@ class EventEntityController extends BaseEntityController
     public static function getEventDataTable(): ?array
     {
         $data = Event::getAllObjects();
-        $data = self::formArrayOfArraysInsteadOfClassObjects($data);
+        $data = self::formNestedArrayInsteadOfObjects($data);
         $arraySize = count($data);
         for ($i = 0; $i < $arraySize; $i++) {
             $data[$i]['author'] = $data[$i]['author']->getLogin();

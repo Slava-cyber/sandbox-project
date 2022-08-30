@@ -55,7 +55,7 @@ class RequestEntityController extends BaseEntityController
     public static function getRequestDataTable(): ?array
     {
         $data = Requests::getAllObjects();
-        $data = self::formArrayOfArraysInsteadOfClassObjects($data);
+        $data = self::formNestedArrayInsteadOfObjects($data);
         $arraySize = count($data);
         for ($i = 0; $i < $arraySize; $i++) {
             $data[$i]['author'] = User::getUserById($data[$i]['author'])->getLogin();

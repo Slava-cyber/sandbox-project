@@ -48,7 +48,7 @@ class UserEntityController extends BaseEntityController
     public static function getUserDataTable(): ?array
     {
         $data = User::getAllObjects();
-        return self::formArrayOfArraysInsteadOfClassObjects($data);
+        return self::formNestedArrayInsteadOfObjects($data);
     }
 
     public static function sendUserRemovalNotificationByEmail(?User $admin, ?User $user): void
