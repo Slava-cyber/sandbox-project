@@ -14,11 +14,11 @@ class BaseEntityController extends Controller
             $data = json_decode(file_get_contents('php://input', true));
             $entity = $data->entityType;
             $id = $data->id;
-            $entityClassName = self::entityModelClassName()[$entity];
+            $entityClassName = 'App\Models\\' . self::entityModelClassName()[$entity];
             $object = $entityClassName::findOneByColumn('id', $id);
             if ($object != null) {
-                if (isset(self::removalNotificationSendByEmailFunctionName()[$entity])) {
-                    $functionName = self::removalNotificationSendByEmailFunctionName()[$entity];
+                if (isset(self::removalNotificationByEmailFunctionName()[$entity])) {
+                    $functionName = self::removalNotificationByEmailFunctionName()[$entity];
                     $entityControllerName = 'App\Controllers\Admin\\' . self::entityControllerName()[$entity];
                     $entityControllerName::$functionName($this->user, $object);
                 }
@@ -89,13 +89,13 @@ class BaseEntityController extends Controller
     private static function entityModelClassName(): ?array
     {
         return [
-            'user' => 'App\Models\Users\User',
-            'event' => 'App\Models\Events\Event',
-            'request' => 'App\Models\Events\Requests',
+            'user' => 'Users\User',
+            'event' => 'Events\Event',
+            'request' => 'Events\Requests',
         ];
     }
 
-    private static function removalNotificationSendByEmailFunctionName(): ?array
+    private static function removalNotificationByEmailFunctionName(): ?array
     {
         return [
             'user' => 'sendUserRemovalNotificationByEmail',
