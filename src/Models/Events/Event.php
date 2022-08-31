@@ -56,7 +56,7 @@ class Event extends Model
     }
 
 
-    public static function create(array $userData, User $user, string $form, int $id): ?Event
+    public static function create(array $userData, User $user, string $form, int $id = 0): ?Event
     {
         $event = null;
         $valid = new Validation($userData, $form);
