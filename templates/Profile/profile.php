@@ -41,7 +41,7 @@
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endforeach; ?>
-            <div class="col-sm-12 text-sm-center text-md-end">
+            <div class="col-sm-12 text-center text-md-end">
                 <?php if ($info['button']) : ?>
                     <a href="/profile/edit" class="btn btn-secondary" role="button" aria-disabled="true">Редактировать
                         профиль</a>
