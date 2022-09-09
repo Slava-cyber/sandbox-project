@@ -1,4 +1,6 @@
 # The 'Sandbox' app - is the place for meeting people with the same interests.
+Users can create events indicating the type of activity, time and place, view incoming requests from other users, and also subscribe to the events of others.
+
 
 <hr style="background-color: #54b686; height: 3px">
 
