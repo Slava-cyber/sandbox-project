@@ -2,6 +2,7 @@
 
 return array
 (
+    '' => 'main/index',
     '^(logout)$' => 'user/logout',
     '^(login)$' => 'user/signIn',
     '^(registration)$' => 'user/signUp',
