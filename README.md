@@ -29,7 +29,7 @@ Used PHP version: 7.4. The code is written in compliance with PSR-12. Virtual ma
 
 ## How to run
 To have a fully-functional application, after cloning this repo you have to:
-Using example settings files which are located in ~/settings/~, rewrite them with your data.
+Using example settings files which are located in [**~/settings**](https://github.com/Slava-cyber/sandbox-project/tree/master/settings), rewrite them with your data.
 
 db.example.php:
 
